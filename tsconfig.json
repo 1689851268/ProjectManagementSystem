@@ -1,0 +1,47 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "useDefineForClassFields": true,
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "strict": true,
+        "jsx": "preserve",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "esModuleInterop": true,
+        "lib": [
+            "ESNext",
+            "DOM"
+        ],
+        "skipLibCheck": true,
+        "noEmit": true,
+        /* 通过 baseUrl & paths 配置路径别名 */
+        "baseUrl": "./",
+        "paths": {
+            "@/*": [
+                "src/*",
+            ],
+        },
+        /* 告诉 Ts 在以下目录中查找类型定义 */
+        "typeRoots": [
+            "./node_modules/@types", // npm 包放置类型定义的地方
+            "./types" // 自定义的全局类型
+        ],
+    },
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.d.ts",
+        "src/**/*.tsx",
+        "src/**/*.vue",
+        "vite.config.ts",
+        "types/**/*.d.ts",
+    ],
+    "exclude": [
+        "node_modules"
+    ],
+    "references": [
+        {
+            "path": "./tsconfig.node.json"
+        }
+    ],
+}
