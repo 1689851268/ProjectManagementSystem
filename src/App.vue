@@ -1,5 +1,5 @@
 <template>
-    <LanguageConfig />
+    <LanguageConfig class="float-right" />
     <el-config-provider :locale="curLocale">
         <router-view></router-view>
     </el-config-provider>
@@ -13,7 +13,7 @@ import en from 'element-plus/dist/locale/en.mjs';
 
 import { useAppStore } from '@/store/app';
 import { SYS_LANGUAGE } from '@/common/enum';
-import { getLanguage } from '@/lang';
+import { getLanguage } from '@/locales';
 import LanguageConfig from '@/components/LanguageConfig.vue';
 
 const appStore = useAppStore();

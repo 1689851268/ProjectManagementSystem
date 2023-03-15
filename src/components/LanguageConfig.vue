@@ -1,5 +1,5 @@
 <template>
-    <el-dropdown>
+    <el-dropdown trigger="click">
         <el-button type="primary">
             {{ allLanguage[appStore.language] }}
             <el-icon class="ml-5"><ArrowDown /></el-icon>
@@ -34,6 +34,8 @@ const allLanguage = {
 };
 
 const toggleLanguage = (curLanguage: SYS_LANGUAGE) => {
+    if (appStore.language === curLanguage) return;
+
     appStore.language = curLanguage;
     locale.value = curLanguage;
     localCache.setItem(SYS_CONFIG.Language, curLanguage);

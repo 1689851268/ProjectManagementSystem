@@ -5,3 +5,30 @@
 .mr-5 {
     margin-right: 5px;
 }
+
+.w-full {
+    width: 100%;
+}
+
+.position-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.font-size-25 {
+    font-size: 25px;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+.float-right {
+    float: right;
+}

@@ -4,4 +4,5 @@ export default {
     'remember me': '记住我',
     'log in': '登陆',
     'sign up': '注册',
+    'Please complete the form.': '请填写完整',
 };

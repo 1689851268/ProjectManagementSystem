@@ -1,7 +1,7 @@
 import { createI18n } from 'vue-i18n';
 
-import zh from '@/lang/zh';
-import en from '@/lang/en';
+import zh from '@/locales/lang/zh';
+import en from '@/locales/lang/en';
 import { localCache } from '@/utils/cache';
 import { SYS_CONFIG, SYS_LANGUAGE } from '@/common/enum';
 
