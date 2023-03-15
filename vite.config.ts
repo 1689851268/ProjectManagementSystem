@@ -15,9 +15,11 @@ export default defineConfig(({ mode }) => {
         plugins: [
             vue(),
             AutoImport({
+                // 自动导入 Element Plus 相关函数, 如: ElMessage, ElMessageBox... (带样式)
                 resolvers: [ElementPlusResolver()],
             }),
             Components({
+                // 自动注册 Element Plus 相关组件
                 resolvers: [ElementPlusResolver()],
             }),
         ],
@@ -27,6 +29,7 @@ export default defineConfig(({ mode }) => {
         resolve: {
             alias: {
                 '@': path.resolve(__dirname, './src'),
+                'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js',
             },
         },
     };
