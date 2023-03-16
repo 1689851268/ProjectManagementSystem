@@ -1,7 +1,7 @@
 <template>
     <el-dropdown trigger="click">
         <el-button type="primary">
-            {{ allLanguage[appStore.language] }}
+            {{ allLanguage[appStore.sysLanguage] }}
             <el-icon class="ml-5"><ArrowDown /></el-icon>
         </el-button>
         <template #dropdown>
@@ -20,13 +20,16 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { ArrowDown } from '@element-plus/icons-vue';
+import { storeToRefs } from 'pinia';
 
 import { localCache } from '@/utils/cache';
 import { useAppStore } from '@/store/app';
 import { SYS_CONFIG, SYS_LANGUAGE } from '@/common/enum';
 
 const appStore = useAppStore();
+
 const { locale } = useI18n();
+const { getSysLanguage } = storeToRefs(appStore);
 
 const allLanguage = {
     [SYS_LANGUAGE.En]: 'English',
@@ -34,9 +37,9 @@ const allLanguage = {
 };
 
 const toggleLanguage = (curLanguage: SYS_LANGUAGE) => {
-    if (appStore.language === curLanguage) return;
+    if (getSysLanguage.value === curLanguage) return;
 
-    appStore.language = curLanguage;
+    appStore.setSysLanguage(curLanguage);
     locale.value = curLanguage;
     localCache.setItem(SYS_CONFIG.Language, curLanguage);
 };

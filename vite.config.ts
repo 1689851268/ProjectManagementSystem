@@ -32,5 +32,12 @@ export default defineConfig(({ mode }) => {
                 'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js',
             },
         },
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    additionalData: '@import "@/styles/variable.scss";', // 全局引入 scss 变量
+                },
+            },
+        },
     };
 });

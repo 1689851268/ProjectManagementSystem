@@ -1,5 +1,5 @@
 export enum SYS_CONFIG {
-    Language = 'language',
+    Language = 'sysLanguage',
 }
 
 export enum SYS_LANGUAGE {

@@ -1,4 +1,5 @@
 <template>
+    <LanguageConfig class="float-right" />
     <div class="position-center">
         <div class="text-center font-size-25 font-bold">{{ $t('log in') }}</div>
         <el-form
@@ -40,6 +41,11 @@
 import { reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { FormInstance, FormRules } from 'element-plus';
+import { useRouter } from 'vue-router';
+
+import LanguageConfig from '@/components/LanguageConfig.vue';
+
+const router = useRouter();
 
 const { t } = useI18n();
 
@@ -50,18 +56,22 @@ const form = reactive({
 
 const ruleFormRef = ref<FormInstance>();
 
+// 点击登录
 const logIn = async (formEl: FormInstance | undefined) => {
     if (!formEl) return;
 
+    // 校验信息
     await formEl.validate((valid, fields) => {
         if (valid) {
             console.log('submit!', form);
+            router.push({ name: 'Notification' }); // 跳转到 Notification 页面
         } else {
             console.log('error submit!', fields);
         }
     });
 };
 
+// 校验规则
 const rules = reactive<FormRules>({
     account: [
         {
@@ -89,7 +99,7 @@ const rules = reactive<FormRules>({
 });
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .login-form {
     width: 300px;
     padding: 40px;
