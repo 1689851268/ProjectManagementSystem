@@ -57,7 +57,7 @@ const handleSelect = (
 $sidebar-width: 300px;
 
 .app-side {
-    background-color: $theme-bg-color;
+    background-color: $sidebar-bg-color;
     transition: width 0.3s;
     position: relative;
 

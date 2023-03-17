@@ -10,4 +10,8 @@ export default {
     'My Project': '我的项目',
     'My Achievement': '我的成果',
     'Project Management': '项 目 管 理',
+    'Title': '标题',
+    'Please enter the title': '请输入标题',
+    'Search': '搜索',
+    'Reset': '重置',
 };

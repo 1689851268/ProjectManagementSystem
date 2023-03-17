@@ -11,7 +11,8 @@ const routes = [
             {
                 path: '/notification', // 默认子路由
                 name: 'Notification', // 通知公告
-                component: () => import('@/views/notification.vue'),
+                component: () =>
+                    import('@/views/notification/notification.vue'),
                 meta: {
                     icon: 'Notification',
                 },

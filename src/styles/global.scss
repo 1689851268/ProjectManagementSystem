@@ -4,8 +4,24 @@
     margin-left: 5px;
 }
 
+.mb-0 {
+    margin-bottom: 0 !important;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
 .w-full {
     width: 100%;
+}
+
+.w-200 {
+    width: 200px !important;
+}
+
+.w-60 {
+    width: 60px !important;
 }
 
 .h-full {
@@ -35,10 +51,10 @@
     float: right;
 }
 
-.w-60 {
-    width: 60px !important;
-}
-
 .flex-direction-column {
     flex-direction: column !important;
+}
+
+.pl-20 {
+    padding-left: 20px;
 }

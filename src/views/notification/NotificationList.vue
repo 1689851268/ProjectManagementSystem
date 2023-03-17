@@ -1,5 +1,5 @@
 <template>
-    <div>notification</div>
+    <div>NotificationList</div>
 </template>
 
 <script setup lang="ts"></script>
