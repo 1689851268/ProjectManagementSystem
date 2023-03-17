@@ -1,70 +1,55 @@
 <template>
     <el-aside class="app-side" :class="{ 'w-60': getMenuCollapsed }">
         <el-scrollbar>
+            <!-- 标题 -->
             <div class="app-title" v-show="!getMenuCollapsed">
                 {{ $t('Project Management') }}
             </div>
+            <!-- 菜单 -->
             <el-menu
                 class="app-menu"
                 :collapse-transition="false"
                 :collapse="getMenuCollapsed"
                 :default-active="'1'"
+                :router="true"
                 background-color="#545c64"
                 text-color="#fff"
                 active-text-color="#ffd04b"
                 @select="handleSelect"
             >
-                <el-menu-item index="1">
-                    <el-icon><Notification /></el-icon>
-                    <template #title>{{ $t('Notification') }}</template>
+                <el-menu-item
+                    v-for="(menu, i) in menuList"
+                    :index="`${i + 1}`"
+                    :route="{ name: menu.name }"
+                >
+                    <el-icon> <component :is="menu.meta?.icon" /> </el-icon>
+                    <template #title>{{ $t(menu.name as string) }}</template>
                 </el-menu-item>
-                <el-menu-item index="2">
-                    <el-icon><DataBoard /></el-icon>
-                    <template #title>{{ $t('Project Hall') }}</template>
-                </el-menu-item>
-                <el-sub-menu index="3">
-                    <template #title>
-                        <el-icon><Notebook /></el-icon>
-                        <span>{{ $t('My Project') }}</span>
-                    </template>
-                    <el-menu-item index="3-1"> Option 1 </el-menu-item>
-                    <el-menu-item index="3-2"> Option 2 </el-menu-item>
-                    <el-menu-item index="3-3"> Option 3 </el-menu-item>
-                </el-sub-menu>
-                <el-sub-menu index="4">
-                    <template #title>
-                        <el-icon><Document /></el-icon>
-                        <span>{{ $t('My Achievement') }}</span>
-                    </template>
-                    <el-menu-item index="4-1"> Option 1 </el-menu-item>
-                    <el-menu-item index="4-2"> Option 2 </el-menu-item>
-                    <el-menu-item index="4-3">
-                        <LanguageConfig />
-                    </el-menu-item>
-                </el-sub-menu>
             </el-menu>
         </el-scrollbar>
     </el-aside>
 </template>
 
 <script setup lang="ts">
-import {
-    DataBoard,
-    Notification,
-    Notebook,
-    Document,
-} from '@element-plus/icons-vue';
 import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
 
 import { useAppStore } from '@/store/app';
-import LanguageConfig from '@/components/LanguageConfig.vue';
 
 const appStore = useAppStore();
+const router = useRouter();
+
+const routes = router.options.routes; // 路由配置
+const menuList = routes.filter((item) => item.name === 'Home')[0].children; // 菜单列表
 
 const { getMenuCollapsed } = storeToRefs(appStore);
 
-const handleSelect = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath);
+const handleSelect = (
+    key: string,
+    keyPath: string[],
+    item: { index: string; indexPath: string[]; route: { name: string } },
+) => {
+    console.log(key, keyPath, item);
 };
 </script>
 
