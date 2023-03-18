@@ -14,4 +14,5 @@ export default {
     'Please enter the title': '请输入标题',
     'Search': '搜索',
     'Reset': '重置',
+    'No data': '暂无数据',
 };

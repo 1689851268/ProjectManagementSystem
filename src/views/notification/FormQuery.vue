@@ -28,10 +28,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import useQueryCondition from '@/hooks/useQueryCondition';
 
-const { queryCondition } = defineProps<{
-    queryCondition: any;
+const { defaultQueryCondition } = defineProps<{
+    defaultQueryCondition: any; // 查询条件及其默认值
+}>();
+
+const emits = defineEmits<{
+    (event: 'setQueryCondition', queryCondition: any): void; // 更新查询条件
+    (event: 'resetQueryCondition'): void; // 重置查询条件
+    (event: 'setCurPage', curPage: number): void; // 重置查询条件
 }>();
 
 // tool - 首字母大写
@@ -40,34 +46,36 @@ const capitalize = (str: string) => {
 };
 
 // 表单项
-const formItems = Object.keys(queryCondition).map((key) => {
+const formItems = Object.keys(defaultQueryCondition).map((key) => {
     return {
         queryTitle: capitalize(key),
         queryTip: key,
     };
 });
 
-// 表单数据
-const formData = ref({ ...queryCondition });
+// 表单数据 & 重置表单数据的方法
+const { queryCondition: formData, resetQueryCondition: resetFormData } =
+    useQueryCondition(defaultQueryCondition);
 
-// 查询
+// 点击搜索
 const queryForm = () => {
-    console.log('formData', formData.value);
+    emits('setQueryCondition', formData.value); // 更新查询条件
+    emits('setCurPage', 1); // 重置当前页码
 };
 
-// 重置
+// 点击重置
 const resetForm = () => {
-    formData.value = queryCondition;
-    queryForm(); // 重置后查询
+    resetFormData(); // 重置表单数据
+    emits('resetQueryCondition'); // 重置查询条件
+    emits('setCurPage', 1); // 重置当前页码
 };
 </script>
 
 <style scoped lang="scss">
+@import '@/styles/mixins.scss';
+
 .notification-query {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    border-bottom: 1px solid #ebeef5;
+    @include content-box;
     display: flex;
     align-items: center;
 

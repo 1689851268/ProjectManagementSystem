@@ -1,6 +1,6 @@
 <template>
     <el-main class="app-main">
-        <el-scrollbar> <router-view /> </el-scrollbar>
+        <router-view />
     </el-main>
 </template>
 
