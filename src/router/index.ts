@@ -1,6 +1,11 @@
 import { App } from 'vue';
 import { RouteRecordRaw, createRouter, createWebHashHistory } from 'vue-router';
 
+/**
+ * 路由配置, 侧边栏会根据以下配置进行渲染
+ * @desc name 路由名称, 用于渲染菜单栏的名称
+ * @desc meta.icon 用于渲染菜单栏的图标
+ */
 const routes = [
     {
         path: '/',

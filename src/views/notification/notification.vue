@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect, unref } from 'vue';
+import { ref, watch, unref } from 'vue';
 import type { Ref } from 'vue';
 import NotificationQuery from './FormQuery.vue';
 import NotificationList from './NotificationList.vue';
@@ -75,7 +75,7 @@ const getNotificationList = async (
         setTimeout(() => {
             resolve({
                 notificationList: generateNotificationList(curPage, pageSize),
-                total: 400,
+                total: 100,
             });
         }, 1000);
     });
@@ -110,21 +110,23 @@ const { queryCondition, setQueryCondition, resetQueryCondition } =
 const { isLoading, startLoading, stopLoading } = useLoading();
 
 // 监听 curPage, pageSize, queryCondition 的变化, 发送请求获取通知列表
-watchEffect(async () => {
-    startLoading();
-    scrollToTop(scrollbar); // 使用 el-scrollbar 滚回到顶部
-    const { notificationList: realNotificationList, total: realTotal } =
-        await getNotificationList(
-            curPage.value,
-            pageSize.value,
-            queryCondition.value.title,
-        );
-    setTotal(realTotal); // 设置通知总数
-    notificationList.value = realNotificationList; // 设置通知列表
-    /* setTotal(0);
-    notificationList.value = []; */
-    stopLoading();
-});
+watch(
+    [curPage, pageSize, queryCondition],
+    async () => {
+        startLoading();
+        scrollToTop(scrollbar); // 使用 el-scrollbar 滚回到顶部
+        const { notificationList: realNotificationList, total: realTotal } =
+            await getNotificationList(
+                curPage.value,
+                pageSize.value,
+                queryCondition.value.title,
+            );
+        setTotal(realTotal); // 设置通知总数
+        notificationList.value = realNotificationList; // 设置通知列表
+        stopLoading();
+    },
+    { immediate: true },
+);
 </script>
 
 <style lang="scss" scoped>

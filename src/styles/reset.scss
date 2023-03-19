@@ -13,6 +13,6 @@ body {
     height: 100%;
 }
 
-:focus {
-    outline: none !important; // 去除 el-drawer 的默认阴影
+.el-drawer:focus {
+    outline: none !important; // 去除 el-drawer 的默认轮廓线
 }

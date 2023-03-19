@@ -21,7 +21,7 @@
         <!-- 分页器 -->
         <el-pagination
             class="p-20"
-            v-if="total > 0"
+            v-if="total > pageSize"
             :current-page="curPage"
             :page-size="pageSize"
             :page-sizes="pageSizes"

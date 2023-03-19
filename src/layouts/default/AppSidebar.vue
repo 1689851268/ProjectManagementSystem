@@ -10,7 +10,7 @@
                 class="app-menu"
                 :collapse-transition="false"
                 :collapse="getMenuCollapsed"
-                :default-active="'1'"
+                :default-active="defaultMenu"
                 :router="true"
                 background-color="#545c64"
                 text-color="#fff"
@@ -18,12 +18,13 @@
                 @select="handleSelect"
             >
                 <el-menu-item
-                    v-for="(menu, i) in menuList"
-                    :index="`${i + 1}`"
-                    :route="{ name: menu.name }"
+                    v-for="{ name, icon } in menuList"
+                    :key="name"
+                    :index="name"
+                    :route="{ name }"
                 >
-                    <el-icon> <component :is="menu.meta?.icon" /> </el-icon>
-                    <template #title>{{ $t(menu.name as string) }}</template>
+                    <el-icon> <component :is="icon" /> </el-icon>
+                    <template #title>{{ $t(name as string) }}</template>
                 </el-menu-item>
             </el-menu>
         </el-scrollbar>
@@ -32,24 +33,23 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { useRouter } from 'vue-router';
 
 import { useAppStore } from '@/store/app';
+import useMenuList from '@/hooks/useMenuList';
 
 const appStore = useAppStore();
-const router = useRouter();
-
-const routes = router.options.routes; // 路由配置
-const menuList = routes.filter((item) => item.name === 'Home')[0].children; // 菜单列表
-
 const { getMenuCollapsed } = storeToRefs(appStore);
 
+// 菜单列表 & 默认选中的菜单
+const { menuList, defaultMenu } = useMenuList();
+
+// 选中菜单时触发
 const handleSelect = (
     key: string,
     keyPath: string[],
     item: { index: string; indexPath: string[]; route: { name: string } },
 ) => {
-    console.log(key, keyPath, item);
+    console.log({ key, keyPath, item });
 };
 </script>
 
