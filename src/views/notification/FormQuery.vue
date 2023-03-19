@@ -4,17 +4,19 @@
         <el-form :inline="true" :model="formData" class="form-inline">
             <el-form-item
                 class="mb-0"
-                v-for="item in formItems"
-                :label="$t(item.queryTitle)"
+                v-for="item in configurations"
+                :label="$t(capitalize(item.name))"
             >
-                <el-input
-                    class="w-200"
-                    v-model="formData[item.queryTip]"
-                    :placeholder="$t(`Please enter the ${item.queryTip}`)"
-                    clearable
-                    @keyup.enter="queryForm"
-                    @clear="queryForm"
-                />
+                <template v-if="item.type === 'input'">
+                    <el-input
+                        class="w-200"
+                        v-model="formData[item.name]"
+                        :placeholder="$t(`Please enter the ${item.name}`)"
+                        clearable
+                        @keyup.enter="queryForm"
+                        @clear="queryForm"
+                    />
+                </template>
             </el-form-item>
         </el-form>
         <!-- 搜索按钮 -->
@@ -28,10 +30,11 @@
 </template>
 
 <script setup lang="ts">
+import { Configuration } from '@/views/notification/interfaces';
 import useQueryCondition from '@/hooks/useQueryCondition';
 
-const { defaultQueryCondition } = defineProps<{
-    defaultQueryCondition: any; // 查询条件及其默认值
+const { configurations } = defineProps<{
+    configurations: Configuration[]; // 表单项的默认配置
 }>();
 
 const emits = defineEmits<{
@@ -45,17 +48,9 @@ const capitalize = (str: string) => {
     return str.slice(0, 1).toUpperCase() + str.slice(1);
 };
 
-// 表单项
-const formItems = Object.keys(defaultQueryCondition).map((key) => {
-    return {
-        queryTitle: capitalize(key),
-        queryTip: key,
-    };
-});
-
 // 表单数据 & 重置表单数据的方法
 const { queryCondition: formData, resetQueryCondition: resetFormData } =
-    useQueryCondition(defaultQueryCondition);
+    useQueryCondition(configurations);
 
 // 点击搜索
 const queryForm = () => {

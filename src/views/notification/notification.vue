@@ -2,7 +2,7 @@
     <div class="notification">
         <!-- 查询组件 -->
         <NotificationQuery
-            :defaultQueryCondition="defaultQueryCondition"
+            :configurations="configurations"
             @setCurPage="setCurPage"
             @setQueryCondition="setQueryCondition"
             @resetQueryCondition="resetQueryCondition"
@@ -26,12 +26,14 @@
 <script setup lang="ts">
 import { ref, watch, unref } from 'vue';
 import type { Ref } from 'vue';
-import NotificationQuery from './FormQuery.vue';
-import NotificationList from './NotificationList.vue';
+
+import NotificationQuery from '@/views/notification/FormQuery.vue';
+import NotificationList from '@/views/notification/NotificationList.vue';
+import { Notification, Configuration } from '@/views/notification/interfaces';
+
 import useQueryCondition from '@/hooks/useQueryCondition';
 import usePagination from '@/hooks/usePagination';
 import useLoading from '@/hooks/useLoading';
-import { Notification } from './interfaces';
 
 /**
  * @desc 生成通知列表
@@ -100,11 +102,13 @@ const limit = 5;
 const { total, curPage, pageSize, pageSizes, setTotal, setCurPage } =
     usePagination(limit);
 
-// 查询条件及其默认值, 用于初始化查询条件 / 重置查询条件, 不会随着查询条件的变化而变化
-const defaultQueryCondition = { title: '' };
-// 查询条件及其相关方法
+// 查询表单的配置项
+const configurations: Configuration[] = [
+    { name: 'title', defaultVal: '', type: 'input' },
+];
+// 获取查询表单的数据及其操作方法
 const { queryCondition, setQueryCondition, resetQueryCondition } =
-    useQueryCondition(defaultQueryCondition);
+    useQueryCondition(configurations);
 
 // loading 及其相关方法
 const { isLoading, startLoading, stopLoading } = useLoading();
