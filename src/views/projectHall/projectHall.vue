@@ -16,6 +16,7 @@
                 :isLoading="isLoading"
                 :total="total"
                 :pageSizes="pageSizes"
+                v-bind="projectHallMetaData"
                 v-model:curPage="curPage"
                 v-model:pageSize="pageSize"
             />
@@ -29,13 +30,14 @@ import type { Ref } from 'vue';
 
 import NotificationQuery from '@/components/FormQuery.vue';
 import ProjectList from '@/views/projectHall/ProjectList.vue';
-import { Project } from '@/views/projectHall/interfaces';
-import { Configuration } from '@/common/interfaces';
 
 import useQueryCondition from '@/hooks/useQueryCondition';
 import usePagination from '@/hooks/usePagination';
 import useLoading from '@/hooks/useLoading';
 import axios from '@/utils/axios';
+import { Project } from '@/views/projectHall/interfaces';
+import { Configuration, MetaData } from '@/common/interfaces';
+import { useMetaDataStore } from '@/store/metaData';
 
 /**
  * @desc 使元素滚回到顶部
@@ -57,33 +59,77 @@ const { total, curPage, pageSize, pageSizes, setTotal, setCurPage } =
     usePagination(limit);
 
 // 查询表单的配置项
-const configurations: Configuration[] = [
-    { name: 'projectName', defaultVal: '', type: 'input' }, // 项目名称
-    { name: 'college', defaultVal: '', type: 'input' }, // 所属院校
-    { name: 'teacher', defaultVal: '', type: 'input' }, // 指导老师
-    {
-        name: 'projectType', // 项目类型
-        defaultVal: '',
-        type: 'select',
-        options: [
-            { label: '理工类', value: '1' },
-            { label: '文学类', value: '2' },
-        ],
+const configurations = ref<Configuration[]>([]);
+// 初始化查询表单的配置项
+const initConfigurations = (
+    newProjectTypes: MetaData[],
+    newProjectStatuses: MetaData[],
+) => {
+    configurations.value = [
+        { name: 'projectName', defaultVal: '', type: 'input' }, // 项目名称
+        { name: 'college', defaultVal: '', type: 'input' }, // 所属院校
+        { name: 'teacher', defaultVal: '', type: 'input' }, // 指导老师
+        {
+            name: 'projectType', // 项目类型
+            defaultVal: '',
+            type: 'select',
+            options: [],
+        },
+        {
+            name: 'projectStatus', // 项目状态
+            defaultVal: '',
+            type: 'select',
+            options: [],
+        },
+    ];
+    configurations.value[3].options = newProjectTypes.map((item) => ({
+        label: item.name,
+        value: item.id,
+    }));
+    configurations.value[4].options = newProjectStatuses.map((item) => ({
+        label: item.name,
+        value: item.id,
+    }));
+};
+
+// 项目类型及项目状态的元数据
+const projectHallMetaData = ref<{
+    projectTypes: Record<number, string>;
+    projectStatuses: Record<number, string>;
+}>({
+    projectTypes: {},
+    projectStatuses: {},
+});
+// 初始化 projectHallMetaData
+const initProjectHallMetaData = (
+    newProjectTypes: MetaData[],
+    newProjectStatuses: MetaData[],
+) => {
+    projectHallMetaData.value.projectTypes = newProjectTypes.reduce(
+        (prev, cur) => ({ ...prev, [cur.id]: cur.name }),
+        {},
+    );
+    projectHallMetaData.value.projectStatuses = newProjectStatuses.reduce(
+        (prev, cur) => ({ ...prev, [cur.id]: cur.name }),
+        {},
+    );
+};
+
+// 获取元数据, 初始化查询表单的配置项
+const metaDataStore = useMetaDataStore();
+// 监听 projectTypes, projectStatuses 的变化, 初始化查询表单的配置项, 初始化 projectHallMetaData
+watch(
+    () => [metaDataStore.getProjectTypes, metaDataStore.getProjectStatuses],
+    ([newProjectTypes, newProjectStatuses]) => {
+        initConfigurations(newProjectTypes, newProjectStatuses);
+        initProjectHallMetaData(newProjectTypes, newProjectStatuses);
     },
-    {
-        name: 'projectStatus', // 项目状态
-        defaultVal: '',
-        type: 'select',
-        options: [
-            { label: '招募中', value: '1' },
-            { label: '进行中', value: '2' },
-            { label: '已完成', value: '3' },
-        ],
-    },
-];
+    { immediate: true },
+);
+
 // 获取查询表单的数据及其操作方法
 const { queryCondition, setQueryCondition, resetQueryCondition } =
-    useQueryCondition(configurations);
+    useQueryCondition(configurations.value);
 
 // loading 及其相关方法
 const { isLoading, startLoading, stopLoading } = useLoading();

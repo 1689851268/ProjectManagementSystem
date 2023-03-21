@@ -11,7 +11,11 @@
                 :label="$t('Project Name')"
                 align="center"
             />
-            <el-table-column prop="type" :label="$t('Type')" align="center" />
+            <el-table-column prop="type" :label="$t('Type')" align="center">
+                <template #default="scope">
+                    {{ projectTypes[scope.row.type] }}
+                </template>
+            </el-table-column>
             <el-table-column
                 prop="teacher"
                 :label="$t('Teacher')"
@@ -27,11 +31,11 @@
                 :label="$t('Publish Time')"
                 align="center"
             />
-            <el-table-column
-                prop="status"
-                :label="$t('Status')"
-                align="center"
-            />
+            <el-table-column prop="status" :label="$t('Status')" align="center">
+                <template #default="scope">
+                    {{ projectStatuses[scope.row.status] }}
+                </template>
+            </el-table-column>
             <el-table-column
                 prop="applicationTime"
                 :label="$t('Application Time')"
@@ -91,6 +95,8 @@ defineProps<{
     pageSize: number;
     curPage: number;
     isLoading: boolean;
+    projectStatuses: Record<string, string>;
+    projectTypes: Record<string, string>;
 }>();
 
 const emits = defineEmits<{
