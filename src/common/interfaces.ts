@@ -4,3 +4,8 @@ export interface Configuration {
     type: string;
     [propName: string]: any;
 }
+
+export interface MetaData {
+    id: number;
+    name: string;
+}
