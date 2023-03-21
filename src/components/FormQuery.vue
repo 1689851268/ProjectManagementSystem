@@ -5,22 +5,39 @@
             <el-form-item
                 class="mb-0"
                 v-for="item in configurations"
-                :label="$t(capitalize(item.name))"
+                :label="$t(getBabel(item.name))"
             >
                 <template v-if="item.type === 'input'">
                     <el-input
-                        class="w-200"
+                        class="w-200 mb-20"
                         v-model="formData[item.name]"
-                        :placeholder="$t(`Please enter the ${item.name}`)"
                         clearable
+                        :placeholder="$t('Please input')"
                         @keyup.enter="queryForm"
                         @clear="queryForm"
                     />
                 </template>
+                <template v-if="item.type === 'select'">
+                    <el-select
+                        class="w-200 mb-20"
+                        v-model="formData[item.name]"
+                        clearable
+                        :placeholder="$t('Please select')"
+                        @change="queryForm"
+                        @clear="queryForm"
+                    >
+                        <el-option
+                            v-for="option in item.options"
+                            :key="option.value"
+                            :label="option.label"
+                            :value="option.value"
+                        />
+                    </el-select>
+                </template>
             </el-form-item>
         </el-form>
         <!-- 搜索按钮 -->
-        <div class="pl-20">
+        <div class="pl-20 mb-20">
             <el-button type="primary" @click="queryForm">
                 {{ $t('Search') }}
             </el-button>
@@ -30,7 +47,8 @@
 </template>
 
 <script setup lang="ts">
-import { Configuration } from '@/views/notification/interfaces';
+import { splitCamelCase, capitalize } from '@/utils/stringFunction';
+import { Configuration } from '@/common/interfaces';
 import useQueryCondition from '@/hooks/useQueryCondition';
 
 const { configurations } = defineProps<{
@@ -43,9 +61,13 @@ const emits = defineEmits<{
     (event: 'setCurPage', curPage: number): void; // 重置查询条件
 }>();
 
-// tool - 首字母大写
-const capitalize = (str: string) => {
-    return str.slice(0, 1).toUpperCase() + str.slice(1);
+/**
+ * 将形如 'abcDef' 的字符串转换为 'Abc Def' 的字符串
+ * @param str 需要转换的字符串
+ * @returns 转换后的字符串
+ */
+const getBabel = (str: string) => {
+    return splitCamelCase(capitalize(str));
 };
 
 // 表单数据 & 重置表单数据的方法
@@ -71,6 +93,7 @@ const resetForm = () => {
 
 .notification-query {
     @include content-box;
+    padding-bottom: 0; // 重置 padding-bottom, 因为表单项有 margin-bottom 为 20px
     display: flex;
     align-items: center;
 

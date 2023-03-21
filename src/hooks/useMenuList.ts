@@ -1,8 +1,8 @@
-import { RouteRecordName, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 interface MenuList {
-    menuList: { name: RouteRecordName; icon: unknown }[];
-    defaultMenu: RouteRecordName;
+    menuList: { name: string; icon: string }[];
+    defaultMenu: string;
 }
 
 /**
@@ -20,12 +20,15 @@ const useMenuList = (): MenuList => {
             .filter((item) => item.name === 'Home')[0]
             .children?.map((menu) => {
                 return {
-                    name: menu.name || '',
-                    icon: menu.meta?.icon,
+                    name: (menu.name as string) || '',
+                    icon: (menu.meta?.icon as string) || '',
                 };
             }) || [];
-    // 默认选中第一个菜单
-    const defaultMenu = menuList[0]?.name || '';
+
+    // 获取当前路由
+    const currentRoute = router.currentRoute.value;
+    // 默认选中当前路由对应的菜单
+    const defaultMenu = (currentRoute.name as string) || '';
 
     return {
         menuList,

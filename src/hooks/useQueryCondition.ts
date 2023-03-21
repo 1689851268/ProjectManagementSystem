@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { Configuration } from '@/views/notification/interfaces';
+import { Configuration } from '@/common/interfaces';
 
 /**
  * @desc 查询条件钩子

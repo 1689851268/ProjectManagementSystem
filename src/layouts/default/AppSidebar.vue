@@ -24,7 +24,7 @@
                     :route="{ name }"
                 >
                     <el-icon> <component :is="icon" /> </el-icon>
-                    <template #title>{{ $t(name as string) }}</template>
+                    <template #title>{{ $t(splitCamelCase(name)) }}</template>
                 </el-menu-item>
             </el-menu>
         </el-scrollbar>
@@ -36,6 +36,7 @@ import { storeToRefs } from 'pinia';
 
 import { useAppStore } from '@/store/app';
 import useMenuList from '@/hooks/useMenuList';
+import { splitCamelCase } from '@/utils/stringFunction';
 
 const appStore = useAppStore();
 const { getMenuCollapsed } = storeToRefs(appStore);

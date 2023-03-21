@@ -24,15 +24,15 @@ const routes = [
             },
             {
                 path: '/project-hall',
-                name: 'Project Hall', // 项目大厅
-                component: () => import('@/views/projectHall.vue'),
+                name: 'ProjectHall', // 项目大厅
+                component: () => import('@/views/projectHall/projectHall.vue'),
                 meta: {
                     icon: 'DataBoard',
                 },
             },
             {
                 path: '/my-project',
-                name: 'My Project', // 我的项目
+                name: 'MyProject', // 我的项目
                 component: () => import('@/views/myProject.vue'),
                 meta: {
                     icon: 'Notebook',
@@ -40,7 +40,7 @@ const routes = [
             },
             {
                 path: '/my-achievement',
-                name: 'My Achievement', // 我的成果
+                name: 'MyAchievement', // 我的成果
                 component: () => import('@/views/myAchievement.vue'),
                 meta: {
                     icon: 'Document',

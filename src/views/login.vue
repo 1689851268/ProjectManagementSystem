@@ -1,7 +1,7 @@
 <template>
     <LanguageConfig class="float-right" />
     <div class="position-center">
-        <div class="text-center font-size-25 font-bold">{{ $t('log in') }}</div>
+        <div class="text-center font-size-25 font-bold">{{ $t('Log In') }}</div>
         <el-form
             ref="ruleFormRef"
             :model="form"
@@ -11,7 +11,7 @@
             <el-form-item prop="account">
                 <el-input
                     v-model="form.account"
-                    :placeholder="$t('account')"
+                    :placeholder="$t('Account')"
                     clearable
                 />
             </el-form-item>
@@ -19,7 +19,7 @@
                 <el-input
                     type="password"
                     v-model="form.password"
-                    :placeholder="$t('password')"
+                    :placeholder="$t('Password')"
                     clearable
                     show-password
                 />
@@ -30,7 +30,7 @@
                     class="w-full"
                     @click="logIn(ruleFormRef)"
                 >
-                    {{ $t('log in') }}
+                    {{ $t('Log In') }}
                 </el-button>
             </el-form-item>
         </el-form>
@@ -76,14 +76,14 @@ const rules = reactive<FormRules>({
     account: [
         {
             required: true,
-            message: t('Please complete the form.'),
+            message: t('Please complete the form'),
             trigger: 'blur',
         },
         {
             min: 8,
             max: 8,
             message: t("{subject}'s length should be {number}", {
-                subject: t('account'),
+                subject: t('Account'),
                 number: 8,
             }),
             trigger: 'blur',
@@ -92,7 +92,7 @@ const rules = reactive<FormRules>({
     password: [
         {
             required: true,
-            message: t('Please complete the form.'),
+            message: t('Please complete the form'),
             trigger: 'blur',
         },
     ],

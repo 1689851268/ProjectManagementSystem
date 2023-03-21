@@ -27,9 +27,10 @@
 import { ref, watch, unref } from 'vue';
 import type { Ref } from 'vue';
 
-import NotificationQuery from '@/views/notification/FormQuery.vue';
+import NotificationQuery from '@/components/FormQuery.vue';
 import NotificationList from '@/views/notification/NotificationList.vue';
-import { Notification, Configuration } from '@/views/notification/interfaces';
+import { Notification } from '@/views/notification/interfaces';
+import { Configuration } from '@/common/interfaces';
 
 import useQueryCondition from '@/hooks/useQueryCondition';
 import usePagination from '@/hooks/usePagination';
