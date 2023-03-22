@@ -1,7 +1,7 @@
 import { useRouter } from 'vue-router';
 
 interface MenuList {
-    menuList: { name: string; icon: string }[];
+    menuList: { name: string; icon: string; hidden: boolean }[];
     defaultMenu: string;
 }
 
@@ -22,13 +22,19 @@ const useMenuList = (): MenuList => {
                 return {
                     name: (menu.name as string) || '',
                     icon: (menu.meta?.icon as string) || '',
+                    hidden: (menu.meta?.hidden as boolean) || false,
                 };
             }) || [];
 
     // 获取当前路由
     const currentRoute = router.currentRoute.value;
     // 默认选中当前路由对应的菜单
-    const defaultMenu = (currentRoute.name as string) || '';
+    let defaultMenu = (currentRoute.name as string) || '';
+
+    // 如果当前路由是通知详情页，则默认选中通知菜单
+    if (defaultMenu === 'NotificationDetail') {
+        defaultMenu = 'Notification';
+    }
 
     return {
         menuList,

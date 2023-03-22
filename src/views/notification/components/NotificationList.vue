@@ -41,7 +41,10 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
 import { Notification } from '../utils/interfaces';
+
+const router = useRouter();
 
 defineProps<{
     notificationList: Array<Notification>;
@@ -70,7 +73,12 @@ const handleCurrentChange = (val: number) => {
 
 // 点击通知时触发
 const handleClick = (notification: Notification) => {
-    console.log(notification);
+    router.push({
+        name: 'NotificationDetail',
+        params: {
+            id: notification.id,
+        },
+    });
 };
 </script>
 

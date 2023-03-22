@@ -17,15 +17,21 @@
                 active-text-color="#ffd04b"
                 @select="handleSelect"
             >
-                <el-menu-item
-                    v-for="{ name, icon } in menuList"
+                <template
+                    v-for="{ name, icon, hidden } in menuList"
                     :key="name"
-                    :index="name"
-                    :route="{ name }"
                 >
-                    <el-icon> <component :is="icon" /> </el-icon>
-                    <template #title>{{ $t(splitCamelCase(name)) }}</template>
-                </el-menu-item>
+                    <el-menu-item
+                        v-if="!hidden"
+                        :index="name"
+                        :route="{ name }"
+                    >
+                        <el-icon> <component :is="icon" /> </el-icon>
+                        <template #title>
+                            {{ $t(splitCamelCase(name)) }}
+                        </template>
+                    </el-menu-item>
+                </template>
             </el-menu>
         </el-scrollbar>
     </el-aside>

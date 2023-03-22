@@ -4,7 +4,8 @@ import { RouteRecordRaw, createRouter, createWebHashHistory } from 'vue-router';
 /**
  * 路由配置, 侧边栏会根据以下配置进行渲染
  * @desc name 路由名称, 用于渲染菜单栏的名称
- * @desc meta.icon 用于渲染菜单栏的图标
+ * @desc meta.icon 用于渲染菜单栏的图标, 隐藏的菜单栏不需要配置
+ * @desc meta.hidden 是否在菜单栏中隐藏, 默认为 false
  */
 const routes = [
     {
@@ -44,6 +45,14 @@ const routes = [
                 component: () => import('@/views/myAchievement.vue'),
                 meta: {
                     icon: 'Document',
+                },
+            },
+            {
+                path: '/notification-detail/:id',
+                name: 'NotificationDetail', // 我的成果
+                component: () => import('@/views/notificationDetail.vue'),
+                meta: {
+                    hidden: true,
                 },
             },
         ],
