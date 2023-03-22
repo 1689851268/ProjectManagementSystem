@@ -5,8 +5,8 @@ export interface Project {
     applicationDate?: string | null;
     projectLeader?: string | null;
     type: number;
-    teacher: number;
-    college: number;
+    teacher: string;
+    college: string;
     specialist?: number | null;
     status: number;
 }
