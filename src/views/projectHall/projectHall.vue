@@ -117,12 +117,12 @@ const initProjectHallMetaData = (
 
 // 获取元数据, 初始化查询表单的配置项
 const metaDataStore = useMetaDataStore();
-// 监听 projectTypes, projectStatuses 的变化, 初始化查询表单的配置项, 初始化 projectHallMetaData
-watch(
-    () => [metaDataStore.getProjectTypes, metaDataStore.getProjectStatuses],
-    ([newProjectTypes, newProjectStatuses]) => {
-        initConfigurations(newProjectTypes, newProjectStatuses);
-        initProjectHallMetaData(newProjectTypes, newProjectStatuses);
+// 订阅 projectTypes, projectStatuses 的变化, 初始化查询表单的配置项, 初始化 projectHallMetaData
+metaDataStore.$subscribe(
+    (_, state) => {
+        const { projectTypes, projectStatuses } = state;
+        initConfigurations(projectTypes, projectStatuses);
+        initProjectHallMetaData(projectTypes, projectStatuses);
     },
     { immediate: true },
 );
