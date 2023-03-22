@@ -24,13 +24,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, unref } from 'vue';
-import type { Ref } from 'vue';
+import { ref, watch } from 'vue';
 
 import NotificationQuery from '@/components/FormQuery.vue';
 import NotificationList from '@/views/notification/NotificationList.vue';
+
 import { Notification } from '@/views/notification/interfaces';
 import { Configuration } from '@/common/interfaces';
+import { scrollToTop } from '@/utils/domHandler';
 
 import useQueryCondition from '@/hooks/useQueryCondition';
 import usePagination from '@/hooks/usePagination';
@@ -82,16 +83,6 @@ const getNotificationList = async (
             });
         }, 1000);
     });
-};
-
-/**
- * @desc 使元素滚回到顶部
- * @param {HTMLElement | Ref<HTMLElement | undefined> | undefined} el 元素
- */
-const scrollToTop = (
-    el: HTMLElement | Ref<HTMLElement | undefined> | undefined,
-) => {
-    unref(el)?.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const scrollbar = ref<HTMLElement>(); // el-scrollbar 的 ref, 用于滚回到顶部

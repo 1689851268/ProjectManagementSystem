@@ -2,6 +2,7 @@ export interface Configuration {
     name: string;
     defaultVal: string;
     type: string;
+    options?: { label: string; value: number }[];
     [propName: string]: any;
 }
 

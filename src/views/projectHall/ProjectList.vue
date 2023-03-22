@@ -5,6 +5,7 @@
                 prop="id"
                 :label="$t('Project ID')"
                 align="center"
+                width="110"
             />
             <el-table-column
                 prop="name"
@@ -13,13 +14,14 @@
             />
             <el-table-column prop="type" :label="$t('Type')" align="center">
                 <template #default="scope">
-                    {{ projectTypes[scope.row.type] }}
+                    {{ scope.row.type }}
                 </template>
             </el-table-column>
             <el-table-column
                 prop="teacher"
                 :label="$t('Teacher')"
                 align="center"
+                width="110"
             />
             <el-table-column
                 prop="college"
@@ -30,10 +32,16 @@
                 prop="publishTime"
                 :label="$t('Publish Time')"
                 align="center"
+                width="170"
             />
-            <el-table-column prop="status" :label="$t('Status')" align="center">
+            <el-table-column
+                prop="status"
+                :label="$t('Status')"
+                align="center"
+                width="110"
+            >
                 <template #default="scope">
-                    {{ projectStatuses[scope.row.status] }}
+                    {{ scope.row.status }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -60,7 +68,7 @@
                         {{ $t('Details') }}
                     </el-button>
                     <el-button
-                        v-if="scope.row.status === 1"
+                        v-if="scope.row.status === projectStatuses[1]"
                         size="small"
                         @click="handleApply(scope.$index, scope.row)"
                     >
@@ -86,7 +94,7 @@
 </template>
 
 <script setup lang="ts">
-import { Project } from './interfaces';
+import { Project } from './utils/interfaces';
 
 defineProps<{
     projectList: Array<Project>;
@@ -96,7 +104,6 @@ defineProps<{
     curPage: number;
     isLoading: boolean;
     projectStatuses: Record<string, string>;
-    projectTypes: Record<string, string>;
 }>();
 
 const emits = defineEmits<{
