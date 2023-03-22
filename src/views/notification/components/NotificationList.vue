@@ -14,7 +14,7 @@
                 {{ notification.content }}
             </div>
             <div class="item-time pb-10">
-                {{ notification.time }}
+                {{ notification.lastUpdateTime }}
             </div>
         </div>
 
@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { Notification } from './interfaces';
+import { Notification } from '../utils/interfaces';
 
 defineProps<{
     notificationList: Array<Notification>;

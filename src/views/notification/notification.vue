@@ -27,37 +27,16 @@
 import { ref, watch } from 'vue';
 
 import NotificationQuery from '@/components/FormQuery.vue';
-import NotificationList from '@/views/notification/NotificationList.vue';
+import NotificationList from '@/views/notification/components/NotificationList.vue';
 
-import { Notification } from '@/views/notification/interfaces';
+import axios from '@/utils/axios';
+import { Notification } from '@/views/notification/utils/interfaces';
 import { Configuration } from '@/common/interfaces';
 import { scrollToTop } from '@/utils/domHandler';
 
 import useQueryCondition from '@/hooks/useQueryCondition';
 import usePagination from '@/hooks/usePagination';
 import useLoading from '@/hooks/useLoading';
-
-/**
- * @desc 生成通知列表
- * @param {number} curPage 当前页码
- * @param {number} length 通知列表的长度
- * @return {Array} 通知列表
- */
-const generateNotificationList = (
-    curPage: number,
-    length: number,
-): Array<Notification> => {
-    // Array.from 用于将类数组对象转换为数组
-    return Array.from({ length }, (_, index) => {
-        const start = (curPage - 1) * length;
-        const serialNumber: number = start + index + 1;
-        return {
-            title: `通知${serialNumber}`,
-            content: `通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容  ${serialNumber}`,
-            time: new Date().toLocaleString(),
-        };
-    });
-};
 
 /**
  * @desc 发送请求, 获取通知列表
@@ -72,14 +51,28 @@ const getNotificationList = async (
     pageSize: number,
     title: string,
 ): Promise<{ notificationList: Array<Notification>; total: number }> => {
-    console.log(curPage, pageSize, title);
-
-    // 模拟请求
     return new Promise((resolve) => {
-        setTimeout(() => {
+        setTimeout(async () => {
+            const res: any = await axios.get('/notification', {
+                params: {
+                    curPage,
+                    pageSize,
+                    title,
+                },
+            });
+
+            const notificationList = res[0].map((item: Notification) => {
+                return {
+                    ...item,
+                    lastUpdateTime: new Date(
+                        +item.lastUpdateTime,
+                    ).toLocaleString(),
+                };
+            });
+
             resolve({
-                notificationList: generateNotificationList(curPage, pageSize),
-                total: 100,
+                notificationList,
+                total: res[1],
             });
         }, 1000);
     });

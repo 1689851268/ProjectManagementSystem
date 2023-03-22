@@ -94,7 +94,7 @@
 </template>
 
 <script setup lang="ts">
-import { Project } from './utils/interfaces';
+import { Project } from '../utils/interfaces';
 
 defineProps<{
     projectList: Array<Project>;

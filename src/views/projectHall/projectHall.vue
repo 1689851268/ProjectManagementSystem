@@ -28,7 +28,7 @@
 import { ref, watch } from 'vue';
 
 import NotificationQuery from '@/components/FormQuery.vue';
-import ProjectList from '@/views/projectHall/ProjectList.vue';
+import ProjectList from '@/views/projectHall/components/ProjectList.vue';
 
 import useQueryCondition from '@/hooks/useQueryCondition';
 import usePagination from '@/hooks/usePagination';
