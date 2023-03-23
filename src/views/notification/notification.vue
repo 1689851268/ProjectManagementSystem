@@ -18,6 +18,7 @@
                 :pageSizes="pageSizes"
                 v-model:curPage="curPage"
                 v-model:pageSize="pageSize"
+                :limit="limit"
             />
         </el-scrollbar>
     </div>

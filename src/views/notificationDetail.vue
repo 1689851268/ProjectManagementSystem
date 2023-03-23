@@ -108,6 +108,10 @@ ol {
     padding-left: 25px;
 }
 
+li {
+    margin: 5px 0;
+}
+
 .notification-detail {
     @include content-box;
     color: #767a8a;

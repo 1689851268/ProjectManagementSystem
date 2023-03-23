@@ -80,7 +80,7 @@
 
         <el-pagination
             class="p-20 pl-0"
-            v-if="total > pageSize"
+            v-if="total > limit"
             :current-page="curPage"
             :page-size="pageSize"
             :page-sizes="pageSizes"
@@ -104,6 +104,7 @@ defineProps<{
     curPage: number;
     isLoading: boolean;
     projectStatuses: Record<string, string>;
+    limit: number;
 }>();
 
 const emits = defineEmits<{

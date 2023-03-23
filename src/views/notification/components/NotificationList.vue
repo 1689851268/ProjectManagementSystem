@@ -21,7 +21,7 @@
         <!-- 分页器 -->
         <el-pagination
             class="p-20"
-            v-if="total > pageSize"
+            v-if="total > limit"
             :current-page="curPage"
             :page-size="pageSize"
             :page-sizes="pageSizes"
@@ -53,6 +53,7 @@ defineProps<{
     pageSize: number;
     curPage: number;
     isLoading: boolean;
+    limit: number;
 }>();
 
 const emits = defineEmits<{
