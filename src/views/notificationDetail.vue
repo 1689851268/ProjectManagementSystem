@@ -1,5 +1,6 @@
 <template>
     <div class="notification-detail">
+        <!-- 通知详情 -->
         <div class="notification-detail-title mb-15">
             {{ notificationDetail.title }}
         </div>
@@ -33,11 +34,18 @@
                 </li>
             </ol>
         </div>
+
+        <!-- 悬浮的返回按钮 -->
+        <div class="back-btn">
+            <el-button color="#545c64" plain @click="backToNotification">
+                返回
+            </el-button>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import axios from '@/utils/axios';
 import { ref } from 'vue';
 
@@ -92,6 +100,12 @@ const getNotificationDetail = async () => {
     console.log('notificationDetail', notificationDetail.value);
 };
 getNotificationDetail();
+
+// 返回通知列表
+const router = useRouter();
+const backToNotification = () => {
+    router.push({ name: 'Notification' });
+};
 </script>
 
 <style scoped lang="scss">
@@ -125,6 +139,12 @@ li {
 
     .notification-detail-content {
         word-break: break-all;
+    }
+
+    .back-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
     }
 }
 </style>
