@@ -49,8 +49,16 @@ const routes = [
             },
             {
                 path: '/notification-detail/:id',
-                name: 'NotificationDetail', // 我的成果
+                name: 'NotificationDetail', // 通知公告详情
                 component: () => import('@/views/notificationDetail.vue'),
+                meta: {
+                    hidden: true,
+                },
+            },
+            {
+                path: '/project-detail/:id',
+                name: 'ProjectDetail', // 项目详情
+                component: () => import('@/views/projectDetail.vue'),
                 meta: {
                     hidden: true,
                 },

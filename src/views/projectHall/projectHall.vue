@@ -20,6 +20,7 @@
                 v-model:curPage="curPage"
                 v-model:pageSize="pageSize"
                 :limit="limit"
+                @initProjectHall="initProjectHall"
             />
         </el-scrollbar>
     </div>
@@ -114,20 +115,21 @@ const formatProjectList = (projectList: rawProject[]) => {
     return data;
 };
 
+// 初始化通知列表
+const initProjectHall = async () => {
+    startLoading();
+    scrollToTop(scrollbar); // 使用 el-scrollbar 滚回到顶部
+    const { data, total } = await getProjectList();
+    const realProjectList = formatProjectList(data);
+    setTotal(total); // 设置通知总数
+    projectList.value = realProjectList; // 设置通知列表
+    stopLoading();
+};
+
 // 监听 curPage, pageSize, queryCondition 的变化, 发送请求获取通知列表
-watch(
-    [curPage, pageSize, queryCondition],
-    async () => {
-        startLoading();
-        scrollToTop(scrollbar); // 使用 el-scrollbar 滚回到顶部
-        const { data, total } = await getProjectList();
-        const realProjectList = formatProjectList(data);
-        setTotal(total); // 设置通知总数
-        projectList.value = realProjectList; // 设置通知列表
-        stopLoading();
-    },
-    { immediate: true },
-);
+watch([curPage, pageSize, queryCondition], initProjectHall, {
+    immediate: true,
+});
 </script>
 
 <style lang="scss" scoped>

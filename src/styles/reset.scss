@@ -16,3 +16,42 @@ body {
 .el-drawer:focus {
     outline: none !important; // 去除 el-drawer 的默认轮廓线
 }
+
+h3 {
+    margin: 0;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+// 覆盖 element plus 中 el-button 的样式, 解决点击后背景色没有恢复的问题
+.el-button--primary {
+    --el-button-bg-color: #409eff !important;
+    --el-button-hover-bg-color: #409eff !important;
+}
+.el-button--primary:hover {
+    --el-button-hover-bg-color: #79bbff !important;
+}
+
+.el-button--warning.is-plain {
+    --el-button-bg-color: #fdf6ec;
+    --el-button-hover-text-color: #e6a23c;
+    --el-button-hover-bg-color: #fdf6ec;
+}
+.el-button--warning.is-plain:hover {
+    --el-button-hover-text-color: #fff;
+    --el-button-hover-bg-color: #e6a23c;
+}
+
+.el-button--danger.is-plain {
+    --el-button-bg-color: #fef0f0 !important;
+    --el-button-hover-text-color: #f56c6c !important;
+    --el-button-hover-bg-color: #fef0f0 !important;
+}
+.el-button--danger.is-plain:hover {
+    --el-button-hover-text-color: #fff !important;
+    --el-button-hover-bg-color: #f56c6c !important;
+}

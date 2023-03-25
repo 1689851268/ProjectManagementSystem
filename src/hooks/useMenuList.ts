@@ -34,6 +34,9 @@ const useMenuList = (): MenuList => {
     // 如果当前路由是通知详情页，则默认选中通知菜单
     if (defaultMenu === 'NotificationDetail') {
         defaultMenu = 'Notification';
+    } else if (defaultMenu === 'ProjectDetail') {
+        // 如果当前路由是项目详情页，则默认选中项目菜单
+        defaultMenu = 'ProjectHall';
     }
 
     return {

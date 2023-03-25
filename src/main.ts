@@ -6,6 +6,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 import { setupRouter } from '@/router';
 import { setupStore } from '@/store';
 import '@/styles/global.scss';
+import 'element-plus/dist/index.css';
 
 function bootstrap() {
     const app = createApp(App);

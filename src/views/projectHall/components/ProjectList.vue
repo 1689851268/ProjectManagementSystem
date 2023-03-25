@@ -1,5 +1,14 @@
 <template>
     <div class="project-list">
+        <!-- 操作按钮 -->
+        <div class="operation-btn mb-20">
+            <h3>项目列表</h3>
+            <el-button type="primary" @click="handleAdd">
+                {{ $t('Add') }}
+            </el-button>
+        </div>
+
+        <!-- 项目列表 -->
         <el-table :data="projectList" border>
             <el-table-column
                 prop="id"
@@ -60,24 +69,49 @@
                 align="center"
             />
             <el-table-column :label="$t('Operations')" align="center">
-                <template #default="scope">
+                <template #default="{ $index, row }">
                     <el-button
+                        class="m-5"
                         size="small"
-                        @click="handleDetails(scope.$index, scope.row)"
+                        @click="handleDetails($index, row)"
                     >
                         {{ $t('Details') }}
                     </el-button>
+                    <!-- 申请操作仅 "学生" 有权限 -->
+                    <!-- 只能申请 "招募中" 的项目 -->
                     <el-button
-                        v-if="scope.row.status === projectStatuses[1]"
+                        v-if="row.status === projectStatuses[1]"
+                        class="m-5"
                         size="small"
-                        @click="handleApply(scope.$index, scope.row)"
+                        @click="handleApply($index, row)"
                     >
                         {{ $t('Apply') }}
+                    </el-button>
+                    <!-- 删除、更新操作仅发布该项目的 "教师" 有权限 -->
+                    <!-- 只能删除、更新 "招募中" 的项目 -->
+                    <el-button
+                        v-if="row.status === projectStatuses[1]"
+                        class="m-5"
+                        size="small"
+                        type="danger"
+                        plain
+                        @click="handleDelete(row.id)"
+                    >
+                        {{ $t('删除') }}
+                    </el-button>
+                    <!-- 只能对项目名称、项目类型、项目描述进行更新 -->
+                    <el-button
+                        v-if="row.status === projectStatuses[1]"
+                        class="m-5"
+                        size="small"
+                    >
+                        {{ $t('更新') }}
                     </el-button>
                 </template>
             </el-table-column>
         </el-table>
 
+        <!-- 分页器 -->
         <el-pagination
             class="p-20 pl-0"
             v-if="total > limit"
@@ -94,7 +128,10 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
 import { Project } from '../utils/interfaces';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import axios from '@/utils/axios';
 
 defineProps<{
     projectList: Array<Project>;
@@ -110,6 +147,7 @@ defineProps<{
 const emits = defineEmits<{
     (event: 'update:curPage', curPage: number): void;
     (event: 'update:pageSize', pageSize: number): void;
+    (event: 'initProjectHall'): void;
 }>();
 
 // 每页显示的条数改变时触发
@@ -124,13 +162,64 @@ const handleCurrentChange = (val: number) => {
 };
 
 // 点击详情时触发
+const router = useRouter();
 const handleDetails = (index: number, row: Project) => {
     console.log(index, row);
+    router.push({
+        name: 'ProjectDetail',
+        params: { id: row.id },
+    });
 };
 
 // 点击申报时触发
 const handleApply = (index: number, row: Project) => {
     console.log(index, row);
+};
+
+// 点击添加时触发
+const handleAdd = () => {
+    console.log('添加');
+};
+
+// 点击删除时触发
+const handleDelete = async (id: number) => {
+    const deletion = await ElMessageBox.confirm(
+        '此操作将永久删除该项目, 是否继续?',
+        {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+        },
+    )
+        .then(() => true)
+        .catch(() => false);
+
+    // 如果用户取消删除, 则不进行后续操作
+    if (!deletion) {
+        ElMessage({
+            type: 'info',
+            message: '已取消删除',
+        });
+        return;
+    }
+
+    // 向后端发送删除请求
+    const affected: number = await axios.delete(`/project/${id}`);
+    // 如果删除失败, 则不进行后续操作
+    if (!affected) {
+        ElMessage({
+            type: 'error',
+            message: '删除失败!',
+        });
+        return;
+    }
+
+    // 删除成功, 则重新请求项目列表数据
+    ElMessage({
+        type: 'success',
+        message: '删除成功!',
+    });
+    emits('initProjectHall'); // 重新请求项目列表数据
 };
 </script>
 
@@ -139,5 +228,11 @@ const handleApply = (index: number, row: Project) => {
 
 .project-list {
     @include content-box;
+}
+
+.operation-btn {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5px;
 }
 </style>
