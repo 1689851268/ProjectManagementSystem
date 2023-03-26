@@ -12,14 +12,14 @@
         <el-scrollbar ref="scrollbar" v-loading="isLoading">
             <ProjectList
                 :class="{ 'h-full': total === 0 }"
-                :projectList="projectList"
                 :isLoading="isLoading"
-                :total="total"
+                :limit="limit"
                 :pageSizes="pageSizes"
+                :total="total"
                 :projectStatuses="projectHallMetaData.projectStatuses"
+                :projectList="projectList"
                 v-model:curPage="curPage"
                 v-model:pageSize="pageSize"
-                :limit="limit"
                 @initProjectHall="initProjectHall"
             />
         </el-scrollbar>
@@ -46,12 +46,6 @@ import { scrollToTop } from '@/utils/domHandler';
 const scrollbar = ref<HTMLElement>(); // el-scrollbar 的 ref, 用于滚回到顶部
 const projectList = ref<Array<Project>>([]); // 项目列表
 
-// 每页显示的条数
-const limit = 10;
-// 分页相关数据及其相关方法
-const { total, curPage, pageSize, pageSizes, setTotal, setCurPage } =
-    usePagination(limit);
-
 // 获取查询表单的配置项
 const { configurations, initConfigurations } = useConfiguration();
 
@@ -70,6 +64,12 @@ metaDataStore.$subscribe(
     },
     { immediate: true },
 );
+
+// 每页显示的条数
+const limit = 10;
+// 分页相关数据及其相关方法
+const { total, curPage, pageSize, pageSizes, setTotal, setCurPage } =
+    usePagination(limit);
 
 // 获取查询表单的数据及其操作方法
 const { queryCondition, setQueryCondition, resetQueryCondition } =

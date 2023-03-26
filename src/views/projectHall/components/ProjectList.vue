@@ -130,8 +130,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { Project } from '../utils/interfaces';
-import { ElMessage, ElMessageBox } from 'element-plus';
-import axios from '@/utils/axios';
+import { handleDeleteAction } from '@/utils/deleteAction';
 
 defineProps<{
     projectList: Array<Project>;
@@ -183,43 +182,16 @@ const handleAdd = () => {
 
 // 点击删除时触发
 const handleDelete = async (id: number) => {
-    const deletion = await ElMessageBox.confirm(
+    handleDeleteAction(
+        // 删除操作的提示信息
         '此操作将永久删除该项目, 是否继续?',
-        {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
+        // 删除请求的 url
+        `/project/${id}`,
+        // 删除成功后的回调函数
+        () => {
+            emits('initProjectHall');
         },
-    )
-        .then(() => true)
-        .catch(() => false);
-
-    // 如果用户取消删除, 则不进行后续操作
-    if (!deletion) {
-        ElMessage({
-            type: 'info',
-            message: '已取消删除',
-        });
-        return;
-    }
-
-    // 向后端发送删除请求
-    const affected: number = await axios.delete(`/project/${id}`);
-    // 如果删除失败, 则不进行后续操作
-    if (!affected) {
-        ElMessage({
-            type: 'error',
-            message: '删除失败!',
-        });
-        return;
-    }
-
-    // 删除成功, 则重新请求项目列表数据
-    ElMessage({
-        type: 'success',
-        message: '删除成功!',
-    });
-    emits('initProjectHall'); // 重新请求项目列表数据
+    );
 };
 </script>
 

@@ -63,6 +63,14 @@ const routes = [
                     hidden: true,
                 },
             },
+            {
+                path: '/user-info',
+                name: 'UserInfo', // 用户信息
+                component: () => import('@/views/userInfo/userInfo.vue'),
+                meta: {
+                    icon: 'Document',
+                },
+            },
         ],
     },
     {

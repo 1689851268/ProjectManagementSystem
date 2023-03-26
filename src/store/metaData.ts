@@ -10,6 +10,8 @@ export const useMetaDataStore = defineStore('metaData', {
         projectStatuses: [] as MetaData[],
         projectTypes: [] as MetaData[],
     }),
-    getters: {},
+    getters: {
+        getIdentities: (state) => state.identities,
+    },
     actions: {},
 });

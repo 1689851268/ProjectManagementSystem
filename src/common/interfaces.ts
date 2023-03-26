@@ -1,7 +1,8 @@
 export interface Configuration {
     name: string;
-    defaultVal: string;
+    defaultVal: string | number;
     type: string;
+    clearable?: boolean;
     options?: { label: string; value: number }[];
     [propName: string]: any;
 }

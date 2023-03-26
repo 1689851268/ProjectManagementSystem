@@ -11,7 +11,7 @@
                     <el-input
                         class="w-200 mb-20"
                         v-model="formData[item.name]"
-                        clearable
+                        :clearable="isClearable(item.clearable)"
                         :placeholder="$t('Please input')"
                         @keyup.enter="queryForm"
                         @clear="queryForm"
@@ -21,7 +21,7 @@
                     <el-select
                         class="w-200 mb-20"
                         v-model="formData[item.name]"
-                        clearable
+                        :clearable="isClearable(item.clearable)"
                         :placeholder="$t('Please select')"
                         @change="queryForm"
                         @clear="queryForm"
@@ -51,7 +51,7 @@ import { splitCamelCase, capitalize } from '@/utils/stringFunction';
 import { Configuration } from '@/common/interfaces';
 import useQueryCondition from '@/hooks/useQueryCondition';
 
-const { configurations } = defineProps<{
+const props = defineProps<{
     configurations: Configuration[]; // 表单项的默认配置
 }>();
 
@@ -60,6 +60,11 @@ const emits = defineEmits<{
     (event: 'resetQueryCondition'): void; // 重置查询条件
     (event: 'setCurPage', curPage: number): void; // 重置查询条件
 }>();
+
+// 判断是否可清空, 默认为 true
+const isClearable = (cleared?: boolean) => {
+    return cleared === undefined ? true : cleared;
+};
 
 /**
  * 将形如 'abcDef' 的字符串转换为 'Abc Def' 的字符串
@@ -72,7 +77,7 @@ const getBabel = (str: string) => {
 
 // 表单数据 & 重置表单数据的方法
 const { queryCondition: formData, resetQueryCondition: resetFormData } =
-    useQueryCondition(configurations);
+    useQueryCondition(props.configurations);
 
 // 点击搜索
 const queryForm = () => {
