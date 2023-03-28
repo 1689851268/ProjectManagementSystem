@@ -1,31 +1,33 @@
 <template>
     <el-dialog
-        title="用户信息"
+        :title="$t('User Info')"
         width="25%"
         :model-value="visible"
         :before-close="handleClose"
         align-center
     >
         <ul class="user-info">
-            <li>身份：{{ curIdentity }}</li>
-
-            <li>账号：{{ userProfile?.uuid }}</li>
-            <li>名称：{{ userProfile?.name }}</li>
-            <li>注册时间：{{ userProfile?.registrationTime }}</li>
-            <li>邮箱：{{ userProfile?.email || '-' }}</li>
-            <li>手机：{{ userProfile?.phone || '-' }}</li>
+            <li>{{ $t('Identity') }}：{{ curIdentity }}</li>
+            <li>{{ $t('Account') }}：{{ userProfile?.uuid }}</li>
+            <li>{{ $t('Name') }}：{{ userProfile?.name }}</li>
+            <li>
+                {{ $t('Registration Time') }}：
+                {{ userProfile?.registrationTime }}
+            </li>
+            <li>{{ $t('Email') }}：{{ userProfile?.email || '-' }}</li>
+            <li>{{ $t('Phone') }}：{{ userProfile?.phone || '-' }}</li>
             <template v-if="identity === 1 || identity === 2">
-                <li>学院：{{ userProfile?.college?.name }}</li>
+                <li>{{ $t('College') }}：{{ userProfile?.college?.name }}</li>
             </template>
             <template v-if="identity === 1">
-                <li>专业：{{ userProfile?.major?.name }}</li>
-                <li>班级：{{ userProfile?.class }}</li>
+                <li>{{ $t('Major') }}：{{ userProfile?.major?.name }}</li>
+                <li>{{ $t('Class') }}：{{ userProfile?.class }}</li>
             </template>
         </ul>
 
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="handleClose"> 关闭 </el-button>
+                <el-button @click="handleClose"> {{ $t('Close') }} </el-button>
             </span>
         </template>
     </el-dialog>

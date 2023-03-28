@@ -2,7 +2,7 @@
     <div class="user-list">
         <!-- 操作按钮 -->
         <div class="operation-btn mb-20">
-            <h3>用户列表</h3>
+            <h3>{{ $t('User List') }}</h3>
             <el-button type="primary" @click="handleAdd" plain>
                 {{ $t('Add') }}
             </el-button>
@@ -10,7 +10,7 @@
 
         <!-- 用户列表 -->
         <el-table :data="userList" border>
-            <el-table-column prop="uuid" :label="$t('uuid')" align="center" />
+            <el-table-column prop="uuid" :label="$t('Uuid')" align="center" />
             <el-table-column prop="name" :label="$t('Name')" align="center" />
             <el-table-column
                 prop="registrationTime"
@@ -33,7 +33,7 @@
                         plain
                         @click="handleUpdate(row.uuid)"
                     >
-                        {{ $t('更新') }}
+                        {{ $t('Update') }}
                     </el-button>
                     <el-button
                         class="m-5"
@@ -42,7 +42,7 @@
                         plain
                         @click="handleDelete(row.uuid)"
                     >
-                        {{ $t('删除') }}
+                        {{ $t('Delete') }}
                     </el-button>
                 </template>
             </el-table-column>
@@ -76,6 +76,9 @@ import useDialog from '@/hooks/useDialog';
 import { handleDeleteAction } from '@/utils/deleteAction';
 import { ref } from 'vue';
 import axios from '@/utils/axios';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps<{
     userList: User[]; // 用户列表
@@ -103,7 +106,7 @@ const handleAdd = () => {
 const handleDelete = (uuid: string) => {
     handleDeleteAction(
         // 删除操作的提示信息
-        '此操作将永久删除该项目, 是否继续?',
+        t('user'),
         // 删除请求的 url
         '/user',
         // 删除成功后的回调函数

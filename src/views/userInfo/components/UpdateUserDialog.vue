@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="更新用户"
+        :title="$t('Update User')"
         width="25%"
         :model-value="props.visible"
         :before-close="handleClose"
@@ -12,7 +12,7 @@
                 <el-select
                     v-model="form.identity"
                     clearable
-                    placeholder="用户身份"
+                    :placeholder="$t(`User's Identity`)"
                     style="width: 100%"
                     disabled
                 >
@@ -27,7 +27,7 @@
                 <el-input
                     v-model="form.name"
                     clearable
-                    placeholder="用户姓名"
+                    :placeholder="$t(`User's Name`)"
                 />
             </el-form-item>
             <el-form-item prop="psw">
@@ -35,7 +35,7 @@
                     v-model="form.psw"
                     type="password"
                     clearable
-                    placeholder="用户密码"
+                    :placeholder="$t('Password')"
                     show-password
                 />
             </el-form-item>
@@ -44,7 +44,7 @@
                     v-model="form.pswAgain"
                     type="password"
                     clearable
-                    placeholder="确认密码"
+                    :placeholder="$t('Password Again')"
                     show-password
                 />
             </el-form-item>
@@ -52,14 +52,14 @@
                 <el-input
                     v-model.number="form.phone"
                     clearable
-                    placeholder="联系电话（选填）"
+                    :placeholder="$t('Phone (optional)')"
                 />
             </el-form-item>
             <el-form-item prop="email">
                 <el-input
                     v-model="form.email"
                     clearable
-                    placeholder="邮箱地址（选填）"
+                    :placeholder="$t('Email (optional)')"
                 />
             </el-form-item>
             <el-form-item
@@ -69,7 +69,7 @@
                 <el-select
                     v-model="form.college"
                     clearable
-                    placeholder="所属学院"
+                    :placeholder="$t('College')"
                     style="width: 100%"
                     @change="handleCollegeChange"
                 >
@@ -84,7 +84,7 @@
                 <el-select
                     v-model="form.major"
                     clearable
-                    placeholder="所属专业"
+                    :placeholder="$t('Major')"
                     style="width: 100%"
                 >
                     <el-option
@@ -98,15 +98,17 @@
                 <el-input
                     v-model.number="form.class"
                     clearable
-                    placeholder="所属班级"
+                    :placeholder="$t('Class')"
                 />
             </el-form-item>
         </el-form>
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="handleClose()"> Cancel </el-button>
+                <el-button @click="handleClose()">
+                    {{ $t('Cancel') }}
+                </el-button>
                 <el-button type="primary" @click="submitForm(ruleFormRef)">
-                    Confirm
+                    {{ $t('Confirm') }}
                 </el-button>
             </span>
         </template>
@@ -120,6 +122,9 @@ import { MetaData } from '@/common/interfaces';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
 import axios from '@/utils/axios';
 import { UserInfo, UserInfoState } from '../utils/interfaces';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps<{
     visible: boolean;
@@ -194,32 +199,38 @@ metaDataStore.$subscribe(
 const rules = reactive<FormRules>({
     identity: {
         required: true,
-        message: 'Please input Activity name',
+        message: t('Please input {subject}', { subject: t('identity') }),
         trigger: 'change',
     },
     name: [
         {
             required: true,
-            message: 'Please input Activity name',
+            message: t('Please input {subject}', { subject: t('name') }),
             trigger: 'blur',
         },
         {
             min: 1,
             max: 30,
-            message: 'Length should be 1 to 30',
+            message: t('Length should be {start} to {end}', {
+                start: 1,
+                end: 30,
+            }),
             trigger: 'blur',
         },
     ],
     psw: [
         {
             required: true,
-            message: 'Please input Activity name',
+            message: t('Please input {subject}', { subject: t('password') }),
             trigger: 'blur',
         },
         {
             min: 1,
             max: 20,
-            message: 'Length should be 1 to 20',
+            message: t('Length should be {start} to {end}', {
+                start: 1,
+                end: 20,
+            }),
             trigger: 'blur',
         },
     ],
@@ -227,7 +238,7 @@ const rules = reactive<FormRules>({
         {
             validator: (_: any, value: string, callback: any) => {
                 if (value !== form.psw) {
-                    callback(new Error("Two inputs don't match!"));
+                    callback(new Error(t("Passwords don't match")));
                 } else {
                     callback();
                 }
@@ -246,31 +257,41 @@ const rules = reactive<FormRules>({
                     // 手机号码长度为 11 位
                     callback();
                 } else {
-                    callback(new Error('Phone number must be 11 digits'));
+                    callback(new Error(t('Phone number must be 11 digits')));
                 }
             },
             trigger: 'blur',
         },
-        { type: 'number', message: 'age must be a number' },
+        {
+            type: 'number',
+            message: t('{item} must be a number', {
+                item: t('Phone'),
+            }),
+        },
     ],
     email: {},
     college: {
         required: true,
-        message: 'Please input Activity name',
+        message: t('Please input {subject}', { subject: t('college') }),
         trigger: 'change',
     },
     major: {
         required: true,
-        message: 'Please input Activity name',
+        message: t('Please input {subject}', { subject: t('major') }),
         trigger: 'change',
     },
     class: [
         {
             required: true,
-            message: 'Please input Activity name',
+            message: t('Please input {subject}', { subject: t('class') }),
             trigger: 'blur',
         },
-        { type: 'number', message: 'age must be a number' },
+        {
+            type: 'number',
+            message: t('{item} must be a number', {
+                item: t('Class'),
+            }),
+        },
     ],
 });
 
@@ -303,7 +324,7 @@ const updateUser = async () => {
     // 更新成功, 弹窗提示, 关闭弹窗, 刷新列表数据
     if (res.status === 201 || res.affected === 1) {
         ElMessage({
-            message: '更新成功',
+            message: t('Update Successfully'),
             type: 'success',
         });
         handleClose();
@@ -311,7 +332,7 @@ const updateUser = async () => {
     } else {
         // 更新失败, 弹窗提示
         ElMessage({
-            message: '更新失败',
+            message: t('Update Failed'),
             type: 'error',
         });
     }

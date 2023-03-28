@@ -2,7 +2,7 @@
     <div class="project-list">
         <!-- 操作按钮 -->
         <div class="operation-btn mb-20">
-            <h3>项目列表</h3>
+            <h3>{{ $t('Project List') }}</h3>
             <el-button type="primary" @click="handleAdd">
                 {{ $t('Add') }}
             </el-button>
@@ -97,7 +97,7 @@
                         plain
                         @click="handleDelete(row.id)"
                     >
-                        {{ $t('删除') }}
+                        {{ $t('Delete') }}
                     </el-button>
                     <!-- 只能对项目名称、项目类型、项目描述进行更新 -->
                     <el-button
@@ -105,7 +105,7 @@
                         class="m-5"
                         size="small"
                     >
-                        {{ $t('更新') }}
+                        {{ $t('Update') }}
                     </el-button>
                 </template>
             </el-table-column>
@@ -131,6 +131,9 @@
 import { useRouter } from 'vue-router';
 import { Project } from '../utils/interfaces';
 import { handleDeleteAction } from '@/utils/deleteAction';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 defineProps<{
     projectList: Array<Project>;
@@ -184,7 +187,7 @@ const handleAdd = () => {
 const handleDelete = async (id: number) => {
     handleDeleteAction(
         // 删除操作的提示信息
-        '此操作将永久删除该项目, 是否继续?',
+        t('project'),
         // 删除请求的 url
         `/project/${id}`,
         // 删除成功后的回调函数

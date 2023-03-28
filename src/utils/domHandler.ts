@@ -1,6 +1,9 @@
 import { unref } from 'vue';
 import type { Ref } from 'vue';
 import { ElMessageBox } from 'element-plus';
+import i18n from '@/locales/index';
+
+const { t } = i18n.global;
 
 /**
  * 使元素滚动到顶部
@@ -19,9 +22,10 @@ export const scrollToTop = (
  */
 export const ElMessageBoxConfirm = async (tips: string) => {
     const deletion = await ElMessageBox.confirm(tips, {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        confirmButtonText: t('Confirm'),
+        cancelButtonText: t('Cancel'),
         type: 'warning',
+        closeOnClickModal: false,
     })
         .then(() => true)
         .catch(() => false);
