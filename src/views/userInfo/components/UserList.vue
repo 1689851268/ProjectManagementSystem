@@ -22,7 +22,7 @@
                     <el-button
                         class="m-5"
                         size="small"
-                        @click="handleDetails($index, row)"
+                        @click="handleDetails(row.uuid)"
                     >
                         {{ $t('Details') }}
                     </el-button>
@@ -31,7 +31,7 @@
                         size="small"
                         type="warning"
                         plain
-                        @click="handleUpdate(row)"
+                        @click="handleUpdate(row.uuid)"
                     >
                         {{ $t('更新') }}
                     </el-button>
@@ -40,7 +40,7 @@
                         size="small"
                         type="danger"
                         plain
-                        @click="handleDelete(row)"
+                        @click="handleDelete(row.uuid)"
                     >
                         {{ $t('删除') }}
                     </el-button>
@@ -58,13 +58,19 @@
             :identity="identity"
             @initUserList="$emit('initUserList')"
         />
+        <GetProfileDialog
+            :identity="identity"
+            :userProfile="userProfile"
+            v-model:visible="profileVisible"
+        />
     </div>
 </template>
 
 <script setup lang="ts">
-import { User, UserInfoState } from '../utils/interfaces';
+import { User, UserInfoState, UserProfile } from '../utils/interfaces';
 import AddUserDialog from '@/views/userInfo/components/AddUserDialog.vue';
 import UpdateUserDialog from '@/views/userInfo/components/UpdateUserDialog.vue';
+import GetProfileDialog from '@/views/userInfo/components/GetProfileDialog.vue';
 
 import useDialog from '@/hooks/useDialog';
 import { handleDeleteAction } from '@/utils/deleteAction';
@@ -72,30 +78,29 @@ import { ref } from 'vue';
 import axios from '@/utils/axios';
 
 const props = defineProps<{
-    userList: User[];
-    identity: number;
+    userList: User[]; // 用户列表
+    identity: number; // 用户身份
 }>();
 
 const emit = defineEmits<{
-    (e: 'initUserList'): void;
+    (e: 'initUserList'): void; // 初始化用户列表
 }>();
 
+// 弹窗, 用于添加用户, 更新用户, 查看用户详情
 const { visible: addVisible, openDialog: openAddVisible } = useDialog();
 const { visible: updateVisible, openDialog: openUpdateVisible } = useDialog();
+const { visible: profileVisible, openDialog: openProfileVisible } = useDialog();
 
 // 添加用户
 const handleAdd = () => {
     openAddVisible();
-    // 1. 弹窗: 选择身份、填写用户信息
-    // 1.1 学生: identity, name, password, college, major, class, (email), (phone)
-    // 1.2 教师: identity, name, password, college, (email), (phone)
-    // 1.3 专家: identity, name, password, (email), (phone)
+    // 学生: identity, name, password, college, major, class, (email), (phone)
+    // 教师: identity, name, password, college, (email), (phone)
+    // 专家: identity, name, password, (email), (phone)
 };
 
 // 删除用户
-const handleDelete = (row: User) => {
-    // 1. 弹窗: 确认删除
-    // 2. 发起请求删除用户
+const handleDelete = (uuid: string) => {
     handleDeleteAction(
         // 删除操作的提示信息
         '此操作将永久删除该项目, 是否继续?',
@@ -108,74 +113,41 @@ const handleDelete = (row: User) => {
         // 删除请求的配置对象
         {
             data: {
-                uuid: row.uuid,
+                uuid,
                 identity: props.identity,
             },
         },
     );
 };
 
-// 当前用户信息, 用于更新用户
-const curUser = ref<UserInfoState | null>(null);
-
 // 更新用户
-const handleUpdate = async (row: User) => {
-    openUpdateVisible();
-    const res: UserInfoState = await axios.get(`/user/${row.uuid}`, {
+const curUser = ref<UserInfoState | null>(null); // 当前用户信息, 用于更新用户
+const handleUpdate = async (uuid: string) => {
+    // 学生: identity(仅展示), name, password, college, major, class, (email), (phone)
+    // 教师: identity(仅展示), name, password, college, (email), (phone)
+    // 专家: identity(仅展示), name, password, (email), (phone)
+    const res: UserInfoState = await axios.get(`/user/${uuid}`, {
         params: {
             identity: props.identity,
         },
     });
-    curUser.value = res; // 获取当前用户信息
-    /*
-    1.1 学生: identity(仅展示), name, password, college, major, class, (email), (phone)
-    {
-        "password": "123",
-        "name": "JS1",
-        "class": 3,
-        "email": "",
-        "phone": "",
-        "college": {
-            "id": 1,
-            "name": "软件学院"
-        },
-        "major": {
-            "id": 1,
-            "name": "软件工程"
-        }
-    }
-    */
-    /*
-    1.2 教师: identity(仅展示), name, password, college, (email), (phone)
-    {
-        "password": "123",
-        "name": "余伟",
-        "email": "c.khlqvwjo@rdkxwp.lb",
-        "phone": "",
-        "college": {
-            "id": 1,
-            "name": "软件学院"
-        }
-    }
-    */
-    /*
-    1.3 专家: identity(仅展示), name, password, (email), (phone)
-    {
-        "password": "123",
-        "name": "ZJ2",
-        "email": "1689851268@qq.com",
-        "phone": "13160968548"
-    }
-    */
+    curUser.value = res;
+    openUpdateVisible();
 };
 
 // 查看用户详情
-const handleDetails = (index: number, row: User) => {
-    console.log(index, row);
-    // 1. 弹窗: 查看用户详情
-    // 1.1 学生: identity, uuid, name, registration time, college, major, class, (email), (phone)
-    // 1.2 教师: identity, uuid, name, registration time, college, (email), (phone)
-    // 1.3 专家: identity, uuid, name, registration time, (email), (phone)
+const userProfile = ref<UserProfile | null>(null); // 用户详情
+const handleDetails = async (uuid: string) => {
+    // 学生: identity, uuid, name, registration time, college, major, class, (email), (phone)
+    // 教师: identity, uuid, name, registration time, college, (email), (phone)
+    // 专家: identity, uuid, name, registration time, (email), (phone)
+    const res: any = await axios.get(`/user/profile/${uuid}`, {
+        params: {
+            identity: props.identity,
+        },
+    });
+    userProfile.value = res;
+    openProfileVisible();
 };
 </script>
 

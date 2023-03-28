@@ -32,3 +32,10 @@ export interface UserInfoState {
     };
     class?: number;
 }
+
+// 剔除 UserInfoState 中的 password 字段, 并增加 identity, registrationTime 字段
+// identity, uuid, name, registration time, college?, major?, class?, (email), (phone)
+export interface UserProfile extends Omit<UserInfoState, 'password'> {
+    identity: string;
+    registrationTime: string;
+}
