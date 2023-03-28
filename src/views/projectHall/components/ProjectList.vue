@@ -184,7 +184,7 @@ const handleAdd = () => {
 };
 
 // 点击删除时触发
-const handleDelete = async (id: number) => {
+const handleDelete = (id: number) => {
     handleDeleteAction(
         // 删除操作的提示信息
         t('project'),

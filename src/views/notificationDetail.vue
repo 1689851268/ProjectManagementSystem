@@ -148,6 +148,8 @@ init();
 // 返回通知列表
 const router = useRouter();
 const backToNotification = () => {
+    // TODO: 返回上一页
+    // 学生返回 Notification, 教师返回 NotificationList
     router.push({ name: 'Notification' });
 };
 </script>

@@ -77,4 +77,10 @@ export default {
     '{item} must be a number': '{item}必须为数字',
     'Add Successfully': '添加成功',
     'Add Failed': '添加失败',
+    'Notification List': '通知列表',
+    'Publisher': '发布人',
+    'Last Updater': '最后更新人',
+    'LastUpdate Time': '最后更新时间',
+    'Notification ID': '通知编号',
+    'notification': '通知',
 };

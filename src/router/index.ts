@@ -12,10 +12,18 @@ const routes = [
         path: '/',
         name: 'Home',
         component: () => import('@/layouts/default/index.vue'),
-        redirect: { name: 'Notification' },
+        redirect: { name: 'ProjectHall' },
         children: [
             {
-                path: '/notification', // 默认子路由
+                path: '/project-hall',
+                name: 'ProjectHall', // 项目大厅
+                component: () => import('@/views/projectHall/projectHall.vue'),
+                meta: {
+                    icon: 'DataBoard',
+                },
+            },
+            {
+                path: '/notification',
                 name: 'Notification', // 通知公告
                 component: () =>
                     import('@/views/notification/notification.vue'),
@@ -24,11 +32,12 @@ const routes = [
                 },
             },
             {
-                path: '/project-hall',
-                name: 'ProjectHall', // 项目大厅
-                component: () => import('@/views/projectHall/projectHall.vue'),
+                path: '/notification-table',
+                name: 'NotificationList', // 通知列表
+                component: () =>
+                    import('@/views/notificationTable/notificationTable.vue'),
                 meta: {
-                    icon: 'DataBoard',
+                    icon: 'Notification',
                 },
             },
             {
