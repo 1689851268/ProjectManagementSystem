@@ -19,6 +19,7 @@ import AppMain from './AppMain.vue';
 import axios from '@/utils/axios';
 import { useMetaDataStore } from '@/store/metaData';
 import { MetaData } from '@/common/interfaces';
+import { useUserStore } from '@/store/user';
 
 interface MetaDataResponse {
     achievementTypes: MetaData[];
@@ -29,13 +30,25 @@ interface MetaDataResponse {
     projectTypes: MetaData[];
 }
 
+interface UserResponse {
+    uuid: string;
+    identity: number;
+    id: number;
+}
+
 // 获取元数据, 并存储到 metaDataStore 中
 const getMetaData = async () => {
-    const metaData: MetaDataResponse = await axios.get('/meta-data');
-
     // 将元数据存储到 store 中
+    const metaData: MetaDataResponse = await axios.get('/meta-data');
     const metaDataStore = useMetaDataStore();
     metaDataStore.$patch(metaData);
+
+    // 将用户信息存储到 store 中
+    const user: UserResponse = await axios.get('/user/identity');
+    const userStore = useUserStore();
+    userStore.setIdentity(user.identity);
+    userStore.setUuid(user.uuid);
+    userStore.setId(user.id);
 };
 getMetaData();
 </script>

@@ -26,6 +26,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button
+                    :loading="isLoading"
                     type="primary"
                     class="w-full"
                     @click="logIn(ruleFormRef)"
@@ -40,12 +41,16 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import type { FormInstance, FormRules } from 'element-plus';
+import { ElMessage, FormInstance, FormRules } from 'element-plus';
 import { useRouter } from 'vue-router';
 
 import LanguageConfig from '@/components/LanguageConfig.vue';
+import axios from '@/utils/axios';
+import { useUserStore } from '@/store/user';
+import useLoading from '@/hooks/useLoading';
 
 const router = useRouter();
+const userStore = useUserStore();
 
 const { t } = useI18n();
 
@@ -56,18 +61,47 @@ const form = reactive({
 
 const ruleFormRef = ref<FormInstance>();
 
+const { isLoading, startLoading, stopLoading } = useLoading();
+
 // 点击登录
 const logIn = async (formEl: FormInstance | undefined) => {
     if (!formEl) return;
 
     // 校验信息
-    await formEl.validate((valid, fields) => {
-        if (valid) {
-            console.log('submit!', form);
-            router.push({ name: 'Notification' }); // 跳转到 Notification 页面
-        } else {
+    await formEl.validate(async (valid, fields) => {
+        // 校验不通过
+        if (!valid) {
             console.log('error submit!', fields);
+            return;
         }
+
+        startLoading();
+        const res: any = await axios
+            .post('/user/login', {
+                username: form.account,
+                password: form.password,
+            })
+            .catch((err) => {
+                console.log('err', err);
+                const msg = err.response.data;
+                return {
+                    status: msg.status as number,
+                    message: msg.data as string,
+                };
+            });
+
+        // 登录失败
+        if (res.status !== 201) {
+            stopLoading();
+            return;
+        }
+
+        // 登录成功
+        ElMessage.success(t('Login success'));
+        const token = res.data.access_token;
+        userStore.setToken(token); // 设置 token
+        router.push({ name: 'ProjectHall' }); // 跳转到 Project Hall 页面
+        stopLoading();
     });
 };
 

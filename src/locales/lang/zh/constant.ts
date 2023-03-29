@@ -83,4 +83,13 @@ export default {
     'LastUpdate Time': '最后更新时间',
     'Notification ID': '通知编号',
     'notification': '通知',
+    'Login success': '登陆成功',
+    'Please choose your teammates': '请选择你的队友',
+    '{item1} or {item2}': '{item1}或{item2}',
+    'the member of the project': '项目组成员',
+    'Please select {subject}': '请选择{subject}',
+    "If you want to go it alone, you don't have to choose a teammate":
+        '若想单干，可以不选队友',
+    'Operation Failure': '操作失败',
+    'Operation Success': '操作成功',
 };

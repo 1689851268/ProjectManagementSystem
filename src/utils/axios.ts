@@ -1,4 +1,7 @@
+import { useUserStore } from '@/store/user';
 import axios from 'axios';
+import { ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router';
 
 // 在 Ts 文件中获取环境变量
 const { VITE_AXIOS_TIMEOUT, VITE_AXIOS_BASEURL } = import.meta.env;
@@ -8,10 +11,15 @@ const instance = axios.create({
     timeout: VITE_AXIOS_TIMEOUT,
 });
 
+const userStore = useUserStore();
+
 // 请求拦截器
 instance.interceptors.request.use(
     function (config) {
-        // 在发送请求之前做些什么
+        // 如果 token 存在, 就在请求头中添加 token
+        if (userStore.getToken) {
+            config.headers.Authorization = `Bearer ${userStore.getToken}`;
+        }
         return config;
     },
     function (error) {
@@ -33,6 +41,16 @@ instance.interceptors.response.use(
     function (error) {
         // 超出 2xx 范围的状态码都会触发该函数
         // 对响应错误做点什么
+        console.log('error', error);
+        const resData = error.response.data;
+
+        // 未登录 / token 过期
+        if (resData.status === 401) {
+            userStore.setToken('');
+        }
+
+        ElMessage.error(resData.data);
+
         return Promise.reject(error);
     },
 );

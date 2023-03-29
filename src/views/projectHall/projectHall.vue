@@ -84,17 +84,22 @@ const getProjectList = async () => {
     const { data, total }: { data: rawProject[]; total: number } =
         await new Promise((resolve) =>
             setTimeout(async () => {
-                const res: any = await axios.get('/project', {
-                    params: {
-                        curPage: curPage.value,
-                        pageSize: pageSize.value,
-                        projectName: queryCondition.value.projectName,
-                        teacher: queryCondition.value.teacher,
-                        college: queryCondition.value.college,
-                        projectType: queryCondition.value.projectType,
-                        projectStatus: queryCondition.value.projectStatus,
-                    },
-                });
+                const res: any = await axios
+                    .get('/project', {
+                        params: {
+                            curPage: curPage.value,
+                            pageSize: pageSize.value,
+                            projectName: queryCondition.value.projectName,
+                            teacher: queryCondition.value.teacher,
+                            college: queryCondition.value.college,
+                            projectType: queryCondition.value.projectType,
+                            projectStatus: queryCondition.value.projectStatus,
+                        },
+                    })
+                    .catch((err) => {
+                        console.log('getProjectList Error: ', err);
+                        return { data: [], total: 0 };
+                    });
                 resolve(res);
             }, 1000),
         );
@@ -106,7 +111,7 @@ const formatProjectList = (projectList: rawProject[]) => {
     const { projectTypes, projectStatuses } = projectHallMetaData.value;
     const data: Project[] = projectList.map((item: any) => ({
         ...item,
-        applicationTime: item.applicationTime || '-',
+        applicationDate: item.applicationDate || '-',
         projectLeader: item.projectLeader || '-',
         specialist: item.specialist || '-',
         type: projectTypes[item.type],
