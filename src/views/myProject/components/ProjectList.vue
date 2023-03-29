@@ -92,14 +92,14 @@
                     <!-- 只能申请 "招募中" 的项目 -->
                     <el-button
                         v-if="
-                            row.status === projectStatuses[1] &&
+                            row.status === projectStatuses[2] &&
                             userStore.getIdentity === 1
                         "
                         class="m-5"
                         size="small"
-                        @click="handleApply(row.id)"
+                        @click="handleWithdraw(row.id)"
                     >
-                        {{ $t('Apply') }}
+                        {{ $t('Withdraw') }}
                     </el-button>
                     <!-- 删除、更新操作仅发布该项目的 "教师" 有权限 -->
                     <!-- 只能删除、更新 "招募中" 的项目 -->
@@ -144,28 +144,18 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
         />
-
-        <ApplyDialog
-            v-model:visible="visible"
-            @initUserList="$emit('initUserList')"
-            v-model:teammateId="teammateId"
-            :btnLoading="isLoading"
-        />
     </div>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { Project } from '../utils/interfaces';
+import { Project } from '../../projectHall/utils/interfaces';
 import { handleDeleteAction } from '@/utils/deleteAction';
 import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/store/user';
-import useDialog from '@/hooks/useDialog';
-import ApplyDialog from './ApplyDialog.vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { ElMessageBoxConfirm } from '@/utils/domHandler';
 import axios from '@/utils/axios';
-import { ref, watch } from 'vue';
-import { ElMessage } from 'element-plus';
-import useLoading from '@/hooks/useLoading';
 
 const userStore = useUserStore();
 
@@ -208,51 +198,6 @@ const handleDetails = (index: number, row: Project) => {
     });
 };
 
-const { visible, openDialog, closeDialog } = useDialog();
-
-// 点击申报时触发
-const teammateId = ref<number[]>([]);
-const projectId = ref<number>(0);
-const handleApply = (id: number) => {
-    projectId.value = id;
-    openDialog();
-};
-
-const { isLoading, startLoading, stopLoading } = useLoading();
-
-watch(teammateId, async (val) => {
-    startLoading();
-    const res: any = await new Promise((resolve) => {
-        setTimeout(async () => {
-            const res = await axios.post('/project/apply', {
-                projectId: projectId.value,
-                applyUserId: userStore.getId,
-                teammateId: val,
-            });
-            resolve(res);
-        }, 800);
-    });
-
-    // 申报失败, 弹窗提示
-    if (res.status !== 201) {
-        ElMessage({
-            message: t('Operation Failure'),
-            type: 'error',
-        });
-        stopLoading();
-        return;
-    }
-
-    // 申报成功, 弹窗提示, 关闭 Dialog, 刷新项目大厅
-    ElMessage({
-        message: t('Operation Success'),
-        type: 'success',
-    });
-    emits('initProjectHall');
-    closeDialog();
-    stopLoading();
-});
-
 // 点击添加时触发
 const handleAdd = () => {
     console.log('添加');
@@ -270,6 +215,42 @@ const handleDelete = (id: number) => {
             emits('initProjectHall');
         },
     );
+};
+
+// 点击撤回时触发
+const handleWithdraw = async (id: number) => {
+    // 弹窗提示用户是否撤回
+    const deletion = await ElMessageBoxConfirm(
+        t('Are you sure you want to withdraw your application?'),
+    );
+
+    // 如果用户取消, 则不进行后续操作
+    if (!deletion) {
+        ElMessage({
+            type: 'info',
+            message: t('Canceled'),
+        });
+        return;
+    }
+
+    // 发送撤回请求
+    const res = await axios.post(`/project/revoke`, { projectId: id });
+
+    // 撤回失败, 则不进行后续操作
+    if (res.status !== 201) {
+        ElMessage({
+            type: 'error',
+            message: t('Withdraw failed'),
+        });
+        return;
+    }
+
+    // 撤回成功后，重新获取项目列表
+    ElMessage({
+        type: 'success',
+        message: t('Withdraw success'),
+    });
+    emits('initProjectHall');
 };
 </script>
 

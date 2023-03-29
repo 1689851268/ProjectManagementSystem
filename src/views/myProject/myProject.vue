@@ -29,7 +29,7 @@
 import { ref, watch } from 'vue';
 
 import NotificationQuery from '@/components/FormQuery.vue';
-import ProjectList from '@/views/projectHall/components/ProjectList.vue';
+import ProjectList from '@/views/myProject/components/ProjectList.vue';
 
 import useQueryCondition from '@/hooks/useQueryCondition';
 import usePagination from '@/hooks/usePagination';
@@ -41,6 +41,7 @@ import axios from '@/utils/axios';
 import { Project, rawProject } from '@/views/projectHall/utils/interfaces';
 import { useMetaDataStore } from '@/store/metaData';
 import { scrollToTop } from '@/utils/domHandler';
+import { useUserStore } from '@/store/user';
 
 const scrollbar = ref<HTMLElement>(); // el-scrollbar 的 ref, 用于滚回到顶部
 const projectList = ref<Array<Project>>([]); // 项目列表
@@ -83,8 +84,10 @@ const getProjectList = async () => {
     const { data, total }: { data: rawProject[]; total: number } =
         await new Promise((resolve) =>
             setTimeout(async () => {
+                const userStore = useUserStore();
+
                 const res: any = await axios
-                    .get('/project', {
+                    .get(`/project/${userStore.getId}`, {
                         params: {
                             curPage: curPage.value,
                             pageSize: pageSize.value,

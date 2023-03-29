@@ -92,4 +92,8 @@ export default {
         '若想单干，可以不选队友',
     'Operation Failure': '操作失败',
     'Operation Success': '操作成功',
+    'Withdraw': '撤回',
+    'Are you sure you want to withdraw your application?': '确定要撤回申请吗？',
+    'Canceled': '已取消',
+    'Withdraw failed': '撤回失败',
 };

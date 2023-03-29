@@ -43,7 +43,7 @@ const routes = [
             {
                 path: '/my-project',
                 name: 'MyProject', // 我的项目
-                component: () => import('@/views/myProject.vue'),
+                component: () => import('@/views/myProject/myProject.vue'),
                 meta: {
                     icon: 'Notebook',
                 },
