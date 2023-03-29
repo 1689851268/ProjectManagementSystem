@@ -87,17 +87,21 @@ const getProjectList = async () => {
                 const userStore = useUserStore();
 
                 const res: any = await axios
-                    .get(`/project/${userStore.getId}`, {
-                        params: {
-                            curPage: curPage.value,
-                            pageSize: pageSize.value,
-                            projectName: queryCondition.value.projectName,
-                            teacher: queryCondition.value.teacher,
-                            college: queryCondition.value.college,
-                            projectType: queryCondition.value.projectType,
-                            projectStatus: queryCondition.value.projectStatus,
+                    .get(
+                        `/project/${userStore.getId}/${userStore.getIdentity}`,
+                        {
+                            params: {
+                                curPage: curPage.value,
+                                pageSize: pageSize.value,
+                                projectName: queryCondition.value.projectName,
+                                teacher: queryCondition.value.teacher,
+                                college: queryCondition.value.college,
+                                projectType: queryCondition.value.projectType,
+                                projectStatus:
+                                    queryCondition.value.projectStatus,
+                            },
                         },
-                    })
+                    )
                     .catch((err) => {
                         console.log('getProjectList Error: ', err);
                         return { data: [], total: 0 };

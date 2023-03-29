@@ -144,6 +144,11 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
         />
+
+        <AddProjectDialog
+            v-model:visible="visible"
+            @initProjectHall="$emit('initProjectHall')"
+        />
     </div>
 </template>
 
@@ -153,9 +158,11 @@ import { Project } from '../../projectHall/utils/interfaces';
 import { handleDeleteAction } from '@/utils/deleteAction';
 import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/store/user';
-import { ElMessage, ElMessageBox } from 'element-plus';
+import { ElMessage } from 'element-plus';
 import { ElMessageBoxConfirm } from '@/utils/domHandler';
 import axios from '@/utils/axios';
+import AddProjectDialog from './AddProjectDialog.vue';
+import useDialog from '@/hooks/useDialog';
 
 const userStore = useUserStore();
 
@@ -199,8 +206,9 @@ const handleDetails = (index: number, row: Project) => {
 };
 
 // 点击添加时触发
+const { visible, openDialog } = useDialog();
 const handleAdd = () => {
-    console.log('添加');
+    openDialog();
 };
 
 // 点击删除时触发

@@ -96,4 +96,9 @@ export default {
     'Are you sure you want to withdraw your application?': '确定要撤回申请吗？',
     'Canceled': '已取消',
     'Withdraw failed': '撤回失败',
+    'Please fill in the project information': '请填写项目信息',
+    'Project Description': '项目描述',
+    'project type': '项目类型',
+    'project name': '项目名称',
+    'project description': '项目描述',
 };

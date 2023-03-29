@@ -34,6 +34,7 @@ interface UserResponse {
     uuid: string;
     identity: number;
     id: number;
+    name: string;
 }
 
 // 获取元数据, 并存储到 metaDataStore 中
@@ -49,6 +50,7 @@ const getMetaData = async () => {
     userStore.setIdentity(user.identity);
     userStore.setUuid(user.uuid);
     userStore.setId(user.id);
+    userStore.setName(user.name);
 };
 getMetaData();
 </script>

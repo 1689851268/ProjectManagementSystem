@@ -3,13 +3,6 @@
         <!-- 操作按钮 -->
         <div class="operation-btn mb-20">
             <h3>{{ $t('Project List') }}</h3>
-            <el-button
-                type="primary"
-                @click="handleAdd"
-                v-if="userStore.getIdentity === 2"
-            >
-                {{ $t('Add') }}
-            </el-button>
         </div>
 
         <!-- 项目列表 -->
@@ -101,32 +94,6 @@
                     >
                         {{ $t('Apply') }}
                     </el-button>
-                    <!-- 删除、更新操作仅发布该项目的 "教师" 有权限 -->
-                    <!-- 只能删除、更新 "招募中" 的项目 -->
-                    <!-- 只能对项目名称、项目类型、项目描述进行更新 -->
-                    <el-button
-                        v-if="
-                            row.status === projectStatuses[1] &&
-                            userStore.getIdentity === 2
-                        "
-                        class="m-5"
-                        size="small"
-                    >
-                        {{ $t('Update') }}
-                    </el-button>
-                    <el-button
-                        v-if="
-                            row.status === projectStatuses[1] &&
-                            userStore.getIdentity === 2
-                        "
-                        class="m-5"
-                        size="small"
-                        type="danger"
-                        plain
-                        @click="handleDelete(row.id)"
-                    >
-                        {{ $t('Delete') }}
-                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -157,7 +124,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { Project } from '../utils/interfaces';
-import { handleDeleteAction } from '@/utils/deleteAction';
 import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/store/user';
 import useDialog from '@/hooks/useDialog';
@@ -209,6 +175,7 @@ const handleDetails = (index: number, row: Project) => {
 };
 
 const { visible, openDialog, closeDialog } = useDialog();
+const { isLoading, startLoading, stopLoading } = useLoading();
 
 // 点击申报时触发
 const teammateId = ref<number[]>([]);
@@ -218,10 +185,10 @@ const handleApply = (id: number) => {
     openDialog();
 };
 
-const { isLoading, startLoading, stopLoading } = useLoading();
-
+// 监听 teammateId, 申报项目
 watch(teammateId, async (val) => {
     startLoading();
+    // 申报项目
     const res: any = await new Promise((resolve) => {
         setTimeout(async () => {
             const res = await axios.post('/project/apply', {
@@ -252,25 +219,6 @@ watch(teammateId, async (val) => {
     closeDialog();
     stopLoading();
 });
-
-// 点击添加时触发
-const handleAdd = () => {
-    console.log('添加');
-};
-
-// 点击删除时触发
-const handleDelete = (id: number) => {
-    handleDeleteAction(
-        // 删除操作的提示信息
-        t('project'),
-        // 删除请求的 url
-        `/project/${id}`,
-        // 删除成功后的回调函数
-        () => {
-            emits('initProjectHall');
-        },
-    );
-};
 </script>
 
 <style scoped lang="scss">

@@ -2,7 +2,7 @@
     <el-dialog
         :title="$t('Please choose your teammates')"
         width="25%"
-        :model-value="props.visible"
+        :model-value="visible"
         :before-close="handleClose"
         :close-on-click-modal="false"
         align-center
@@ -67,7 +67,7 @@ const { t } = useI18n();
 
 const userStore = useUserStore();
 
-const props = defineProps<{
+defineProps<{
     visible: boolean;
     teammateId: number[];
     btnLoading: boolean;
