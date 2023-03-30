@@ -18,11 +18,11 @@
                 @select="handleSelect"
             >
                 <template
-                    v-for="{ name, icon, hidden } in menuList"
+                    v-for="{ name, icon, hidden, auth } in menuList"
                     :key="name"
                 >
                     <el-menu-item
-                        v-if="!hidden"
+                        v-if="!hidden && auth.includes(getIdentity)"
                         :index="name"
                         :route="{ name }"
                     >
@@ -43,6 +43,7 @@ import { storeToRefs } from 'pinia';
 import { useAppStore } from '@/store/app';
 import useMenuList from '@/hooks/useMenuList';
 import { splitCamelCase } from '@/utils/stringFunction';
+import { useUserStore } from '@/store/user';
 
 const appStore = useAppStore();
 const { getMenuCollapsed } = storeToRefs(appStore);
@@ -58,6 +59,10 @@ const handleSelect = (
 ) => {
     console.log({ key, keyPath, item });
 };
+
+// 用户鉴权
+const userStore = useUserStore();
+const { getIdentity } = storeToRefs(userStore);
 </script>
 
 <style scoped lang="scss">

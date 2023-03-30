@@ -20,6 +20,7 @@ const routes = [
                 component: () => import('@/views/projectHall/projectHall.vue'),
                 meta: {
                     icon: 'DataBoard',
+                    auth: [1, 2, 3],
                 },
             },
             {
@@ -29,6 +30,7 @@ const routes = [
                     import('@/views/notification/notification.vue'),
                 meta: {
                     icon: 'Notification',
+                    auth: [1, 2, 3],
                 },
             },
             {
@@ -38,6 +40,7 @@ const routes = [
                     import('@/views/notificationTable/notificationTable.vue'),
                 meta: {
                     icon: 'Notification',
+                    auth: [2],
                 },
             },
             {
@@ -46,6 +49,7 @@ const routes = [
                 component: () => import('@/views/myProject/myProject.vue'),
                 meta: {
                     icon: 'Notebook',
+                    auth: [1, 2, 3],
                 },
             },
             {
@@ -54,6 +58,7 @@ const routes = [
                 component: () => import('@/views/myAchievement.vue'),
                 meta: {
                     icon: 'Document',
+                    auth: [1, 2],
                 },
             },
             {
@@ -62,6 +67,7 @@ const routes = [
                 component: () => import('@/views/notificationDetail.vue'),
                 meta: {
                     hidden: true,
+                    auth: [1, 2, 3],
                 },
             },
             {
@@ -70,6 +76,7 @@ const routes = [
                 component: () => import('@/views/projectDetail.vue'),
                 meta: {
                     hidden: true,
+                    auth: [1, 2, 3],
                 },
             },
             {
@@ -78,6 +85,7 @@ const routes = [
                 component: () => import('@/views/userInfo/userInfo.vue'),
                 meta: {
                     icon: 'Document',
+                    auth: [4],
                 },
             },
         ],

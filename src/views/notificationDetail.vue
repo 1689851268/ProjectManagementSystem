@@ -153,12 +153,28 @@ const init = async () => {
 };
 init();
 
-// 返回通知列表
+// 返回上一页
 const router = useRouter();
+const pre = ref(''); // 上一个页面的 name 属性
 const backToNotification = () => {
-    // TODO: 返回上一页
-    // 学生返回 Notification, 教师返回 NotificationList
-    router.push({ name: 'Notification' });
+    // 从哪个页面跳转过来的, 就返回到哪个页面; 若没有上一个页面, 则返回到通知列表
+    router.push({ name: pre.value || 'Notification' });
+};
+
+defineExpose({
+    pre, // 使用 defineExpose 暴露变量, 以便在 beforeRouteEnter 中使用
+});
+</script>
+
+<script lang="ts">
+// 另开一个 script 标签, 以使用 beforeRouteEnter
+export default {
+    beforeRouteEnter(_to, from, next) {
+        next((vm: any) => {
+            // 获取上一个页面的 name 属性
+            vm.pre = from.name || '';
+        });
+    },
 };
 </script>
 
@@ -175,20 +191,25 @@ li {
 }
 $color: #6b6e7a;
 .attachment-list li {
+    $a-color: #409eff;
     cursor: pointer;
+    color: $a-color;
+
     a {
-        color: $color;
+        color: $a-color;
         text-decoration: none;
     }
+
     &:hover {
-        $hover-color: #409eff;
+        $hover-color: #0080ff;
         color: $hover-color;
         a {
             color: $hover-color;
         }
     }
+
     &:active {
-        $active-color: #0f7deb;
+        $active-color: #004285;
         color: $active-color;
         a {
             color: $active-color;

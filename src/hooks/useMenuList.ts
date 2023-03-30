@@ -1,7 +1,7 @@
 import { useRouter } from 'vue-router';
 
 interface MenuList {
-    menuList: { name: string; icon: string; hidden: boolean }[];
+    menuList: { name: string; icon: string; hidden: boolean; auth: number[] }[];
     defaultMenu: string;
 }
 
@@ -23,6 +23,7 @@ const useMenuList = (): MenuList => {
                     name: (menu.name as string) || '',
                     icon: (menu.meta?.icon as string) || '',
                     hidden: (menu.meta?.hidden as boolean) || false,
+                    auth: (menu.meta?.auth as number[]) || [],
                 };
             }) || [];
 
