@@ -88,46 +88,61 @@
                     >
                         {{ $t('Details') }}
                     </el-button>
+
                     <!-- [撤销] 操作仅 "学生" 有权限 -->
                     <!-- 只能撤销 "招募中" 的项目 -->
-                    <el-button
-                        v-if="
-                            row.status === projectStatuses[2] &&
-                            userStore.getIdentity === 1
-                        "
-                        class="m-5"
-                        size="small"
-                        @click="handleWithdraw(row.id)"
-                    >
-                        {{ $t('Withdraw') }}
-                    </el-button>
-                    <!-- [删除]、[更新] 操作仅发布该项目的 "教师" 有权限 -->
-                    <!-- 只能删除、更新 "招募中" 的项目 -->
-                    <!-- 只能对项目名称、项目类型、项目描述进行更新 -->
-                    <el-button
-                        v-if="
-                            row.status === projectStatuses[1] &&
-                            userStore.getIdentity === 2
-                        "
-                        class="m-5"
-                        size="small"
-                        @click="handleUpdate(row.id)"
-                    >
-                        {{ $t('Update') }}
-                    </el-button>
-                    <el-button
-                        v-if="
-                            row.status === projectStatuses[1] &&
-                            userStore.getIdentity === 2
-                        "
-                        class="m-5"
-                        size="small"
-                        type="danger"
-                        plain
-                        @click="handleDelete(row.id)"
-                    >
-                        {{ $t('Delete') }}
-                    </el-button>
+                    <template v-if="userStore.getIdentity === 1">
+                        <el-button
+                            v-if="row.status === projectStatuses[2]"
+                            class="m-5"
+                            size="small"
+                            @click="handleWithdraw(row.id)"
+                        >
+                            {{ $t('Withdraw') }}
+                        </el-button>
+                    </template>
+
+                    <template v-if="userStore.getIdentity === 2">
+                        <!-- [删除]、[更新] 操作仅发布该项目的 "教师" 有权限 -->
+                        <!-- 只能删除、更新 "招募中" 的项目 -->
+                        <!-- 只能对项目名称、项目类型、项目描述进行更新 -->
+                        <el-button
+                            v-if="row.status === projectStatuses[1]"
+                            class="m-5"
+                            size="small"
+                            @click="handleUpdate(row.id)"
+                        >
+                            {{ $t('Update') }}
+                        </el-button>
+                        <el-button
+                            v-if="row.status === projectStatuses[1]"
+                            class="m-5"
+                            size="small"
+                            type="danger"
+                            plain
+                            @click="handleDelete(row.id)"
+                        >
+                            {{ $t('Delete') }}
+                        </el-button>
+                        <el-button
+                            v-if="row.status === projectStatuses[2]"
+                            class="m-5"
+                            size="small"
+                            plain
+                            @click="handleConsent(row.id)"
+                        >
+                            {{ $t('Consent') }}
+                        </el-button>
+                        <el-button
+                            v-if="row.status === projectStatuses[2]"
+                            class="m-5"
+                            size="small"
+                            plain
+                            @click="handleReject(row.id)"
+                        >
+                            {{ $t('Reject') }}
+                        </el-button>
+                    </template>
                 </template>
             </el-table-column>
         </el-table>
@@ -151,6 +166,12 @@
             :projectDetail="projectDetail"
             @initProjectHall="$emit('initProjectHall')"
         />
+
+        <AllowProjectDialog
+            v-model:visible="allowVisible"
+            :projectId="curProjectId"
+            @initProjectHall="$emit('initProjectHall')"
+        />
     </div>
 </template>
 
@@ -167,6 +188,7 @@ import AddProjectDialog from './AddProjectDialog.vue';
 import useDialog from '@/hooks/useDialog';
 import { ref } from 'vue';
 import { ProjectForm } from '../utils/interfaces';
+import AllowProjectDialog from './AllowProjectDialog.vue';
 
 const userStore = useUserStore();
 
@@ -240,12 +262,12 @@ const handleDelete = (id: number) => {
 // 点击撤回时触发
 const handleWithdraw = async (id: number) => {
     // 弹窗提示用户是否撤回
-    const deletion = await ElMessageBoxConfirm(
+    const isSure = await ElMessageBoxConfirm(
         t('Are you sure you want to withdraw your application?'),
     );
 
     // 如果用户取消, 则不进行后续操作
-    if (!deletion) {
+    if (!isSure) {
         ElMessage({
             type: 'info',
             message: t('Canceled'),
@@ -265,10 +287,59 @@ const handleWithdraw = async (id: number) => {
         return;
     }
 
-    // 撤回成功后，重新获取项目列表
+    // 撤回成功后, 重新获取项目列表
     ElMessage({
         type: 'success',
         message: t('Withdraw success'),
+    });
+    emits('initProjectHall');
+};
+
+// 点击同意时触发
+const curProjectId = ref<number>(0);
+const { visible: allowVisible, openDialog: openAllow } = useDialog();
+const handleConsent = (id: number) => {
+    // 1. 弹窗选择审批的专家, 获取 [专家的 id]
+    curProjectId.value = id;
+    openAllow();
+    // 2. 发送请求更新 project 表: status: 3, specialist: [专家的 id]
+    // 3. 更新项目列表
+};
+
+// 点击拒绝时触发
+const handleReject = async (id: number) => {
+    // 弹窗提示用户是否拒绝
+    const isSure = await ElMessageBoxConfirm(
+        t('Are you sure you want to reject this application?'),
+    );
+
+    // 如果用户取消, 则不进行后续操作
+    if (!isSure) {
+        ElMessage({
+            type: 'info',
+            message: t('Canceled'),
+        });
+        return;
+    }
+
+    // 2. 发送请求更新
+    // 2.1 project 表, 根据 projectId 更新 status: 1, applicationDate: "", projectLeader: null
+    // 2.2 project_and_student 表, 根据 projectId 删除记录
+    const res = await axios.post(`/project/reject`, { projectId: id });
+
+    // 拒绝失败, 则不进行后续操作
+    if (res.status !== 201) {
+        ElMessage({
+            type: 'error',
+            message: t('Reject Failed'),
+        });
+        return;
+    }
+
+    // 拒绝成功后, 重新获取项目列表
+    ElMessage({
+        type: 'success',
+        message: t('Reject Successfully'),
     });
     emits('initProjectHall');
 };

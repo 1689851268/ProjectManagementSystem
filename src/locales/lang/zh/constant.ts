@@ -103,4 +103,13 @@ export default {
     'project description': '项目描述',
     'Operation Failed': '操作失败',
     'Operation Successfully': '操作成功',
+    'Consent': '同意',
+    'Reject': '拒绝',
+    'Are you sure you want to reject this application?':
+        '您确定要拒绝此申请吗？',
+    'Reject Failed': '拒绝失败',
+    'Reject Successfully': '拒绝成功',
+    'Please select the specialist': '请选择专家',
+    'specialist': '专家',
+    'Operation failed': '操作失败',
 };
