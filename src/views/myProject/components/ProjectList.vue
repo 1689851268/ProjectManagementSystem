@@ -88,8 +88,8 @@
                     >
                         {{ $t('Details') }}
                     </el-button>
-                    <!-- 申请操作仅 "学生" 有权限 -->
-                    <!-- 只能申请 "招募中" 的项目 -->
+                    <!-- [撤销] 操作仅 "学生" 有权限 -->
+                    <!-- 只能撤销 "招募中" 的项目 -->
                     <el-button
                         v-if="
                             row.status === projectStatuses[2] &&
@@ -101,7 +101,7 @@
                     >
                         {{ $t('Withdraw') }}
                     </el-button>
-                    <!-- 删除、更新操作仅发布该项目的 "教师" 有权限 -->
+                    <!-- [删除]、[更新] 操作仅发布该项目的 "教师" 有权限 -->
                     <!-- 只能删除、更新 "招募中" 的项目 -->
                     <!-- 只能对项目名称、项目类型、项目描述进行更新 -->
                     <el-button
@@ -111,6 +111,7 @@
                         "
                         class="m-5"
                         size="small"
+                        @click="handleUpdate(row.id)"
                     >
                         {{ $t('Update') }}
                     </el-button>
@@ -147,6 +148,7 @@
 
         <AddProjectDialog
             v-model:visible="visible"
+            :projectDetail="projectDetail"
             @initProjectHall="$emit('initProjectHall')"
         />
     </div>
@@ -163,6 +165,8 @@ import { ElMessageBoxConfirm } from '@/utils/domHandler';
 import axios from '@/utils/axios';
 import AddProjectDialog from './AddProjectDialog.vue';
 import useDialog from '@/hooks/useDialog';
+import { ref } from 'vue';
+import { ProjectForm } from '../utils/interfaces';
 
 const userStore = useUserStore();
 
@@ -208,6 +212,14 @@ const handleDetails = (index: number, row: Project) => {
 // 点击添加时触发
 const { visible, openDialog } = useDialog();
 const handleAdd = () => {
+    openDialog();
+};
+
+// 点击更新时触发
+const projectDetail = ref<ProjectForm | null>(null);
+const handleUpdate = async (id: number) => {
+    const res: any = await axios.get(`/project/${id}`);
+    projectDetail.value = { ...res, id };
     openDialog();
 };
 

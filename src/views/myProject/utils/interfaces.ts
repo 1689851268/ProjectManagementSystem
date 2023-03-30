@@ -16,3 +16,10 @@ export type Project = Omit<rawProject, 'status' | 'type'> & {
     status: string;
     type: string;
 };
+
+export interface ProjectForm {
+    name: string;
+    type: string;
+    description: string;
+    id: number;
+}

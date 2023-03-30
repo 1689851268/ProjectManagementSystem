@@ -101,4 +101,6 @@ export default {
     'project type': '项目类型',
     'project name': '项目名称',
     'project description': '项目描述',
+    'Operation Failed': '操作失败',
+    'Operation Successfully': '操作成功',
 };

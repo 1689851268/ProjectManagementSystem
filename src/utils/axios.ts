@@ -41,15 +41,15 @@ instance.interceptors.response.use(
     function (error) {
         // 超出 2xx 范围的状态码都会触发该函数
         // 对响应错误做点什么
-        console.log('error', error);
-        const resData = error.response.data;
+        const errRes = error.response;
+        console.log('errRes', errRes);
 
         // 未登录 / token 过期
-        if (resData.status === 401) {
+        if (errRes.status === 401) {
             userStore.setToken('');
         }
 
-        ElMessage.error(resData.data);
+        ElMessage.error(errRes.statusText);
 
         return Promise.reject(error);
     },

@@ -29,7 +29,6 @@ export const handleDeleteAction = async (
 
     // 向后端发送删除请求
     const affected: number = await axios.delete(url, config);
-    console.log('affected: ', affected);
 
     // 如果删除失败, 则不进行后续操作
     if (!affected) {

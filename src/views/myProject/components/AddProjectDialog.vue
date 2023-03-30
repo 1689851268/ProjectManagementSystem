@@ -66,8 +66,9 @@ import { useUserStore } from '@/store/user';
 import axios from '@/utils/axios';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
 import { storeToRefs } from 'pinia';
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { ProjectForm } from '../utils/interfaces';
 
 const { t } = useI18n();
 const userStore = useUserStore();
@@ -75,8 +76,9 @@ const userStore = useUserStore();
 const metaDataStore = useMetaDataStore();
 const { getProjectTypes } = storeToRefs(metaDataStore);
 
-defineProps<{
+const props = defineProps<{
     visible: boolean;
+    projectDetail: ProjectForm | null;
 }>();
 
 const emit = defineEmits<{
@@ -136,27 +138,76 @@ const form = reactive({
     desc: '',
 });
 
-// 发送请求添加项目
-const appProject = async () => {
-    startLoading();
+// 侦听 projectDetail 变化, 更新表单数据
+watch(
+    () => props.projectDetail,
+    (newVal) => {
+        if (newVal) {
+            form.name = newVal.name;
+            form.type = `${newVal.type}`;
+            form.desc = newVal.description;
+        }
+    },
+    { immediate: true },
+);
 
-    // 发送请求, 添加项目
-    const res: any = await new Promise((resolve) => {
-        setTimeout(async () => {
-            const res = await axios.post('/project', {
+// 根据条件获取 axios 请求配置
+const useAxiosConfig = (projectDetail: ProjectForm | null) => {
+    // axios 请求配置
+    const axiosConfig = {
+        add: {
+            url: '/project',
+            data: {
                 name: form.name,
                 type: form.type,
                 description: form.desc,
                 teacher: userStore.getId,
-            });
+            },
+        },
+        edit: {
+            url: `/project/${projectDetail?.id}`,
+            data: {
+                name: form.name,
+                type: form.type,
+                description: form.desc,
+            },
+        },
+    };
+    // 判断 projectDetail 是否存在, 存在则为编辑, 不存在则为新增
+    const configKey = projectDetail ? 'edit' : 'add';
+    const url = axiosConfig[configKey].url;
+    const data = axiosConfig[configKey].data;
+    const method = projectDetail ? 'patch' : 'post';
+
+    return {
+        url,
+        data,
+        method,
+    };
+};
+
+// 发送请求操作项目
+const operProject = async () => {
+    startLoading();
+
+    // 获取 axios 请求配置
+    const { url, data, method } = useAxiosConfig(props.projectDetail);
+
+    // 发送请求, 添加项目
+    const res: any = await new Promise((resolve) => {
+        setTimeout(async () => {
+            const res = await (axios as any)[method](url, { ...data });
             resolve(res);
         }, 500);
     });
 
-    // 添加失败, 弹窗提示
-    if (res.status !== 201) {
+    // 操作失败, 弹窗提示
+    if (
+        /* 添加失败 */ res.status !== 201 &&
+        /* 更新失败 */ res.affected !== 1
+    ) {
         ElMessage({
-            message: t('Add Failed'),
+            message: t('Operation Failed'),
             type: 'error',
         });
         stopLoading();
@@ -165,7 +216,7 @@ const appProject = async () => {
 
     // 添加成功, 弹窗提示
     ElMessage({
-        message: t('Add Successfully'),
+        message: t('Operation Successfully'),
         type: 'success',
     });
     emit('initProjectHall');
@@ -184,7 +235,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     await formEl.validate((valid, fields) => {
         // 校验通过, 发送请求新增用户
         if (valid) {
-            appProject();
+            operProject();
         } else {
             console.log('error submit!', fields);
         }
