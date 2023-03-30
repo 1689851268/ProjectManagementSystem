@@ -143,6 +143,26 @@
                             {{ $t('Reject') }}
                         </el-button>
                     </template>
+
+                    <!-- [同意开题] & [拒绝开题] -->
+                    <ProposalBtn
+                        v-if="
+                            userStore.getIdentity === 3 &&
+                            row.status === projectStatuses[3]
+                        "
+                        :projectId="row.id"
+                        @initProjectHall="$emit('initProjectHall')"
+                    />
+
+                    <!-- [同意结题] & [拒绝结题] -->
+                    <FinalBtn
+                        v-if="
+                            userStore.getIdentity === 3 &&
+                            row.status === projectStatuses[4]
+                        "
+                        :projectId="row.id"
+                        @initProjectHall="$emit('initProjectHall')"
+                    />
                 </template>
             </el-table-column>
         </el-table>
@@ -189,6 +209,8 @@ import useDialog from '@/hooks/useDialog';
 import { ref } from 'vue';
 import { ProjectForm } from '../utils/interfaces';
 import AllowProjectDialog from './AllowProjectDialog.vue';
+import ProposalBtn from './ProposalBtn.vue';
+import FinalBtn from './FinalBtn.vue';
 
 const userStore = useUserStore();
 

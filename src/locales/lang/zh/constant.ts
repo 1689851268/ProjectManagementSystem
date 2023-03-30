@@ -112,4 +112,13 @@ export default {
     'Please select the specialist': '请选择专家',
     'specialist': '专家',
     'Operation failed': '操作失败',
+    'Operation success': '操作成功',
+    'Agree the proposal': '同意开题',
+    'Reject the proposal': '拒绝开题',
+    'Are you sure you want to allow this application?':
+        '您确定要同意此申请吗？',
+    'Agree the conclusion': '同意结题',
+    'Reject the conclusion': '拒绝结题',
+    'Are you sure you want to reject the conclusion?': '确定要拒绝结题吗？',
+    'Are you sure you want to allow the conclusion?': '确定要同意结题吗？',
 };
