@@ -38,7 +38,12 @@
                             ) in notificationDetail?.notificationAttachments"
                             :key="i"
                         >
-                            {{ attachment.name }}
+                            <a
+                                :href="`${baseUrl}/notification-attachment/download/${attachment.id}`"
+                                :download="attachment.name"
+                            >
+                                {{ attachment.name }}
+                            </a>
                         </li>
                     </ol>
                 </div>
@@ -67,6 +72,8 @@ import axios from '@/utils/axios';
 import { ref, computed } from 'vue';
 import useLoading from '@/hooks/useLoading';
 
+const baseUrl = import.meta.env.VITE_AXIOS_BASEURL;
+
 interface rawNotificationDetail {
     id: number;
     title: string;
@@ -76,6 +83,7 @@ interface rawNotificationDetail {
     notificationAttachments: {
         name: string;
         storagePath: string;
+        id: number;
     }[];
     publisher: {
         name: string;
@@ -165,10 +173,32 @@ ol {
 li {
     margin: 5px 0;
 }
+$color: #6b6e7a;
+.attachment-list li {
+    cursor: pointer;
+    a {
+        color: $color;
+        text-decoration: none;
+    }
+    &:hover {
+        $hover-color: #409eff;
+        color: $hover-color;
+        a {
+            color: $hover-color;
+        }
+    }
+    &:active {
+        $active-color: #0f7deb;
+        color: $active-color;
+        a {
+            color: $active-color;
+        }
+    }
+}
 
 .notification-detail {
     @include content-box;
-    color: #767a8a;
+    color: $color;
     position: relative;
     box-sizing: border-box;
 

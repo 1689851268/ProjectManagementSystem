@@ -57,6 +57,14 @@
                     >
                         {{ $t('Delete') }}
                     </el-button>
+                    <el-button
+                        class="m-5"
+                        size="small"
+                        plain
+                        @click="handleUpdate(row.id)"
+                    >
+                        {{ $t('Update') }}
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -80,6 +88,12 @@
         >
             {{ $t('No data') }}
         </div>
+
+        <AddNotificationDialog
+            v-model:visible="addDialog"
+            :notificationDetail="notificationDetail"
+            @initNotificationList="emits('initNotificationList')"
+        />
     </div>
 </template>
 
@@ -88,6 +102,11 @@ import { NotificationItem } from '../utils/interfaces';
 import { useRouter } from 'vue-router';
 import { handleDeleteAction } from '@/utils/deleteAction';
 import { useI18n } from 'vue-i18n';
+import AddNotificationDialog from './AddNotificationDialog.vue';
+import useDialog from '@/hooks/useDialog';
+import { ref } from 'vue';
+import axios from '@/utils/axios';
+import { NotificationDetail } from '../utils/interfaces';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -119,10 +138,21 @@ const handleCurrentChange = (val: number) => {
     emits('update:curPage', val);
 };
 
+// 添加操作
+const { visible: addDialog, openDialog: openAddDialog } = useDialog();
+const notificationDetail = ref<NotificationDetail | null>(null);
 const handleAdd = () => {
-    console.log('add');
+    openAddDialog();
+};
+// 更新操作
+const handleUpdate = async (id: number) => {
+    // 发送 axios 获取 notificationDetail
+    const res: any = await axios.get(`notification/detail/${id}`);
+    notificationDetail.value = res;
+    openAddDialog();
 };
 
+// 删除操作
 const handleDelete = (id: number) => {
     handleDeleteAction(
         // 删除操作的提示信息
@@ -136,6 +166,7 @@ const handleDelete = (id: number) => {
     );
 };
 
+// 查看详情
 const handleDetails = (id: number) => {
     router.push({
         name: 'NotificationDetail',

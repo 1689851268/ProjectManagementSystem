@@ -121,4 +121,13 @@ export default {
     'Reject the conclusion': '拒绝结题',
     'Are you sure you want to reject the conclusion?': '确定要拒绝结题吗？',
     'Are you sure you want to allow the conclusion?': '确定要同意结题吗？',
+    'Notification Title': '通知标题',
+    'Notification Content': '通知内容',
+    'Please fill in the notification information': '请填写通知信息',
+    'project title': '项目标题',
+    'Click to upload': '点击上传',
+    'Are you sure you want to delete "{item}" ?': '确定要删除 "{item}" 吗？',
+    'If there is no attachment, do not upload': '若无附件，请勿上传',
+    'notification title': '通知标题',
+    'notification content': '通知内容',
 };

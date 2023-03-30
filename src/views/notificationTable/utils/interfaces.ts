@@ -23,3 +23,13 @@ export interface NotificationItem {
     publisher: string;
     lastUpdater: string;
 }
+
+export interface NotificationDetail {
+    id: number;
+    title: string;
+    content: string;
+    notificationAttachments: {
+        name: string;
+        storagePath: string;
+    }[];
+}

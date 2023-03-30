@@ -1,7 +1,6 @@
 import { useUserStore } from '@/store/user';
 import axios from 'axios';
 import { ElMessage } from 'element-plus';
-import { useRouter } from 'vue-router';
 
 // 在 Ts 文件中获取环境变量
 const { VITE_AXIOS_TIMEOUT, VITE_AXIOS_BASEURL } = import.meta.env;
