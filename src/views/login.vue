@@ -1,5 +1,5 @@
 <template>
-    <LanguageConfig class="float-right" />
+    <LanguageConfig class="float-right m-20" />
     <div class="position-center">
         <div class="text-center font-size-25 font-bold">{{ $t('Log In') }}</div>
         <el-form

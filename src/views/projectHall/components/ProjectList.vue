@@ -65,7 +65,7 @@
                 prop="projectLeader"
                 :label="$t('Project Leader')"
                 align="center"
-                width="110"
+                width="130"
             />
             <el-table-column
                 prop="specialist"

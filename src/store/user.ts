@@ -31,6 +31,13 @@ export const useUserStore = defineStore('user', {
         setName(name: string) {
             this.name = name;
         },
+        logout() {
+            this.token = '';
+            this.identity = 0;
+            this.uuid = '';
+            this.id = 0;
+            this.name = '';
+        },
     },
     persist: {
         paths: ['token'],

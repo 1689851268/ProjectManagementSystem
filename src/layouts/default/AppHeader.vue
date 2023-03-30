@@ -9,20 +9,26 @@
         </div>
         <div class="float-right">
             <!-- 配置 -->
-            <el-dropdown trigger="click">
-                <el-icon :size="iconSize" class="header-btn line-height-add-3">
-                    <Setting />
-                </el-icon>
-                <template #dropdown>
-                    <el-dropdown-menu>
-                        <el-dropdown-item>View</el-dropdown-item>
-                        <el-dropdown-item>Add</el-dropdown-item>
-                        <el-dropdown-item>Delete</el-dropdown-item>
-                    </el-dropdown-menu>
-                </template>
-            </el-dropdown>
+            <LanguageConfig class="languageConfig" />
             <!-- 个人中心 -->
-            <span class="header-btn">Tom</span>
+            <span class="header-btn">
+                <el-dropdown trigger="click">
+                    <span class="el-dropdown-link">
+                        {{ uuid }}
+                        <el-icon class="el-icon--right">
+                            <Setting />
+                        </el-icon>
+                    </span>
+                    <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item> 个人中心 </el-dropdown-item>
+                            <el-dropdown-item @click="logout">
+                                退出登录
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
+            </span>
         </div>
     </el-header>
 </template>
@@ -32,14 +38,29 @@ import { Setting, Expand, Fold } from '@element-plus/icons-vue';
 import { storeToRefs } from 'pinia';
 
 import { useAppStore } from '@/store/app';
+import LanguageConfig from '@/components/LanguageConfig.vue';
+import { useRouter } from 'vue-router';
+import { useUserStore } from '@/store/user';
 
 const appStore = useAppStore();
+const userStore = useUserStore();
+const router = useRouter();
+
+defineProps<{
+    uuid: string;
+}>();
 
 const { getMenuCollapsed } = storeToRefs(appStore);
 const iconSize = 20;
 
 const toggleCollapsed = () => {
     appStore.toggleMenuCollapsed();
+};
+
+// 退出登录
+const logout = () => {
+    router.push('/login');
+    userStore.logout();
 };
 </script>
 
@@ -48,6 +69,15 @@ const toggleCollapsed = () => {
     height: $header-height;
     border-bottom: 1px solid #ebeef5;
     padding: 0;
+}
+
+.languageConfig,
+.el-dropdown-link {
+    height: $header-height;
+    line-height: $header-height;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .header-btn {

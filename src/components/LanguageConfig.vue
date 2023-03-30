@@ -1,6 +1,6 @@
 <template>
     <el-dropdown trigger="click">
-        <el-button type="primary">
+        <el-button>
             {{ allLanguage[appStore.sysLanguage] }}
             <el-icon class="ml-5"><ArrowDown /></el-icon>
         </el-button>

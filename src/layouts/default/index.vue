@@ -5,7 +5,7 @@
 
         <!-- 内容 -->
         <el-container class="flex-direction-column">
-            <AppHeader />
+            <AppHeader :uuid="getUuid" />
             <AppMain />
         </el-container>
     </el-container>
@@ -20,6 +20,11 @@ import axios from '@/utils/axios';
 import { useMetaDataStore } from '@/store/metaData';
 import { MetaData } from '@/common/interfaces';
 import { useUserStore } from '@/store/user';
+import { storeToRefs } from 'pinia';
+
+const userStore = useUserStore();
+const metaDataStore = useMetaDataStore();
+const { getUuid } = storeToRefs(userStore);
 
 interface MetaDataResponse {
     achievementTypes: MetaData[];
@@ -41,12 +46,10 @@ interface UserResponse {
 const getMetaData = async () => {
     // 将元数据存储到 store 中
     const metaData: MetaDataResponse = await axios.get('/meta-data');
-    const metaDataStore = useMetaDataStore();
     metaDataStore.$patch(metaData);
 
     // 将用户信息存储到 store 中
     const user: UserResponse = await axios.get('/user/identity');
-    const userStore = useUserStore();
     userStore.setIdentity(user.identity);
     userStore.setUuid(user.uuid);
     userStore.setId(user.id);
