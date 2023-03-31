@@ -10,7 +10,13 @@
 
 <script setup lang="ts">
 // 缓存组件, 避免重复渲染; 数组元素为组件名
-const cacheComponents = ['notification', 'projectHall'];
+const cacheComponents = [
+    'notification',
+    'projectHall',
+    'myProject',
+    'notificationTable',
+    'myAchievement',
+];
 </script>
 
 <style scoped lang="scss">

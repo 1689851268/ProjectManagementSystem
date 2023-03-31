@@ -1,3 +1,4 @@
+import { router } from '@/router';
 import { useUserStore } from '@/store/user';
 import axios from 'axios';
 import { ElMessage } from 'element-plus';
@@ -45,7 +46,8 @@ instance.interceptors.response.use(
 
         // 未登录 / token 过期
         if (errRes.status === 401) {
-            userStore.setToken('');
+            userStore.setToken(''); // 清空 token
+            router.push({ name: 'Login' }); // 跳转到登录页
         }
 
         ElMessage.error(errRes.statusText);

@@ -100,7 +100,7 @@ const logIn = async (formEl: FormInstance | undefined) => {
         ElMessage.success(t('Login success'));
         const token = res.data.access_token;
         userStore.setToken(token); // 设置 token
-        router.push({ name: 'ProjectHall' }); // 跳转到 Project Hall 页面
+        router.push({ name: 'Notification' }); // 跳转到 Notification 页面
         stopLoading();
     });
 };

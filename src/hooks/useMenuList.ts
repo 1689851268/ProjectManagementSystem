@@ -1,8 +1,9 @@
+import { Ref, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 interface MenuList {
     menuList: { name: string; icon: string; hidden: boolean; auth: number[] }[];
-    defaultMenu: string;
+    defaultMenu: Ref<string>;
 }
 
 /**
@@ -27,18 +28,23 @@ const useMenuList = (): MenuList => {
                 };
             }) || [];
 
-    // 获取当前路由
-    const currentRoute = router.currentRoute.value;
-    // 默认选中当前路由对应的菜单
-    let defaultMenu = (currentRoute.name as string) || '';
-
-    // 如果当前路由是通知详情页，则默认选中通知菜单
-    if (defaultMenu === 'NotificationDetail') {
-        defaultMenu = 'Notification';
-    } else if (defaultMenu === 'ProjectDetail') {
-        // 如果当前路由是项目详情页，则默认选中项目菜单
-        defaultMenu = 'ProjectHall';
-    }
+    // 监听路由变化, 设置默认高亮的菜单
+    let defaultMenu = ref('');
+    watch(
+        () => router.currentRoute.value,
+        (route) => {
+            console.log('route', route);
+            defaultMenu.value = route.name as string;
+            if (defaultMenu.value === 'NotificationDetail') {
+                // 如果当前路由是通知详情页，则默认选中通知菜单
+                defaultMenu.value = 'Notification';
+            } else if (defaultMenu.value === 'ProjectDetail') {
+                // 如果当前路由是项目详情页，则默认选中项目菜单
+                defaultMenu.value = 'ProjectHall';
+            }
+        },
+        { immediate: true },
+    );
 
     return {
         menuList,
