@@ -38,11 +38,6 @@
                     <el-button type="primary">
                         {{ $t('Click to upload') }}
                     </el-button>
-                    <template #tip>
-                        <div class="el-upload__tip">
-                            {{ $t('If there is no attachment, do not upload') }}
-                        </div>
-                    </template>
                 </el-upload>
             </el-form-item>
         </el-form>
@@ -65,9 +60,7 @@
 
 <script setup lang="ts">
 import useLoading from '@/hooks/useLoading';
-import { useUserStore } from '@/store/user';
 import axios from '@/utils/axios';
-import { log } from 'console';
 import {
     ElMessage,
     ElMessageBox,
@@ -83,7 +76,6 @@ import { NotificationDetail } from '../utils/interfaces';
 const baseUrl = import.meta.env.VITE_AXIOS_BASEURL;
 
 const { t } = useI18n();
-const userStore = useUserStore();
 
 const props = defineProps<{
     visible: boolean;
@@ -150,39 +142,6 @@ watch(
     },
     { immediate: true },
 );
-
-// 根据条件获取 axios 请求配置
-const useAxiosConfig = (notificationDetail: any | null) => {
-    // axios 请求配置
-    const axiosConfig = {
-        add: {
-            url: '/notification',
-            data: {
-                notificationTitle: form.notificationTitle,
-                description: form.content,
-                teacher: userStore.getId,
-            },
-        },
-        edit: {
-            url: `/project/${notificationDetail?.id}`,
-            data: {
-                notificationTitle: form.notificationTitle,
-                description: form.content,
-            },
-        },
-    };
-    // 判断 notificationDetail 是否存在, 存在则为编辑, 不存在则为新增
-    const configKey = notificationDetail ? 'edit' : 'add';
-    const url = axiosConfig[configKey].url;
-    const data = axiosConfig[configKey].data;
-    const method = notificationDetail ? 'patch' : 'post';
-
-    return {
-        url,
-        data,
-        method,
-    };
-};
 
 // 发送请求操作通知
 const operNotification = async () => {

@@ -21,7 +21,9 @@
                     </span>
                     <template #dropdown>
                         <el-dropdown-menu>
-                            <el-dropdown-item> 个人中心 </el-dropdown-item>
+                            <el-dropdown-item @click="toPersonalCenter">
+                                个人中心
+                            </el-dropdown-item>
                             <el-dropdown-item @click="logout">
                                 退出登录
                             </el-dropdown-item>
@@ -46,7 +48,7 @@ const appStore = useAppStore();
 const userStore = useUserStore();
 const router = useRouter();
 
-defineProps<{
+const props = defineProps<{
     uuid: string;
 }>();
 
@@ -61,6 +63,12 @@ const toggleCollapsed = () => {
 const logout = () => {
     router.push('/login');
     userStore.logout();
+};
+
+const toPersonalCenter = () => {
+    router.push({
+        name: 'PersonalCenter',
+    });
 };
 </script>
 

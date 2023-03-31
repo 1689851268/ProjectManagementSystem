@@ -23,3 +23,9 @@ export interface ProjectForm {
     description: string;
     id: number;
 }
+
+export interface Attachment {
+    id: number;
+    name: string;
+    storagePath: string;
+}

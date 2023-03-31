@@ -130,4 +130,13 @@ export default {
     'If there is no attachment, do not upload': '若无附件，请勿上传',
     'notification title': '通知标题',
     'notification content': '通知内容',
+    'Submit the proposal report': '提交开题报告',
+    'Submit the conclusion report': '提交结题报告',
+    'Select the file you want to upload': '选择要上传的文件',
+    'select file': '选择文件',
+    'upload to server': '上传到服务器',
+    'limit 1 file, new file will cover the old file':
+        '限制上传 1 个文件，新文件会覆盖旧文件',
+    'Opening Report': '开题报告',
+    'Closing Report': '结题报告',
 };

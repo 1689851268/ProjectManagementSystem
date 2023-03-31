@@ -81,6 +81,15 @@ const routes = [
                 },
             },
             {
+                path: '/personal-center',
+                name: 'PersonalCenter', // 个人中心
+                component: () => import('@/views/personalCenter.vue'),
+                meta: {
+                    hidden: true,
+                    auth: [1, 2, 3, 4],
+                },
+            },
+            {
                 path: '/user-info',
                 name: 'UserInfo', // 用户信息
                 component: () => import('@/views/userInfo/userInfo.vue'),

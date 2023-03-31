@@ -89,8 +89,25 @@
                         {{ $t('Details') }}
                     </el-button>
 
-                    <!-- [撤销] 操作仅 "学生" 有权限 -->
-                    <!-- 只能撤销 "招募中" 的项目 -->
+                    <el-button
+                        v-if="row.status === projectStatuses[3]"
+                        class="m-5"
+                        size="small"
+                        @click="submitProposal(row.id)"
+                    >
+                        {{ $t('Opening Report') }}
+                    </el-button>
+
+                    <el-button
+                        v-if="row.status === projectStatuses[4]"
+                        class="m-5"
+                        size="small"
+                        @click="submitConclusion(row.id)"
+                    >
+                        {{ $t('Closing Report') }}
+                    </el-button>
+
+                    <!-- [撤销] & [提交报告] -->
                     <template v-if="userStore.getIdentity === 1">
                         <el-button
                             v-if="row.status === projectStatuses[2]"
@@ -192,6 +209,13 @@
             :projectId="curProjectId"
             @initProjectHall="$emit('initProjectHall')"
         />
+
+        <SubmitAttachmentDialog
+            v-model:visible="attVisible"
+            :projectId="projectId"
+            :attachment="attachment"
+            :type="type"
+        />
     </div>
 </template>
 
@@ -207,10 +231,11 @@ import axios from '@/utils/axios';
 import AddProjectDialog from './AddProjectDialog.vue';
 import useDialog from '@/hooks/useDialog';
 import { ref } from 'vue';
-import { ProjectForm } from '../utils/interfaces';
+import { Attachment, ProjectForm } from '../utils/interfaces';
 import AllowProjectDialog from './AllowProjectDialog.vue';
 import ProposalBtn from './ProposalBtn.vue';
 import FinalBtn from './FinalBtn.vue';
+import SubmitAttachmentDialog from './SubmitAttachmentDialog.vue';
 
 const userStore = useUserStore();
 
@@ -364,6 +389,38 @@ const handleReject = async (id: number) => {
         message: t('Reject Successfully'),
     });
     emits('initProjectHall');
+};
+
+// 提交开题报告
+const attachment = ref<Attachment | null>(null);
+const projectId = ref(0);
+const type = ref(0);
+const { visible: attVisible, openDialog: openAttDialog } = useDialog();
+const submitProposal = async (id: number) => {
+    projectId.value = id;
+    type.value = 0;
+
+    attachment.value =
+        (await axios.get(`/project-attachment/${id}`, {
+            params: { type: type.value },
+        })) || null;
+    console.log('attachment', attachment.value);
+
+    openAttDialog();
+};
+
+// 提交结题报告
+const submitConclusion = async (id: number) => {
+    projectId.value = id;
+    type.value = 1;
+
+    attachment.value =
+        (await axios.get(`/project-attachment/${id}`, {
+            params: { type: type.value },
+        })) || null;
+    console.log('attachment', attachment.value);
+
+    openAttDialog();
 };
 </script>
 
