@@ -21,7 +21,10 @@
                     </span>
                     <template #dropdown>
                         <el-dropdown-menu>
-                            <el-dropdown-item @click="toPersonalCenter">
+                            <el-dropdown-item
+                                @click="toPersonalCenter"
+                                v-if="userStore.getIdentity !== 4"
+                            >
                                 个人中心
                             </el-dropdown-item>
                             <el-dropdown-item @click="logout">

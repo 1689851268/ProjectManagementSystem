@@ -89,6 +89,7 @@
                         {{ $t('Details') }}
                     </el-button>
 
+                    <!-- 开题报告 -->
                     <el-button
                         v-if="row.status === projectStatuses[3]"
                         class="m-5"
@@ -98,6 +99,7 @@
                         {{ $t('Opening Report') }}
                     </el-button>
 
+                    <!-- 结题报告 -->
                     <el-button
                         v-if="row.status === projectStatuses[4]"
                         class="m-5"
@@ -107,7 +109,17 @@
                         {{ $t('Closing Report') }}
                     </el-button>
 
-                    <!-- [撤销] & [提交报告] -->
+                    <!-- 项目成果 -->
+                    <!-- <el-button
+                        v-if="row.status === projectStatuses[4]"
+                        class="m-5"
+                        size="small"
+                        @click="submitConclusion(row.id)"
+                    >
+                        {{ $t('Add Project Outcome') }}
+                    </el-button> -->
+
+                    <!-- [撤销]-->
                     <template v-if="userStore.getIdentity === 1">
                         <el-button
                             v-if="row.status === projectStatuses[2]"

@@ -35,13 +35,13 @@ const useMenuList = (): MenuList => {
         (route) => {
             console.log('route', route);
             defaultMenu.value = route.name as string;
-            if (defaultMenu.value === 'NotificationDetail') {
-                // 如果当前路由是通知详情页，则默认选中通知菜单
-                defaultMenu.value = 'Notification';
-            } else if (defaultMenu.value === 'ProjectDetail') {
-                // 如果当前路由是项目详情页，则默认选中项目菜单
-                defaultMenu.value = 'ProjectHall';
-            }
+            // if (defaultMenu.value === 'NotificationDetail') {
+            //     // 如果当前路由是通知详情页，则默认选中通知菜单
+            //     defaultMenu.value = 'Notification';
+            // } else if (defaultMenu.value === 'ProjectDetail') {
+            //     // 如果当前路由是项目详情页，则默认选中项目菜单
+            //     defaultMenu.value = 'ProjectHall';
+            // }
         },
         { immediate: true },
     );

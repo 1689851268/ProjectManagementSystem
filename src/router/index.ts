@@ -53,15 +53,15 @@ const routes = [
                     auth: [1, 2, 3],
                 },
             },
-            {
-                path: '/my-achievement',
-                name: 'MyAchievement', // 我的成果
-                component: () => import('@/views/myAchievement.vue'),
-                meta: {
-                    icon: 'Document',
-                    auth: [1, 2],
-                },
-            },
+            // {
+            //     path: '/my-achievement',
+            //     name: 'MyAchievement', // 我的成果
+            //     component: () => import('@/views/myAchievement.vue'),
+            //     meta: {
+            //         icon: 'Document',
+            //         auth: [1, 2],
+            //     },
+            // },
             {
                 path: '/notification-detail/:id',
                 name: 'NotificationDetail', // 通知公告详情

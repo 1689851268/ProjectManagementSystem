@@ -139,4 +139,6 @@ export default {
         '限制上传 1 个文件，新文件会覆盖旧文件',
     'Opening Report': '开题报告',
     'Closing Report': '结题报告',
+    'Add Project Outcome': '添加项目成果',
+    'Please fill in the output information': '请填写成果信息',
 };
