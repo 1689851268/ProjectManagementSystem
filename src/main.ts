@@ -1,10 +1,18 @@
+// Vue & Libraries
 import { createApp } from 'vue';
-import App from '@/App.vue';
 import i18n from '@/locales/index';
-import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 
+// Components
+import App from '@/App.vue';
+
+// Router & Store
 import { setupRouter } from '@/router';
 import { setupStore } from '@/store';
+
+// Utils
+import { registerElementPlusIcons } from '@/utils/registerElementPlusIcons';
+
+// Styles
 import '@/styles/global.scss';
 import 'element-plus/dist/index.css';
 
@@ -12,9 +20,7 @@ function bootstrap() {
     const app = createApp(App);
 
     // element-plus icons
-    for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-        app.component(key, component);
-    }
+    registerElementPlusIcons(app);
 
     // i18n
     app.use(i18n);
@@ -27,5 +33,4 @@ function bootstrap() {
 
     app.mount('#app');
 }
-
 bootstrap();
