@@ -80,36 +80,27 @@ const { isLoading, startLoading, stopLoading } = useLoading();
 
 // 获取项目列表及其总数
 const getProjectList = async () => {
-    // 发送请求, 获取数据
-    const { data, total }: { data: rawProject[]; total: number } =
-        await new Promise((resolve) =>
-            setTimeout(async () => {
-                const userStore = useUserStore();
+    const userStore = useUserStore();
 
-                const res: any = await axios
-                    .get(
-                        `/project/${userStore.getId}/${userStore.getIdentity}`,
-                        {
-                            params: {
-                                curPage: curPage.value,
-                                pageSize: pageSize.value,
-                                projectName: queryCondition.value.projectName,
-                                teacher: queryCondition.value.teacher,
-                                college: queryCondition.value.college,
-                                projectType: queryCondition.value.projectType,
-                                projectStatus:
-                                    queryCondition.value.projectStatus,
-                            },
-                        },
-                    )
-                    .catch((err) => {
-                        console.log('getProjectList Error: ', err);
-                        return { data: [], total: 0 };
-                    });
-                resolve(res);
-            }, 1000),
-        );
-    return { data, total };
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    // 发送请求, 获取数据
+    const res: any = await axios
+        .get(`/project/${userStore.getId}/${userStore.getIdentity}`, {
+            params: {
+                curPage: curPage.value,
+                pageSize: pageSize.value,
+                projectName: queryCondition.value.projectName,
+                teacher: queryCondition.value.teacher,
+                college: queryCondition.value.college,
+                projectType: queryCondition.value.projectType,
+                projectStatus: queryCondition.value.projectStatus,
+            },
+        })
+        .catch((err) => {
+            console.log('getProjectList Error: ', err);
+            return { data: [], total: 0 };
+        });
+    return { data: res.data, total: res.total };
 };
 
 // 格式化项目列表
