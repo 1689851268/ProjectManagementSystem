@@ -1,7 +1,7 @@
 <template>
     <el-main class="app-main">
         <router-view v-slot="{ Component }">
-            <keep-alive :include="cacheComponents" :max="5">
+            <keep-alive :include="cacheComponents" :max="maxCacheSize">
                 <component :is="Component" />
             </keep-alive>
         </router-view>
@@ -17,6 +17,8 @@ const cacheComponents = [
     'notificationTable',
     'myAchievement',
 ];
+// 缓存组件最大数量
+const maxCacheSize = 5;
 </script>
 
 <style scoped lang="scss">
