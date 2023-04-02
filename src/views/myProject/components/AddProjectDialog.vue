@@ -159,7 +159,7 @@ const useAxiosConfig = (projectDetail: ProjectForm | null) => {
             url: '/project',
             data: {
                 name: form.name,
-                type: form.type,
+                type: +form.type,
                 description: form.desc,
                 teacher: userStore.getId,
             },
@@ -168,7 +168,7 @@ const useAxiosConfig = (projectDetail: ProjectForm | null) => {
             url: `/project/${projectDetail?.id}`,
             data: {
                 name: form.name,
-                type: form.type,
+                type: +form.type,
                 description: form.desc,
             },
         },
@@ -194,12 +194,8 @@ const operProject = async () => {
     const { url, data, method } = useAxiosConfig(props.projectDetail);
 
     // 发送请求, 添加项目
-    const res: any = await new Promise((resolve) => {
-        setTimeout(async () => {
-            const res = await (axios as any)[method](url, { ...data });
-            resolve(res);
-        }, 500);
-    });
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const res = await (axios as any)[method](url, { ...data });
 
     // 操作失败, 弹窗提示
     if (

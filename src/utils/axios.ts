@@ -52,7 +52,7 @@ instance.interceptors.response.use(
 
         ElMessage.error(errRes.statusText);
 
-        return Promise.reject(error);
+        return 'Request Error';
     },
 );
 

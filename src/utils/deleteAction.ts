@@ -9,7 +9,7 @@ export const handleDeleteAction = async (
     tips: string, // 删除操作的提示信息
     url: string, // axios 请求的 url
     cb: () => void, // 删除成功, 重新请求列表数据
-    config?: any, // axios 请求配置
+    config = {}, // axios 请求的配置对象
 ) => {
     const deletion = await ElMessageBoxConfirm(
         t(
@@ -20,10 +20,6 @@ export const handleDeleteAction = async (
 
     // 如果用户取消删除, 则不进行后续操作
     if (!deletion) {
-        ElMessage({
-            type: 'info',
-            message: t('Undeleted'),
-        });
         return;
     }
 

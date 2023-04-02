@@ -113,29 +113,26 @@
         />
 
         <ApplyDialog
+            :projectId="projectId"
             v-model:visible="visible"
-            @initUserList="$emit('initUserList')"
-            v-model:teammateId="teammateId"
-            :btnLoading="isLoading"
+            v-model:btnLoading="isLoading"
+            @initProjectHall="$emit('initProjectHall')"
         />
     </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+
 import { Project } from '../utils/interfaces';
-import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/store/user';
-import useDialog from '@/hooks/useDialog';
-import ApplyDialog from './ApplyDialog.vue';
-import axios from '@/utils/axios';
-import { ref, watch } from 'vue';
-import { ElMessage } from 'element-plus';
 import useLoading from '@/hooks/useLoading';
 
-const userStore = useUserStore();
+import useDialog from '@/hooks/useDialog';
+import ApplyDialog from './ApplyDialog.vue';
 
-const { t } = useI18n();
+const userStore = useUserStore();
 
 defineProps<{
     projectList: Array<Project>;
@@ -174,8 +171,8 @@ const handleDetails = (index: number, row: Project) => {
     });
 };
 
-const { visible, openDialog, closeDialog } = useDialog();
-const { isLoading, startLoading, stopLoading } = useLoading();
+const { visible, openDialog } = useDialog();
+const { isLoading } = useLoading();
 
 // 点击申报时触发
 const teammateId = ref<number[]>([]);
@@ -184,41 +181,6 @@ const handleApply = (id: number) => {
     projectId.value = id;
     openDialog();
 };
-
-// 监听 teammateId, 申报项目
-watch(teammateId, async (val) => {
-    startLoading();
-    // 申报项目
-    const res: any = await new Promise((resolve) => {
-        setTimeout(async () => {
-            const res = await axios.post('/project/apply', {
-                projectId: projectId.value,
-                applyUserId: userStore.getId,
-                teammateId: val,
-            });
-            resolve(res);
-        }, 800);
-    });
-
-    // 申报失败, 弹窗提示
-    if (res.status !== 201) {
-        ElMessage({
-            message: t('Operation Failure'),
-            type: 'error',
-        });
-        stopLoading();
-        return;
-    }
-
-    // 申报成功, 弹窗提示, 关闭 Dialog, 刷新项目大厅
-    ElMessage({
-        message: t('Operation Success'),
-        type: 'success',
-    });
-    emits('initProjectHall');
-    closeDialog();
-    stopLoading();
-});
 </script>
 
 <style scoped lang="scss">

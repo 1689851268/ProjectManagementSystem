@@ -62,21 +62,22 @@ import axios from '@/utils/axios';
 import { FormInstance, FormRules } from 'element-plus';
 import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { ElMessage } from 'element-plus';
 
 const { t } = useI18n();
 
 const userStore = useUserStore();
 
-defineProps<{
+const props = defineProps<{
     visible: boolean;
-    teammateId: number[];
     btnLoading: boolean;
+    projectId: number;
 }>();
 
-const emit = defineEmits<{
+const emits = defineEmits<{
     (e: 'update:visible', newVal: boolean): void;
-    (e: 'update:teammateId', newVal: number[]): void;
-    (e: 'initUserList'): void;
+    (e: 'update:btnLoading', newVal: boolean): void;
+    (e: 'initProjectHall'): void;
 }>();
 
 interface ListItem {
@@ -148,9 +149,37 @@ const getStudent = async (query: string) => {
 
 // 发送请求申报项目
 const applyProject = async () => {
+    emits('update:btnLoading', true);
+
     // 把 userStore.getId 从 form.name 中移除
     const teammateId = form.name.filter((item) => item !== userStore.getId);
-    emit('update:teammateId', teammateId);
+
+    // 申报项目
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const res = await axios.post('/project/apply', {
+        projectId: props.projectId,
+        applyUserId: userStore.getId,
+        teammateId,
+    });
+
+    // 申报失败, 弹窗提示
+    if (res.status !== 201) {
+        ElMessage({
+            message: t('Operation Failure'),
+            type: 'error',
+        });
+        stopLoading();
+        return;
+    }
+
+    // 申报成功, 弹窗提示, 关闭 Dialog, 刷新项目大厅
+    ElMessage({
+        message: t('Operation Success'),
+        type: 'success',
+    });
+    emits('initProjectHall');
+    emits('update:btnLoading', false);
+    handleClose();
 };
 
 // 提交表单
@@ -174,7 +203,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
 
 // 关闭弹窗
 const handleClose = () => {
-    emit('update:visible', false);
+    emits('update:visible', false);
     setTimeout(() => {
         resetForm(ruleFormRef.value);
     }, 500);
