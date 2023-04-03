@@ -79,22 +79,28 @@ const { isLoading, startLoading, stopLoading } = useLoading();
 const getProjectList = async () => {
     // 发送请求, 获取数据
     await new Promise((resolve) => setTimeout(resolve, 500));
-    const res: any = await ajax
-        .get(`/project/student/${userStore.getId}`, {
-            params: {
-                curPage: curPage.value,
-                pageSize: pageSize.value,
-                projectName: queryCondition.value.projectName,
-                teacher: queryCondition.value.teacher,
-                college: queryCondition.value.college,
-                projectType: queryCondition.value.projectType,
-                projectStatus: queryCondition.value.projectStatus,
-            },
-        })
-        .catch((err) => {
-            console.log('getProjectList Error: ', err);
-            return [[], 0];
-        });
+    const res: any = await ajax.get(`/project/student/${userStore.getId}`, {
+        params: {
+            curPage: curPage.value,
+            pageSize: pageSize.value,
+            projectName: queryCondition.value.projectName,
+            teacher: queryCondition.value.teacher,
+            college: queryCondition.value.college,
+            projectType: queryCondition.value.projectType,
+            projectStatus: queryCondition.value.projectStatus,
+        },
+    });
+
+    // 由于后端返回的数据格式是 [data, total], 所以这里要判断 res 是不是数组
+    // 如果不是数组, 说明请求失败
+    if (!Array.isArray(res)) {
+        return {
+            data: [],
+            total: 0,
+        };
+    }
+
+    // 返回数据
     return {
         data: res[0] as RawInvolvedProject[],
         total: res[1] as number,
