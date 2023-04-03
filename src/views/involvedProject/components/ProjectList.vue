@@ -1,6 +1,6 @@
 <template>
     <div class="project-list">
-        <!-- 操作按钮 -->
+        <!-- 标题 -->
         <div class="operation-btn mb-20">
             <h3>{{ $t('Project List') }}</h3>
         </div>
@@ -23,11 +23,7 @@
                 :label="$t('Type')"
                 align="center"
                 width="110"
-            >
-                <template #default="scope">
-                    {{ scope.row.type }}
-                </template>
-            </el-table-column>
+            />
             <el-table-column
                 prop="teacher"
                 :label="$t('Teacher')"
@@ -51,11 +47,7 @@
                 :label="$t('Status')"
                 align="center"
                 width="110"
-            >
-                <template #default="scope">
-                    {{ scope.row.status }}
-                </template>
-            </el-table-column>
+            />
             <el-table-column
                 prop="applicationDate"
                 :label="$t('Application Time')"
@@ -73,11 +65,11 @@
                 align="center"
             />
             <el-table-column :label="$t('Operations')" align="center">
-                <template #default="{ $index, row }">
+                <template #default="{ row }">
                     <el-button
                         class="m-5"
                         size="small"
-                        @click="handleDetails($index, row)"
+                        @click="handleDetails(row.id)"
                     >
                         {{ $t('Details') }}
                     </el-button>
@@ -103,23 +95,22 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import { InvolvedProject } from '../utils/interfaces';
 
-import { Project } from '../../projectHall/utils/interfaces';
+const router = useRouter();
 
 defineProps<{
-    projectList: Array<Project>;
+    projectList: InvolvedProject[];
     total: number;
-    pageSizes: Array<number>;
+    limit: number;
+    pageSizes: number[];
     pageSize: number;
     curPage: number;
-    projectStatuses: Record<string, string>;
-    limit: number;
 }>();
 
 const emits = defineEmits<{
     (event: 'update:curPage', curPage: number): void;
     (event: 'update:pageSize', pageSize: number): void;
-    (event: 'initProjectHall'): void;
 }>();
 
 // 每页显示的条数改变时触发
@@ -134,12 +125,10 @@ const handleCurrentChange = (val: number) => {
 };
 
 // 点击详情时触发
-const router = useRouter();
-const handleDetails = (index: number, row: Project) => {
-    console.log(index, row);
+const handleDetails = (id: number) => {
     router.push({
         name: 'ProjectDetail',
-        params: { id: row.id },
+        params: { id },
     });
 };
 </script>

@@ -15,11 +15,9 @@
                 :limit="limit"
                 :pageSizes="pageSizes"
                 :total="total"
-                :projectStatuses="projectHallMetaData.projectStatuses"
                 :projectList="projectList"
                 v-model:curPage="curPage"
                 v-model:pageSize="pageSize"
-                @initProjectHall="initProjectHall"
             />
         </el-scrollbar>
     </div>
@@ -35,7 +33,6 @@ import useQueryCondition from '@/hooks/useQueryCondition';
 import usePagination from '@/hooks/usePagination';
 import useLoading from '@/hooks/useLoading';
 import useConfiguration from '@/views/projectHall/utils/useConfiguration';
-import useProjectHallMetaData from '@/views/projectHall/utils/useProjectHallMetaData';
 
 import axios from '@/utils/axios';
 import { useMetaDataStore } from '@/store/metaData';
@@ -45,38 +42,35 @@ import { formatDate } from '@/utils/transformTime';
 import { InvolvedProject, RawInvolvedProject } from './utils/interfaces';
 
 const userStore = useUserStore();
+const metaDataStore = useMetaDataStore();
 
 const scrollbar = ref<HTMLElement>(); // el-scrollbar 的 ref, 用于滚回到顶部
 const projectList = ref<InvolvedProject[]>([]); // 项目列表
 
 // 获取查询表单的配置项
 const { configurations, initConfigurations } = useConfiguration();
-
-// 获取 projectHall 所需的元数据
-const { projectHallMetaData, initProjectHallMetaData } =
-    useProjectHallMetaData();
-
-// 获取元数据, 初始化查询表单的配置项
-const metaDataStore = useMetaDataStore();
 // 订阅 projectTypes, projectStatuses 的变化, 初始化 configurations 和 projectHallMetaData
 metaDataStore.$subscribe(
     (_, state) => {
         const { projectTypes, projectStatuses } = state;
-        initConfigurations(projectTypes, projectStatuses);
-        initProjectHallMetaData(projectTypes, projectStatuses);
+        // 过滤掉 id 为 1 的状态, 即 '招募中' 状态
+        const statusOmitId1 = projectStatuses.filter(
+            (status) => status.id !== 1,
+        );
+        initConfigurations(projectTypes, statusOmitId1);
     },
     { immediate: true },
 );
+
+// 获取查询表单的数据及其操作方法
+const { queryCondition, setQueryCondition, resetQueryCondition } =
+    useQueryCondition(configurations.value);
 
 // 每页显示的条数
 const limit = 10;
 // 分页相关数据及其相关方法
 const { total, curPage, pageSize, pageSizes, setTotal, setCurPage } =
     usePagination(limit);
-
-// 获取查询表单的数据及其操作方法
-const { queryCondition, setQueryCondition, resetQueryCondition } =
-    useQueryCondition(configurations.value);
 
 // loading 及其相关方法
 const { isLoading, startLoading, stopLoading } = useLoading();
@@ -99,7 +93,7 @@ const getProjectList = async () => {
         })
         .catch((err) => {
             console.log('getProjectList Error: ', err);
-            return { data: [], total: 0 };
+            return [[], 0];
         });
     return {
         data: res[0] as RawInvolvedProject[],

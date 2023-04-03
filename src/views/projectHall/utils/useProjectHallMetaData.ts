@@ -1,14 +1,18 @@
 import { MetaData } from '@/common/interfaces';
 import { ref } from 'vue';
 
+/**
+ * 项目大厅的元数据
+ * @returns projectHallMetaData - 项目大厅的元数据
+ * @returns initProjectHallMetaData - 用于初始化 projectHallMetaData
+ */
 const useProjectHallMetaData = () => {
-    // 项目类型及项目状态的元数据
     const projectHallMetaData = ref<{
         projectTypes: Record<number, string>;
         projectStatuses: Record<number, string>;
     }>({
-        projectTypes: {},
-        projectStatuses: {},
+        projectTypes: {}, // 项目类型的元数据
+        projectStatuses: {}, // 项目状态的元数据
     });
 
     // 初始化 projectHallMetaData

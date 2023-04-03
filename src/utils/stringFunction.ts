@@ -1,5 +1,7 @@
 /**
- * @desc 将形如 'abcDef' / 'AbcDef' 的字符串拆开为 'abc Def' / 'Abc Def' 的形式
+ * @example
+ * splitCamelCase('abcDef') -→ 'abc Def'
+ * splitCamelCase('AbcDef') -→ 'Abc Def'
  */
 export const splitCamelCase = (str: string) => {
     return str.replace(/([A-Z])/g, ' $1').trim();
