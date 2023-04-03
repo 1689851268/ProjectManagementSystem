@@ -68,7 +68,7 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax.js';
 import { ref, computed } from 'vue';
 import useLoading from '@/hooks/useLoading';
 
@@ -113,7 +113,7 @@ const { params } = useRoute();
 // 根据 params.id 获取通知详情
 const getNotificationDetail = async () => {
     // 发送请求, 获取通知详情
-    const res: rawNotificationDetail = await axios.get(
+    const res: rawNotificationDetail = await ajax.get(
         `/notification/${params.id}`,
     );
 

@@ -57,7 +57,7 @@ import {
     genFileId,
 } from 'element-plus';
 import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus';
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax';
 import { useI18n } from 'vue-i18n';
 import { Attachment } from '../utils/interfaces';
 import { useUserStore } from '@/store/user';
@@ -120,13 +120,13 @@ const handleSuccess = async (
     let res: any;
     if (props.attachment) {
         // 更新
-        res = await axios.patch(`/project-attachment/${props.attachment.id}`, {
+        res = await ajax.patch(`/project-attachment/${props.attachment.id}`, {
             storagePath: response.filename,
             name: response.originalname,
         });
     } else {
         // 新增
-        res = await axios.post('/project-attachment', {
+        res = await ajax.post('/project-attachment', {
             projectId: props.projectId,
             storagePath: response.filename,
             name: response.originalname,
@@ -172,7 +172,7 @@ const handlePreview = async (file: UploadFile) => {
     if (file.url) {
         // 已上传, 点击下载
         const id = props.attachment?.id; // 附件id
-        const res: any = await axios.get(`/project-attachment/download/${id}`, {
+        const res: any = await ajax.get(`/project-attachment/download/${id}`, {
             responseType: 'blob',
         });
 

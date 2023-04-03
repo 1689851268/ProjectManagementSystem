@@ -118,7 +118,7 @@ import { useMetaDataStore } from '@/store/metaData';
 import { watch, ref, reactive } from 'vue';
 import { MetaData } from '@/common/interfaces';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax';
 import { UserInfo } from '../utils/interfaces';
 import { useI18n } from 'vue-i18n';
 
@@ -166,7 +166,7 @@ watch(
     () => form.college,
     async (newVal) => {
         // 发送请求获取专业信息
-        const major: MetaData[] = await axios.get('/major', {
+        const major: MetaData[] = await ajax.get('/major', {
             params: { collegeId: newVal },
         });
         form.major = ''; // 清空专业信息
@@ -289,7 +289,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 
 // 发送请求新增用户
 const addUser = async () => {
-    const res = await axios.post('/user', {
+    const res = await ajax.post('/user', {
         identity: form.identity,
         name: form.name,
         password: form.psw,

@@ -45,7 +45,7 @@ import { ElMessage, FormInstance, FormRules } from 'element-plus';
 import { useRouter } from 'vue-router';
 
 import LanguageConfig from '@/components/LanguageConfig.vue';
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax.js';
 import { useUserStore } from '@/store/user';
 import useLoading from '@/hooks/useLoading';
 
@@ -76,7 +76,7 @@ const logIn = async (formEl: FormInstance | undefined) => {
         }
 
         startLoading();
-        const res: any = await axios
+        const res: any = await ajax
             .post('/user/login', {
                 username: form.account,
                 password: form.password,

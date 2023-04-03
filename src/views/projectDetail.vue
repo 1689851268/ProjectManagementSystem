@@ -99,7 +99,7 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax.js';
 import useLoading from '@/hooks/useLoading';
 import { ref } from 'vue';
 
@@ -116,7 +116,7 @@ const projectTeacher = ref<any>(null); // 项目指导老师
 const projectSpecialist = ref<any>(null); // 项目审批专家
 
 const getProjectDetail = async () => {
-    const res: any = await axios.get(`/project/detail/${params.id}`);
+    const res: any = await ajax.get(`/project/detail/${params.id}`);
     console.log('res', res);
     project.value = res.project;
     members.value = res.members[0].students || [];

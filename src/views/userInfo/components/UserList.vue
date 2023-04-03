@@ -75,7 +75,7 @@ import GetProfileDialog from '@/views/userInfo/components/GetProfileDialog.vue';
 import useDialog from '@/hooks/useDialog';
 import { handleDeleteAction } from '@/utils/deleteAction';
 import { ref } from 'vue';
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -129,7 +129,7 @@ const handleUpdate = async (uuid: string) => {
     // 学生: identity(仅展示), name, password, college, major, class, (email), (phone)
     // 教师: identity(仅展示), name, password, college, (email), (phone)
     // 专家: identity(仅展示), name, password, (email), (phone)
-    const res: UserInfoState = await axios.get(`/user/${uuid}`, {
+    const res: UserInfoState = await ajax.get(`/user/${uuid}`, {
         params: {
             identity: props.identity,
         },
@@ -144,7 +144,7 @@ const handleDetails = async (uuid: string) => {
     // 学生: identity, uuid, name, registration time, college, major, class, (email), (phone)
     // 教师: identity, uuid, name, registration time, college, (email), (phone)
     // 专家: identity, uuid, name, registration time, (email), (phone)
-    const res: any = await axios.get(`/user/profile/${uuid}`, {
+    const res: any = await ajax.get(`/user/profile/${uuid}`, {
         params: {
             identity: props.identity,
         },

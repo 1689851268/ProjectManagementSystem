@@ -1,6 +1,6 @@
 import i18n from '@/locales';
 import { ElMessage } from 'element-plus';
-import axios from './axios';
+import ajax from './ajax';
 import { ElMessageBoxConfirm } from './domHandler';
 
 const { t } = i18n.global;
@@ -24,7 +24,7 @@ const usePatchUpdate = async (
     }
 
     // 发请求更新 project 表: status-6, rejectTime-当前时间
-    const res: any = await axios.patch(url, {
+    const res: any = await ajax.patch(url, {
         ...params,
     });
 

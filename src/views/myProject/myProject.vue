@@ -37,7 +37,7 @@ import useLoading from '@/hooks/useLoading';
 import useConfiguration from '@/views/projectHall/utils/useConfiguration';
 import useProjectHallMetaData from '@/views/projectHall/utils/useProjectHallMetaData';
 
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax.js';
 import { Project, rawProject } from '@/views/projectHall/utils/interfaces';
 import { useMetaDataStore } from '@/store/metaData';
 import { scrollToTop } from '@/utils/domHandler';
@@ -84,7 +84,7 @@ const getProjectList = async () => {
 
     await new Promise((resolve) => setTimeout(resolve, 500));
     // 发送请求, 获取数据
-    const res: any = await axios
+    const res: any = await ajax
         .get(`/project/${userStore.getId}/${userStore.getIdentity}`, {
             params: {
                 curPage: curPage.value,

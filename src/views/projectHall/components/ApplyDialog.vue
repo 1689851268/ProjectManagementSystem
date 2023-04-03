@@ -58,7 +58,7 @@
 <script lang="ts" setup>
 import useLoading from '@/hooks/useLoading';
 import { useUserStore } from '@/store/user';
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax.js';
 import { FormInstance, FormRules } from 'element-plus';
 import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -129,7 +129,7 @@ const getStudent = async (query: string) => {
     startLoading();
     const res: any = await new Promise((resolve) => {
         setTimeout(async () => {
-            const res = await axios.get('/student', {
+            const res = await ajax.get('/student', {
                 params: {
                     keyword: query,
                 },
@@ -156,7 +156,7 @@ const applyProject = async () => {
 
     // 申报项目
     await new Promise((resolve) => setTimeout(resolve, 500));
-    const res = await axios.post('/project/apply', {
+    const res = await ajax.post('/project/apply', {
         projectId: props.projectId,
         applyUserId: userStore.getId,
         teammateId,

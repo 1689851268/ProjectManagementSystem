@@ -35,7 +35,7 @@ import useConfiguration from '@/views/userInfo/utils/useConfiguration';
 import { useMetaDataStore } from '@/store/metaData';
 import useQueryCondition from '@/hooks/useQueryCondition';
 import usePagination from '@/hooks/usePagination';
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax.js';
 import { User } from '@/views/userInfo/utils/interfaces';
 import { scrollToTop } from '@/utils/domHandler';
 
@@ -74,7 +74,7 @@ const getProjectList = async () => {
     // 发送请求, 获取数据
     const [data, total]: [User[], number] = await new Promise((resolve) =>
         setTimeout(async () => {
-            const res: any = await axios.get('/user', {
+            const res: any = await ajax.get('/user', {
                 params: {
                     curPage: curPage.value,
                     pageSize: pageSize.value,

@@ -48,7 +48,7 @@
 
 <script lang="ts" setup>
 import useLoading from '@/hooks/useLoading';
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax.js';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
 import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -111,7 +111,7 @@ const getStudent = async (query: string) => {
     startLoading();
     const res: any = await new Promise((resolve) => {
         setTimeout(async () => {
-            const res = await axios.get('/specialist', {
+            const res = await ajax.get('/specialist', {
                 params: {
                     keyword: query,
                 },
@@ -138,7 +138,7 @@ const {
 const allowProject = async () => {
     startBtnLoading();
     // 1. 发送请求更新 project 表: 根据 projectId 更新 status: 3, specialist: [专家的 id]
-    const res: any = await axios.patch(`/project/allow`, {
+    const res: any = await ajax.patch(`/project/allow`, {
         projectId: props.projectId,
         specialist: form.name,
     });

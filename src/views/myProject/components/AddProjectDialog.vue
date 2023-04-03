@@ -63,7 +63,7 @@
 import useLoading from '@/hooks/useLoading';
 import { useMetaDataStore } from '@/store/metaData';
 import { useUserStore } from '@/store/user';
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
 import { storeToRefs } from 'pinia';
 import { reactive, ref, watch } from 'vue';
@@ -151,9 +151,9 @@ watch(
     { immediate: true },
 );
 
-// 根据条件获取 axios 请求配置
+// 根据条件获取 ajax 请求配置
 const useAxiosConfig = (projectDetail: ProjectForm | null) => {
-    // axios 请求配置
+    // ajax 请求配置
     const axiosConfig = {
         add: {
             url: '/project',
@@ -190,12 +190,12 @@ const useAxiosConfig = (projectDetail: ProjectForm | null) => {
 const operProject = async () => {
     startLoading();
 
-    // 获取 axios 请求配置
+    // 获取 ajax 请求配置
     const { url, data, method } = useAxiosConfig(props.projectDetail);
 
     // 发送请求, 添加项目
     await new Promise((resolve) => setTimeout(resolve, 500));
-    const res = await (axios as any)[method](url, { ...data });
+    const res = await (ajax as any)[method](url, { ...data });
 
     // 操作失败, 弹窗提示
     if (

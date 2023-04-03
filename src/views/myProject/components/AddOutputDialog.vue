@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
 import useLoading from '@/hooks/useLoading';
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax.js';
 import {
     ElMessage,
     ElMessageBox,
@@ -149,7 +149,7 @@ const operNotification = async () => {
     // 发送请求, 添加项目
     const res: any = await new Promise((resolve) => {
         setTimeout(async () => {
-            const res: any = await axios.post('/notification', {
+            const res: any = await ajax.post('/notification', {
                 title: form.achieveName,
                 type: form.type,
                 attachment: rawFileList,
@@ -245,7 +245,7 @@ const handleRemove: UploadProps['onRemove'] = async (file) => {
     // 编辑时, 不能获取到 file.response, 需要提交修改来发送请求删除文件
     if (fileRes) {
         // 发送请求删除文件
-        await axios.delete(`/notification-attachment/${fileRes.filename}`);
+        await ajax.delete(`/notification-attachment/${fileRes.filename}`);
     }
 };
 </script>

@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import useLoading from '@/hooks/useLoading';
 import { useUserStore } from '@/store/user';
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax.js';
 import { ElMessage, FormRules } from 'element-plus';
 import { reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -102,7 +102,7 @@ const user = ref<User | null>(null);
 const init = async () => {
     const uuid = userStore.getUuid;
     const identity = userStore.getIdentity;
-    const res: any = await axios.get(`/user/${uuid}`, {
+    const res: any = await ajax.get(`/user/${uuid}`, {
         params: {
             identity,
         },
@@ -128,7 +128,7 @@ const handleUpdate = async () => {
     const identity = userStore.getIdentity;
     startLoading();
     await new Promise((resolve) => setTimeout(resolve, 500));
-    await axios
+    await ajax
         .patch(`/user/${uuid}`, {
             identity,
             ...form.value,

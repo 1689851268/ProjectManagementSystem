@@ -31,7 +31,7 @@ import { ref, watch } from 'vue';
 import NotificationQuery from '@/components/FormQuery.vue';
 import NotificationList from '@/views/notificationTable/components/NotificationList.vue';
 
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax.js';
 import {
     Notification,
     NotificationItem,
@@ -60,7 +60,7 @@ const getNotificationList = async (
 ): Promise<{ notificationList: Array<NotificationItem>; total: number }> => {
     return new Promise((resolve) => {
         setTimeout(async () => {
-            const res: any = await axios.get('/notification/list', {
+            const res: any = await ajax.get('/notification/list', {
                 params: {
                     curPage,
                     pageSize,

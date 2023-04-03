@@ -6,7 +6,7 @@ import { ElMessage } from 'element-plus';
 // 在 Ts 文件中获取环境变量
 const { VITE_AXIOS_TIMEOUT, VITE_AXIOS_BASEURL } = import.meta.env;
 
-const instance = axios.create({
+const ajax = axios.create({
     baseURL: VITE_AXIOS_BASEURL,
     timeout: VITE_AXIOS_TIMEOUT,
 });
@@ -14,7 +14,7 @@ const instance = axios.create({
 const userStore = useUserStore();
 
 // 请求拦截器
-instance.interceptors.request.use(
+ajax.interceptors.request.use(
     function (config) {
         // 如果 token 存在, 就在请求头中添加 token
         if (userStore.getToken) {
@@ -29,7 +29,7 @@ instance.interceptors.request.use(
 );
 
 // 响应拦截器
-instance.interceptors.response.use(
+ajax.interceptors.response.use(
     function (response) {
         // 2xx 范围内的状态码都会触发该函数
         if (response.status === 200) {
@@ -56,4 +56,4 @@ instance.interceptors.response.use(
     },
 );
 
-export default instance;
+export default ajax;

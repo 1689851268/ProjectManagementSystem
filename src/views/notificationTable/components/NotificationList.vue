@@ -105,7 +105,7 @@ import { useI18n } from 'vue-i18n';
 import AddNotificationDialog from './AddNotificationDialog.vue';
 import useDialog from '@/hooks/useDialog';
 import { ref } from 'vue';
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax';
 import { NotificationDetail } from '../utils/interfaces';
 
 const { t } = useI18n();
@@ -146,8 +146,8 @@ const handleAdd = () => {
 };
 // 更新操作
 const handleUpdate = async (id: number) => {
-    // 发送 axios 获取 notificationDetail
-    const res: any = await axios.get(`notification/detail/${id}`);
+    // 发送 ajax 获取 notificationDetail
+    const res: any = await ajax.get(`notification/detail/${id}`);
     notificationDetail.value = res;
     openAddDialog();
 };

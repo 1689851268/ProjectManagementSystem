@@ -16,7 +16,7 @@ import AppSidebar from './AppSidebar.vue';
 import AppHeader from './AppHeader.vue';
 import AppMain from './AppMain.vue';
 
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax';
 import { useMetaDataStore } from '@/store/metaData';
 import { MetaData } from '@/common/interfaces';
 import { useUserStore } from '@/store/user';
@@ -45,11 +45,11 @@ interface UserResponse {
 // 获取元数据, 并存储到 metaDataStore 中
 const getMetaData = async () => {
     // 将元数据存储到 store 中
-    const metaData: MetaDataResponse = await axios.get('/meta-data');
+    const metaData: MetaDataResponse = await ajax.get('/meta-data');
     metaDataStore.$patch(metaData);
 
     // 将用户信息存储到 store 中
-    const user: UserResponse = await axios.get('/user/identity');
+    const user: UserResponse = await ajax.get('/user/identity');
     userStore.setIdentity(user.identity);
     userStore.setUuid(user.uuid);
     userStore.setId(user.id);

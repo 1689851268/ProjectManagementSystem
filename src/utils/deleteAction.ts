@@ -1,5 +1,5 @@
 import { ElMessage } from 'element-plus';
-import axios from './axios';
+import ajax from './ajax';
 import { ElMessageBoxConfirm } from './domHandler';
 import i18n from '@/locales/index';
 
@@ -7,9 +7,9 @@ const { t } = i18n.global;
 
 export const handleDeleteAction = async (
     tips: string, // 删除操作的提示信息
-    url: string, // axios 请求的 url
+    url: string, // ajax 请求的 url
     cb: () => void, // 删除成功, 重新请求列表数据
-    config = {}, // axios 请求的配置对象
+    config = {}, // ajax 请求的配置对象
 ) => {
     const deletion = await ElMessageBoxConfirm(
         t(
@@ -24,7 +24,7 @@ export const handleDeleteAction = async (
     }
 
     // 向后端发送删除请求
-    const affected: number = await axios.delete(url, config);
+    const affected: number = await ajax.delete(url, config);
 
     // 如果删除失败, 则不进行后续操作
     if (!affected) {

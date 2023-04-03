@@ -239,7 +239,7 @@ import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/store/user';
 import { ElMessage } from 'element-plus';
 import { ElMessageBoxConfirm } from '@/utils/domHandler';
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax';
 import AddProjectDialog from './AddProjectDialog.vue';
 import useDialog from '@/hooks/useDialog';
 import { ref } from 'vue';
@@ -299,7 +299,7 @@ const handleAdd = () => {
 // 点击更新时触发
 const projectDetail = ref<ProjectForm | null>(null);
 const handleUpdate = async (id: number) => {
-    const res: any = await axios.get(`/project/${id}`);
+    const res: any = await ajax.get(`/project/${id}`);
     projectDetail.value = { ...res, id };
     openDialog();
 };
@@ -335,7 +335,7 @@ const handleWithdraw = async (id: number) => {
     }
 
     // 发送撤回请求
-    const res = await axios.post(`/project/revoke`, { projectId: id });
+    const res = await ajax.post(`/project/revoke`, { projectId: id });
 
     // 撤回失败, 则不进行后续操作
     if (res.status !== 201) {
@@ -384,7 +384,7 @@ const handleReject = async (id: number) => {
     // 2. 发送请求更新
     // 2.1 project 表, 根据 projectId 更新 status: 1, applicationDate: "", projectLeader: null
     // 2.2 project_and_student 表, 根据 projectId 删除记录
-    const res = await axios.post(`/project/reject`, { projectId: id });
+    const res = await ajax.post(`/project/reject`, { projectId: id });
 
     // 拒绝失败, 则不进行后续操作
     if (res.status !== 201) {
@@ -413,7 +413,7 @@ const submitProposal = async (id: number) => {
     type.value = 0;
 
     attachment.value =
-        (await axios.get(`/project-attachment/${id}`, {
+        (await ajax.get(`/project-attachment/${id}`, {
             params: { type: type.value },
         })) || null;
     console.log('attachment', attachment.value);
@@ -427,7 +427,7 @@ const submitConclusion = async (id: number) => {
     type.value = 1;
 
     attachment.value =
-        (await axios.get(`/project-attachment/${id}`, {
+        (await ajax.get(`/project-attachment/${id}`, {
             params: { type: type.value },
         })) || null;
     console.log('attachment', attachment.value);

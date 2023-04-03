@@ -34,7 +34,7 @@ import usePagination from '@/hooks/usePagination';
 import useLoading from '@/hooks/useLoading';
 import useConfiguration from '@/views/projectHall/utils/useConfiguration';
 
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax';
 import { useMetaDataStore } from '@/store/metaData';
 import { scrollToTop } from '@/utils/domHandler';
 import { useUserStore } from '@/store/user';
@@ -79,7 +79,7 @@ const { isLoading, startLoading, stopLoading } = useLoading();
 const getProjectList = async () => {
     // 发送请求, 获取数据
     await new Promise((resolve) => setTimeout(resolve, 500));
-    const res: any = await axios
+    const res: any = await ajax
         .get(`/project/student/${userStore.getId}`, {
             params: {
                 curPage: curPage.value,

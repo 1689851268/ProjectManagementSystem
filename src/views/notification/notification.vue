@@ -30,7 +30,7 @@ import { ref, watch } from 'vue';
 import NotificationQuery from '@/components/FormQuery.vue';
 import NotificationList from '@/views/notification/components/NotificationList.vue';
 
-import axios from '@/utils/axios';
+import ajax from '@/utils/ajax.js';
 import { Notification } from '@/views/notification/utils/interfaces';
 import { Configuration } from '@/common/interfaces';
 import { scrollToTop } from '@/utils/domHandler';
@@ -54,7 +54,7 @@ const getNotificationList = async (
 ): Promise<{ notificationList: Array<Notification>; total: number }> => {
     return new Promise((resolve) => {
         setTimeout(async () => {
-            const res: any = await axios.get('/notification', {
+            const res: any = await ajax.get('/notification', {
                 params: {
                     curPage,
                     pageSize,
