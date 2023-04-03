@@ -53,6 +53,16 @@ const routes = [
                     auth: [1, 2, 3],
                 },
             },
+            {
+                path: '/involved-project',
+                name: 'InvolvedProject', // 项目参与
+                component: () =>
+                    import('@/views/involvedProject/involvedProject.vue'),
+                meta: {
+                    icon: 'Document',
+                    auth: [1],
+                },
+            },
             // {
             //     path: '/my-achievement',
             //     name: 'MyAchievement', // 我的成果

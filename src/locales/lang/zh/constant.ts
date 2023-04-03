@@ -141,4 +141,5 @@ export default {
     'Closing Report': '结题报告',
     'Add Project Outcome': '添加项目成果',
     'Please fill in the output information': '请填写成果信息',
+    'Involved Project': '项目参与',
 };

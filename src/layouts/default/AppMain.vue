@@ -16,6 +16,7 @@ const cacheComponents = [
     'myProject',
     'notificationTable',
     'myAchievement',
+    'involvedProject',
 ];
 // 缓存组件最大数量
 const maxCacheSize = 5;
