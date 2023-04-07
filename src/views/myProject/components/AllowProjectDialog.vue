@@ -47,11 +47,12 @@
 </template>
 
 <script lang="ts" setup>
-import useLoading from '@/hooks/useLoading';
-import ajax from '@/utils/ajax.js';
-import { ElMessage, FormInstance, FormRules } from 'element-plus';
-import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { computed, reactive, ref } from 'vue';
+import { ElMessage, FormInstance, FormRules } from 'element-plus';
+
+import ajax from '@/utils/ajax.js';
+import useLoading from '@/hooks/useLoading';
 
 const { t } = useI18n();
 
@@ -109,15 +110,11 @@ const getStudent = async (query: string) => {
     }
 
     startLoading();
-    const res: any = await new Promise((resolve) => {
-        setTimeout(async () => {
-            const res = await ajax.get('/specialist', {
-                params: {
-                    keyword: query,
-                },
-            });
-            resolve(res);
-        }, 300);
+    new Promise((resolve) => setTimeout(resolve, 500));
+    const res: any = await ajax.get('/specialist', {
+        params: {
+            keyword: query,
+        },
     });
     stopLoading();
 

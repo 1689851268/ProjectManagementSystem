@@ -36,7 +36,7 @@ const handleAgree = async () => {
 
 const handleReject = async () => {
     const tips = 'Are you sure you want to reject the conclusion?';
-    const url = '/project/rejectOpen';
+    const url = '/project/invalidate';
     const params = {
         projectId: props.projectId,
     };
