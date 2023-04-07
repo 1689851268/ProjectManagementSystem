@@ -4,8 +4,8 @@
         <div
             class="notification-item mt-20"
             v-for="notification in notificationList"
-            :key="notification.title"
-            @click="handleClick(notification)"
+            :key="notification.id"
+            @click="handleClick(notification.id)"
         >
             <div class="item-title mb-15">
                 {{ notification.title }}
@@ -73,11 +73,11 @@ const handleCurrentChange = (val: number) => {
 };
 
 // 点击通知时触发
-const handleClick = (notification: Notification) => {
+const handleClick = (id: number) => {
     router.push({
         name: 'NotificationDetail',
         params: {
-            id: notification.id,
+            id,
         },
     });
 };

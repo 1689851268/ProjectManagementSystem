@@ -12,9 +12,9 @@
 </template>
 
 <script lang="ts" setup>
-import AppSidebar from './AppSidebar.vue';
-import AppHeader from './AppHeader.vue';
-import AppMain from './AppMain.vue';
+import AppSidebar from './components/AppSidebar.vue';
+import AppHeader from './components/AppHeader.vue';
+import AppMain from './components/AppMain.vue';
 
 import ajax from '@/utils/ajax';
 import { useMetaDataStore } from '@/store/metaData';

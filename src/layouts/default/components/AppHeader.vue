@@ -51,13 +51,14 @@ const appStore = useAppStore();
 const userStore = useUserStore();
 const router = useRouter();
 
-const props = defineProps<{
+defineProps<{
     uuid: string;
 }>();
 
 const { getMenuCollapsed } = storeToRefs(appStore);
 const iconSize = 20;
 
+// 控制菜单栏是否展开
 const toggleCollapsed = () => {
     appStore.toggleMenuCollapsed();
 };
@@ -68,6 +69,7 @@ const logout = () => {
     userStore.logout();
 };
 
+// 跳转到个人中心
 const toPersonalCenter = () => {
     router.push({
         name: 'PersonalCenter',

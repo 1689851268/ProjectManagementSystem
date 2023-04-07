@@ -232,25 +232,28 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-import { Project } from '../../projectHall/utils/interfaces';
-import { handleDeleteAction } from '@/utils/deleteAction';
-import { useI18n } from 'vue-i18n';
-import { useUserStore } from '@/store/user';
-import { ElMessage } from 'element-plus';
-import { ElMessageBoxConfirm } from '@/utils/domHandler';
-import ajax from '@/utils/ajax';
-import AddProjectDialog from './AddProjectDialog.vue';
-import useDialog from '@/hooks/useDialog';
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
+import { ElMessage } from 'element-plus';
+
+import { Project } from '../../projectHall/utils/interfaces';
 import { Attachment, ProjectForm } from '../utils/interfaces';
-import AllowProjectDialog from './AllowProjectDialog.vue';
-import ProposalBtn from './ProposalBtn.vue';
+
+import ajax from '@/utils/ajax';
+import useDialog from '@/hooks/useDialog';
+import { ElMessageBoxConfirm } from '@/utils/domHandler';
+import { handleDeleteAction } from '@/utils/deleteAction';
+
 import FinalBtn from './FinalBtn.vue';
+import ProposalBtn from './ProposalBtn.vue';
+import AddProjectDialog from './AddProjectDialog.vue';
+import AllowProjectDialog from './AllowProjectDialog.vue';
 import SubmitAttachmentDialog from './SubmitAttachmentDialog.vue';
 
-const userStore = useUserStore();
+import { useUserStore } from '@/store/user';
 
+const userStore = useUserStore();
 const { t } = useI18n();
 
 defineProps<{
@@ -290,14 +293,14 @@ const handleDetails = (index: number, row: Project) => {
     });
 };
 
-// 点击添加时触发
 const { visible, openDialog } = useDialog();
+const projectDetail = ref<ProjectForm | null>(null);
+// 点击添加时触发
 const handleAdd = () => {
+    projectDetail.value = null;
     openDialog();
 };
-
 // 点击更新时触发
-const projectDetail = ref<ProjectForm | null>(null);
 const handleUpdate = async (id: number) => {
     const res: any = await ajax.get(`/project/${id}`);
     projectDetail.value = { ...res, id };

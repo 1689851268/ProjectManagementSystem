@@ -34,6 +34,7 @@ import ajax from '@/utils/ajax.js';
 import { Notification } from '@/views/notification/utils/interfaces';
 import { Configuration } from '@/common/interfaces';
 import { scrollToTop } from '@/utils/domHandler';
+import { formatDate } from '@/utils/transformTime';
 
 import useQueryCondition from '@/hooks/useQueryCondition';
 import usePagination from '@/hooks/usePagination';
@@ -41,46 +42,44 @@ import useLoading from '@/hooks/useLoading';
 
 /**
  * @desc 发送请求, 获取通知列表
- * @param {number} curPage 当前页码
- * @param {number} pageSize 每页显示的条数
- * @param {string} title 通知标题
- * @return {Array} 通知列表
- * @return {number} total 通知总数
+ * @param curPage 当前页码
+ * @param pageSize 每页显示的条数
+ * @param title 通知标题
+ * @return 通知列表
+ * @return total 通知总数
  */
 const getNotificationList = async (
     curPage: number,
     pageSize: number,
     title: string,
-): Promise<{ notificationList: Array<Notification>; total: number }> => {
-    return new Promise((resolve) => {
-        setTimeout(async () => {
-            const res: any = await ajax.get('/notification', {
-                params: {
-                    curPage,
-                    pageSize,
-                    title,
-                },
-            });
+): Promise<{ notificationList: Notification[]; total: number }> => {
+    new Promise((resolve) => setTimeout(resolve, 500));
 
-            const notificationList = res[0].map((item: Notification) => {
-                return {
-                    ...item,
-                    lastUpdateTime: new Date(
-                        +item.lastUpdateTime,
-                    ).toLocaleString(),
-                };
-            });
-
-            resolve({
-                notificationList,
-                total: res[1],
-            });
-        }, 1000);
+    // 发送请求, 获取通知列表
+    const res: any = await ajax.get('/notification', {
+        params: {
+            curPage,
+            pageSize,
+            title,
+        },
     });
+
+    // 格式化时间
+    const notificationList = res[0].map((item: Notification) => {
+        return {
+            ...item,
+            lastUpdateTime: formatDate(item.lastUpdateTime),
+        };
+    });
+
+    return {
+        notificationList,
+        total: res[1],
+    };
 };
 
 const scrollbar = ref<HTMLElement>(); // el-scrollbar 的 ref, 用于滚回到顶部
-const notificationList = ref<Array<Notification>>([]); // 通知列表
+const notificationList = ref<Notification[]>([]); // 通知列表
 
 // 每页显示的条数
 const limit = 5;

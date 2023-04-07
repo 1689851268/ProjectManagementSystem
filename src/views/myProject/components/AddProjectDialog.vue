@@ -60,15 +60,17 @@
 </template>
 
 <script setup lang="ts">
+import ajax from '@/utils/ajax';
 import useLoading from '@/hooks/useLoading';
+import { ProjectForm } from '../utils/interfaces';
+
 import { useMetaDataStore } from '@/store/metaData';
 import { useUserStore } from '@/store/user';
-import ajax from '@/utils/ajax';
-import { ElMessage, FormInstance, FormRules } from 'element-plus';
+
+import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 import { reactive, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { ProjectForm } from '../utils/interfaces';
+import { ElMessage, FormInstance, FormRules } from 'element-plus';
 
 const { t } = useI18n();
 const userStore = useUserStore();
