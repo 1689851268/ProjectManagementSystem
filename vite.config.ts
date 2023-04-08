@@ -8,8 +8,8 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
     // 获取环境变量
-    const root = process.cwd();
-    const { VITE_PORT } = loadEnv(mode, root);
+    const envDir = process.cwd();
+    const { VITE_PORT } = loadEnv(mode, envDir);
 
     return {
         plugins: [
