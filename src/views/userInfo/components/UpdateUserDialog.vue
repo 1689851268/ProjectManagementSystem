@@ -116,13 +116,14 @@
 </template>
 
 <script setup lang="ts">
-import { useMetaDataStore } from '@/store/metaData';
-import { watch, ref, reactive } from 'vue';
-import { MetaData } from '@/common/interfaces';
-import { ElMessage, FormInstance, FormRules } from 'element-plus';
-import ajax from '@/utils/ajax';
-import { UserInfo, UserInfoState } from '../utils/interfaces';
 import { useI18n } from 'vue-i18n';
+import { watch, ref, reactive } from 'vue';
+import { ElMessage, FormInstance, FormRules } from 'element-plus';
+
+import ajax from '@/utils/ajax';
+import { MetaData } from '@/common/interfaces';
+import { useMetaDataStore } from '@/store/metaData';
+import { UserInfo, UserInfoState } from '../utils/interfaces';
 
 const { t } = useI18n();
 
@@ -141,7 +142,7 @@ const ruleFormRef = ref<FormInstance>(); // 表单实例
 
 // 表单数据
 const form = reactive<UserInfo>({
-    identity: `${props.identity}`,
+    identity: '',
     name: '',
     psw: '',
     pswAgain: '',
@@ -151,6 +152,15 @@ const form = reactive<UserInfo>({
     major: '',
     class: '',
 });
+
+// 监听 props.identity 变化, 更新表单数据
+watch(
+    () => props.identity,
+    (newVal) => {
+        form.identity = `${newVal}`;
+    },
+    { immediate: true },
+);
 
 const majors = ref<MetaData[]>([]); // 专业信息
 
@@ -310,6 +320,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 
 // 发送请求新增用户
 const updateUser = async () => {
+    // 发送请求更新用户
     const res: any = await ajax.patch(`/user/${props.curUser?.uuid}`, {
         identity: form.identity,
         name: form.name,
@@ -321,21 +332,22 @@ const updateUser = async () => {
         class: form.class,
     });
 
-    // 更新成功, 弹窗提示, 关闭弹窗, 刷新列表数据
-    if (res.status === 201 || res.affected === 1) {
-        ElMessage({
-            message: t('Update Successfully'),
-            type: 'success',
-        });
-        handleClose();
-        emit('initUserList');
-    } else {
-        // 更新失败, 弹窗提示
+    // 更新失败, 弹窗提示
+    if (res.status !== 201 && res.affected !== 1) {
         ElMessage({
             message: t('Update Failed'),
             type: 'error',
         });
+        return;
     }
+
+    // 更新成功, 弹窗提示, 关闭弹窗, 刷新列表数据
+    ElMessage({
+        message: t('Update Successfully'),
+        type: 'success',
+    });
+    handleClose();
+    emit('initUserList');
 };
 
 // 重置表单

@@ -22,8 +22,7 @@ export const capitalize = (str: string) => {
  *   formatDate('1680506813294') => '2023/4/3 15:26:53'
  *   formatDate('') => '-'
  */
-export const formatDate = (time: string) => {
-    if (time === '') return '-';
-    const localeTimeString = new Date(+time).toLocaleTimeString();
-    return localeTimeString;
+export const formatDate = (time: string): string => {
+    if (!time) return '-';
+    return new Date(+time).toLocaleTimeString();
 };

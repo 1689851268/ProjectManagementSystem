@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="user-info">
         <UserQuery
             :configurations="configurations"
             @setCurPage="setCurPage"
@@ -31,13 +31,14 @@ import UserQuery from '@/components/FormQuery.vue';
 import UserList from '@/views/userInfo/components/UserList.vue';
 
 import useLoading from '@/hooks/useLoading';
+import useQueryCondition from '@/hooks/useQueryCondition';
 import useConfiguration from '@/views/userInfo/utils/useConfiguration';
 import { useMetaDataStore } from '@/store/metaData';
-import useQueryCondition from '@/hooks/useQueryCondition';
 import usePagination from '@/hooks/usePagination';
 import ajax from '@/utils/ajax.js';
 import { User } from '@/views/userInfo/utils/interfaces';
 import { scrollToTop } from '@/utils/domHandler';
+import { formatDate } from '@/utils/stringFunction';
 
 const scrollbar = ref<HTMLElement>(); // el-scrollbar 的 ref, 用于滚回到顶部
 const userList = ref<Array<User>>([]); // 用户列表
@@ -71,21 +72,17 @@ const { isLoading, startLoading, stopLoading } = useLoading();
 
 // 获取用户列表及其总数
 const getProjectList = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
     // 发送请求, 获取数据
-    const [data, total]: [User[], number] = await new Promise((resolve) =>
-        setTimeout(async () => {
-            const res: any = await ajax.get('/user', {
-                params: {
-                    curPage: curPage.value,
-                    pageSize: pageSize.value,
-                    uuid: queryCondition.value.uuid,
-                    name: queryCondition.value.name,
-                    identity: queryCondition.value.identity,
-                },
-            });
-            resolve(res);
-        }, 1000),
-    );
+    const [data, total]: [User[], number] = await ajax.get('/user', {
+        params: {
+            curPage: curPage.value,
+            pageSize: pageSize.value,
+            uuid: queryCondition.value.uuid,
+            name: queryCondition.value.name,
+            identity: queryCondition.value.identity,
+        },
+    });
     return { data, total };
 };
 
@@ -93,7 +90,7 @@ const getProjectList = async () => {
 const formatProjectList = (projectList: User[]) => {
     const data: User[] = projectList.map((item: any) => ({
         ...item,
-        registrationTime: new Date(+item.registrationTime).toLocaleString(),
+        registrationTime: formatDate(item.registrationTime),
     }));
     return data;
 };
@@ -114,3 +111,16 @@ watch([curPage, pageSize, queryCondition], initUserList, {
     immediate: true,
 });
 </script>
+
+<style lang="scss" scoped>
+.user-info {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    // 重置 el-scrollbar 样式
+    :deep(.el-scrollbar__view) {
+        height: 100%;
+    }
+}
+</style>

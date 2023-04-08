@@ -50,7 +50,13 @@ ajax.interceptors.response.use(
             router.push({ name: 'Login' }); // 跳转到登录页
         }
 
-        ElMessage.error(errRes.statusText);
+        if (errRes.data.errno === 1451) {
+            // 处理用户信息管理中, 外键约束引起的删除失败
+            ElMessage.warning(errRes.data.message);
+        } else {
+            // 其他错误
+            ElMessage.error(errRes.statusText);
+        }
 
         return 'Request Error';
     },

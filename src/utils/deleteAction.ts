@@ -28,8 +28,7 @@ export const handleDeleteAction = async (
     console.log('affected', affected);
 
     // 如果 affected 为字符串 / 0, 则表示删除失败, 不进行后续操作
-    // !+0 - true;    !+1 - false;    !+'任意字符串' - true
-    if (!+affected) {
+    if (typeof affected === 'string' || affected === 0) {
         ElMessage({
             type: 'error',
             message: t('Delete Failed'),
