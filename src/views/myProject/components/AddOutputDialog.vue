@@ -64,8 +64,8 @@
 </template>
 
 <script setup lang="ts">
-import useLoading from '@/hooks/useLoading';
-import ajax from '@/utils/ajax.js';
+import { useI18n } from 'vue-i18n';
+import { reactive, ref } from 'vue';
 import {
     ElMessage,
     ElMessageBox,
@@ -74,29 +74,30 @@ import {
     UploadProps,
     UploadUserFile,
 } from 'element-plus';
-import { reactive, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useMetaDataStore } from '@/store/metaData';
+
+import ajax from '@/utils/ajax.js';
+import useLoading from '@/hooks/useLoading';
 import { MetaData } from '@/common/interfaces';
+import { useMetaDataStore } from '@/store/metaData';
 
 const baseUrl = import.meta.env.VITE_AXIOS_BASEURL;
 
-const options = ref<MetaData[]>([]);
 const metaDataStore = useMetaDataStore();
-metaDataStore.$subscribe((_mutation, state) => {
-    console.log({ projectTypes: state.projectTypes });
-    options.value = state.projectTypes;
-});
-
 const { t } = useI18n();
 
-const props = defineProps<{
+defineProps<{
     visible: boolean;
 }>();
 
 const emit = defineEmits<{
     (e: 'update:visible', newVal: boolean): void;
 }>();
+
+const options = ref<MetaData[]>([]);
+metaDataStore.$subscribe((_mutation, state) => {
+    console.log({ projectTypes: state.projectTypes });
+    options.value = state.projectTypes;
+});
 
 // 表单验证规则
 const rules = reactive<FormRules>({

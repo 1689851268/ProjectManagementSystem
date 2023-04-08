@@ -1,4 +1,4 @@
-import { SYS_CONFIG, SYS_LANGUAGE } from '@/common/enum';
+import { SYS_CONFIG } from '@/common/enum';
 
 export const localCache = {
     /**

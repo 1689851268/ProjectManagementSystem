@@ -34,7 +34,7 @@ import ajax from '@/utils/ajax.js';
 import { Notification } from '@/views/notification/utils/interfaces';
 import { Configuration } from '@/common/interfaces';
 import { scrollToTop } from '@/utils/domHandler';
-import { formatDate } from '@/utils/transformTime';
+import { formatDate } from '@/utils/stringFunction';
 
 import useQueryCondition from '@/hooks/useQueryCondition';
 import usePagination from '@/hooks/usePagination';

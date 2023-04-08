@@ -48,30 +48,30 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import {
     ElMessage,
-    ElMessageBox,
     UploadFile,
     UploadFiles,
     UploadUserFile,
     genFileId,
 } from 'element-plus';
 import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus';
-import ajax from '@/utils/ajax';
-import { useI18n } from 'vue-i18n';
-import { Attachment } from '../utils/interfaces';
-import { useUserStore } from '@/store/user';
 
-const baseUrl = import.meta.env.VITE_AXIOS_BASEURL;
+import ajax from '@/utils/ajax';
+import { useUserStore } from '@/store/user';
+import { Attachment } from '../utils/interfaces';
+import { downloadBlob } from '@/utils/downloadBlob';
 
 const userStore = useUserStore();
+const { t } = useI18n();
+
+const baseUrl = import.meta.env.VITE_AXIOS_BASEURL;
 
 const typeText = ref<Record<number, string>>({
     0: '开题',
     1: '结题',
 });
-
-const { t } = useI18n();
 
 const props = defineProps<{
     visible: boolean;
@@ -84,10 +84,11 @@ const emit = defineEmits<{
     (e: 'update:visible', newVal: boolean): void;
 }>();
 
+// 上传文件列表
 const fileList = ref<UploadUserFile[]>([]);
 
-// 文件超出时的钩子
 const upload = ref<UploadInstance>();
+// 文件超出时的钩子
 const handleExceed: UploadProps['onExceed'] = (files) => {
     upload.value!.clearFiles();
     const file = files[0] as UploadRawFile;
@@ -168,36 +169,19 @@ watch(
     },
 );
 
+// 点击文件列表中已上传的文件时的钩子
 const handlePreview = async (file: UploadFile) => {
-    if (file.url) {
-        // 已上传, 点击下载
-        const id = props.attachment?.id; // 附件id
-        const res: any = await ajax.get(`/project-attachment/download/${id}`, {
-            responseType: 'blob',
-        });
-
-        // 创建一个 URL 对象，指向 blob 对象
-        let url = window.URL.createObjectURL(res);
-
-        // 创建一个 a 标签，设置 href 属性为 URL 对象，设置 download 属性为文件名
-        let link = document.createElement('a');
-        link.href = url;
-        link.download = props.attachment?.name as string;
-
-        // 将 a 标签添加到文档中
-        document.body.appendChild(link);
-
-        // 触发 a 标签的点击事件，下载文件
-        link.click();
-
-        // 移除 a 标签
-        document.body.removeChild(link);
-
-        // 释放 URL 对象
-        window.URL.revokeObjectURL(url);
-    } else {
-        // 未上传, 点击没有反应
+    // 如果未上传, 则没有反应
+    if (!file.url) {
+        return;
     }
+
+    // 如果已上传, 则获取资源并下载
+    const id = props.attachment?.id; // 附件id
+    const res: any = await ajax.get(`/project-attachment/download/${id}`, {
+        responseType: 'blob',
+    });
+    downloadBlob(res, props.attachment?.name as string);
 };
 </script>
 

@@ -25,9 +25,11 @@ export const handleDeleteAction = async (
 
     // 向后端发送删除请求
     const affected: number = await ajax.delete(url, config);
+    console.log('affected', affected);
 
-    // 如果删除失败, 则不进行后续操作
-    if (!affected) {
+    // 如果 affected 为字符串 / 0, 则表示删除失败, 不进行后续操作
+    // !+0 - true;    !+1 - false;    !+'任意字符串' - true
+    if (!+affected) {
         ElMessage({
             type: 'error',
             message: t('Delete Failed'),

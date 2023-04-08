@@ -38,8 +38,8 @@ import ajax from '@/utils/ajax';
 import { useMetaDataStore } from '@/store/metaData';
 import { scrollToTop } from '@/utils/domHandler';
 import { useUserStore } from '@/store/user';
-import { formatDate } from '@/utils/transformTime';
 import { InvolvedProject, RawInvolvedProject } from './utils/interfaces';
+import { formatDate } from '@/utils/stringFunction';
 
 const userStore = useUserStore();
 const metaDataStore = useMetaDataStore();

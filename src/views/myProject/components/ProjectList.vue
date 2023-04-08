@@ -94,7 +94,7 @@
                         v-if="row.status === projectStatuses[3]"
                         class="m-5"
                         size="small"
-                        @click="submitProposal(row.id)"
+                        @click="submitReport(row.id, 0)"
                     >
                         {{ $t('Opening Report') }}
                     </el-button>
@@ -104,20 +104,10 @@
                         v-if="row.status === projectStatuses[4]"
                         class="m-5"
                         size="small"
-                        @click="submitConclusion(row.id)"
+                        @click="submitReport(row.id, 1)"
                     >
                         {{ $t('Closing Report') }}
                     </el-button>
-
-                    <!-- 项目成果 -->
-                    <!-- <el-button
-                        v-if="row.status === projectStatuses[4]"
-                        class="m-5"
-                        size="small"
-                        @click="submitConclusion(row.id)"
-                    >
-                        {{ $t('Add Project Outcome') }}
-                    </el-button> -->
 
                     <!-- [撤销]-->
                     <template v-if="userStore.getIdentity === 1">
@@ -406,28 +396,14 @@ const handleReject = async (id: number) => {
     emits('initProjectHall');
 };
 
-// 提交开题报告
 const attachment = ref<Attachment | null>(null);
 const projectId = ref(0);
 const type = ref(0);
 const { visible: attVisible, openDialog: openAttDialog } = useDialog();
-const submitProposal = async (id: number) => {
+// 提交结题报告 or 开题报告
+const submitReport = async (id: number, reportType: number) => {
     projectId.value = id;
-    type.value = 0;
-
-    attachment.value =
-        (await ajax.get(`/project-attachment/${id}`, {
-            params: { type: type.value },
-        })) || null;
-    console.log('attachment', attachment.value);
-
-    openAttDialog();
-};
-
-// 提交结题报告
-const submitConclusion = async (id: number) => {
-    projectId.value = id;
-    type.value = 1;
+    type.value = reportType;
 
     attachment.value =
         (await ajax.get(`/project-attachment/${id}`, {
