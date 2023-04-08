@@ -33,6 +33,15 @@ export const defaultRoutes = [
                 },
             },
             {
+                path: '/my-project',
+                name: 'MyProject', // 我的项目
+                component: () => import('@/views/myProject/myProject.vue'),
+                meta: {
+                    icon: 'Notebook',
+                    auth: [1, 2, 3],
+                },
+            },
+            {
                 path: '/notification-table',
                 name: 'NotificationList', // 通知列表
                 component: () =>
@@ -40,15 +49,6 @@ export const defaultRoutes = [
                 meta: {
                     icon: 'Notification',
                     auth: [2],
-                },
-            },
-            {
-                path: '/my-project',
-                name: 'MyProject', // 我的项目
-                component: () => import('@/views/myProject/myProject.vue'),
-                meta: {
-                    icon: 'Notebook',
-                    auth: [1, 2, 3],
                 },
             },
             {
