@@ -17,12 +17,14 @@ export function getCurLanguage(): SYS_LANGUAGE {
 
     // 缓存中没有数据, 通过 navigator.language 获取浏览器使用的语言
     const navLanguage = navigator.language.toLowerCase();
-    const locales = [SYS_LANGUAGE.En, SYS_LANGUAGE.Zh];
-    for (const locale of locales) {
-        if (navLanguage.indexOf(locale) > -1) {
-            return locale;
+
+    // 遍历 SYS_LANGUAGE, 如果浏览器使用的语言包含 SYS_LANGUAGE 中的某个值, 则返回该值
+    for (const lang in SYS_LANGUAGE) {
+        if (navLanguage.includes(lang)) {
+            return lang as SYS_LANGUAGE;
         }
     }
+
     return SYS_LANGUAGE.Zh;
 }
 
