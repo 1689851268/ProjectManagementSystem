@@ -66,7 +66,9 @@ const toggleCollapsed = () => {
 // 退出登录
 const logout = () => {
     router.push('/login');
-    userStore.logout();
+    setTimeout(() => {
+        userStore.logout();
+    }, 500);
 };
 
 // 跳转到个人中心
