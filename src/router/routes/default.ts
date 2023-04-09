@@ -10,7 +10,7 @@ export const defaultRoutes = [
     {
         path: '/',
         name: 'Home',
-        component: () => import('@/layouts/default/index.vue'),
+        component: () => import('@/layouts/index.vue'),
         redirect: { name: 'Notification' },
         children: [
             {

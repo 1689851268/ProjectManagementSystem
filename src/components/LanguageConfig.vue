@@ -23,7 +23,7 @@ import { ArrowDown } from '@element-plus/icons-vue';
 import { storeToRefs } from 'pinia';
 
 import { localCache } from '@/utils/cache';
-import { useAppStore } from '@/store/app';
+import { useAppStore } from '@/store/modules/app';
 import { SYS_CONFIG, SYS_LANGUAGE } from '@/common/enum';
 
 const appStore = useAppStore();

@@ -51,7 +51,7 @@ import { useI18n } from 'vue-i18n';
 import { computed, reactive, ref } from 'vue';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
 
-import ajax from '@/utils/ajax.js';
+import ajax from '@/utils/ajax';
 import useLoading from '@/hooks/useLoading';
 
 const { t } = useI18n();

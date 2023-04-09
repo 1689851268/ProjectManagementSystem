@@ -45,8 +45,8 @@
 
 <script setup lang="ts">
 import useLoading from '@/hooks/useLoading';
-import { useUserStore } from '@/store/user';
-import ajax from '@/utils/ajax.js';
+import { useUserStore } from '@/store/modules/user';
+import ajax from '@/utils/ajax';
 import { ElMessage, FormRules } from 'element-plus';
 import { reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';

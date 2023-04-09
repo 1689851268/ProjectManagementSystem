@@ -59,7 +59,7 @@ import {
 import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus';
 
 import ajax from '@/utils/ajax';
-import { useUserStore } from '@/store/user';
+import { useUserStore } from '@/store/modules/user';
 import { Attachment } from '../utils/interfaces';
 import { downloadBlob } from '@/utils/downloadBlob';
 

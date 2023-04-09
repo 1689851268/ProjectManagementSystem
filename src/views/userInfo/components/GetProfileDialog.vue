@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import { MetaData } from '@/common/interfaces';
-import { useMetaDataStore } from '@/store/metaData';
+import { useMetaDataStore } from '@/store/modules/metaData';
 import { computed, ref } from 'vue';
 import { UserProfile } from '../utils/interfaces';
 

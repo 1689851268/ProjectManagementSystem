@@ -11,7 +11,7 @@ import { storeToRefs } from 'pinia';
 import zh from 'element-plus/dist/locale/zh-cn.mjs';
 import en from 'element-plus/dist/locale/en.mjs';
 
-import { useAppStore } from '@/store/app';
+import { useAppStore } from '@/store/modules/app';
 import { SYS_LANGUAGE } from '@/common/enum';
 import { getCurLanguage } from '@/locales';
 

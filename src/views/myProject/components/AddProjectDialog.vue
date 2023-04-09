@@ -64,8 +64,8 @@ import ajax from '@/utils/ajax';
 import useLoading from '@/hooks/useLoading';
 import { ProjectForm } from '../utils/interfaces';
 
-import { useMetaDataStore } from '@/store/metaData';
-import { useUserStore } from '@/store/user';
+import { useMetaDataStore } from '@/store/modules/metaData';
+import { useUserStore } from '@/store/modules/user';
 
 import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';

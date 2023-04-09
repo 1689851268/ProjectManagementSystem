@@ -35,9 +35,9 @@ import useLoading from '@/hooks/useLoading';
 import useConfiguration from '@/views/projectHall/utils/useConfiguration';
 
 import ajax from '@/utils/ajax';
-import { useMetaDataStore } from '@/store/metaData';
+import { useMetaDataStore } from '@/store/modules/metaData';
 import { scrollToTop } from '@/utils/domHandler';
-import { useUserStore } from '@/store/user';
+import { useUserStore } from '@/store/modules/user';
 import { InvolvedProject, RawInvolvedProject } from './utils/interfaces';
 import { formatDate } from '@/utils/stringFunction';
 

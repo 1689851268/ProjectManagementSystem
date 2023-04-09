@@ -40,10 +40,10 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 
-import { useAppStore } from '@/store/app';
+import { useAppStore } from '@/store/modules/app';
 import useMenuList from '@/hooks/useMenuList';
 import { splitCamelCase } from '@/utils/stringFunction';
-import { useUserStore } from '@/store/user';
+import { useUserStore } from '@/store/modules/user';
 
 const appStore = useAppStore();
 const { getMenuCollapsed } = storeToRefs(appStore);

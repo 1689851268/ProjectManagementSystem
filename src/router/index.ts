@@ -1,4 +1,4 @@
-import { useUserStore } from '@/store/user';
+import { useUserStore } from '@/store/modules/user';
 import { App } from 'vue';
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { defaultRoutes } from './routes/default';

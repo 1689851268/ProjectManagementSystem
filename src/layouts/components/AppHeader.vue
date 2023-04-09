@@ -42,10 +42,10 @@
 import { Setting, Expand, Fold } from '@element-plus/icons-vue';
 import { storeToRefs } from 'pinia';
 
-import { useAppStore } from '@/store/app';
+import { useAppStore } from '@/store/modules/app';
 import LanguageConfig from '@/components/LanguageConfig.vue';
 import { useRouter } from 'vue-router';
-import { useUserStore } from '@/store/user';
+import { useUserStore } from '@/store/modules/user';
 
 const appStore = useAppStore();
 const userStore = useUserStore();

@@ -68,7 +68,7 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
-import ajax from '@/utils/ajax.js';
+import ajax from '@/utils/ajax';
 import { ref, computed } from 'vue';
 import useLoading from '@/hooks/useLoading';
 

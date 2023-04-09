@@ -1,5 +1,5 @@
 import { router } from '@/router';
-import { useUserStore } from '@/store/user';
+import { useUserStore } from '@/store/modules/user';
 import axios from 'axios';
 import { ElMessage } from 'element-plus';
 

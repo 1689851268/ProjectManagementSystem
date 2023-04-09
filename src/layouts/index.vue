@@ -17,9 +17,9 @@ import AppHeader from './components/AppHeader.vue';
 import AppMain from './components/AppMain.vue';
 
 import ajax from '@/utils/ajax';
-import { useMetaDataStore } from '@/store/metaData';
+import { useMetaDataStore } from '@/store/modules/metaData';
 import { MetaData } from '@/common/interfaces';
-import { useUserStore } from '@/store/user';
+import { useUserStore } from '@/store/modules/user';
 import { storeToRefs } from 'pinia';
 
 const userStore = useUserStore();

@@ -37,9 +37,9 @@ import useLoading from '@/hooks/useLoading';
 import useConfiguration from '@/views/projectHall/utils/useConfiguration';
 import useProjectHallMetaData from '@/views/projectHall/utils/useProjectHallMetaData';
 
-import ajax from '@/utils/ajax.js';
+import ajax from '@/utils/ajax';
 import { Project, rawProject } from '@/views/projectHall/utils/interfaces';
-import { useMetaDataStore } from '@/store/metaData';
+import { useMetaDataStore } from '@/store/modules/metaData';
 import { scrollToTop } from '@/utils/domHandler';
 
 const scrollbar = ref<HTMLElement>(); // el-scrollbar 的 ref, 用于滚回到顶部

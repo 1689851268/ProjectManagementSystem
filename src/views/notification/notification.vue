@@ -30,7 +30,7 @@ import { ref, watch } from 'vue';
 import NotificationQuery from '@/components/FormQuery.vue';
 import NotificationList from '@/views/notification/components/NotificationList.vue';
 
-import ajax from '@/utils/ajax.js';
+import ajax from '@/utils/ajax';
 import { Notification } from '@/views/notification/utils/interfaces';
 import { Configuration } from '@/common/interfaces';
 import { scrollToTop } from '@/utils/domHandler';

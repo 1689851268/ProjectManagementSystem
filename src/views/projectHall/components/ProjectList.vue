@@ -126,7 +126,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { Project } from '../utils/interfaces';
-import { useUserStore } from '@/store/user';
+import { useUserStore } from '@/store/modules/user';
 import useLoading from '@/hooks/useLoading';
 
 import useDialog from '@/hooks/useDialog';

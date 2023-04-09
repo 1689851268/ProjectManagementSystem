@@ -31,7 +31,7 @@ import { ref, watch } from 'vue';
 import NotificationQuery from '@/components/FormQuery.vue';
 import NotificationList from '@/views/notificationTable/components/NotificationList.vue';
 
-import ajax from '@/utils/ajax.js';
+import ajax from '@/utils/ajax';
 import {
     Notification,
     NotificationItem,

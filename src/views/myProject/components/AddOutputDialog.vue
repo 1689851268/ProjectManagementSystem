@@ -75,10 +75,10 @@ import {
     UploadUserFile,
 } from 'element-plus';
 
-import ajax from '@/utils/ajax.js';
+import ajax from '@/utils/ajax';
 import useLoading from '@/hooks/useLoading';
 import { MetaData } from '@/common/interfaces';
-import { useMetaDataStore } from '@/store/metaData';
+import { useMetaDataStore } from '@/store/modules/metaData';
 
 const baseUrl = import.meta.env.VITE_AXIOS_BASEURL;
 

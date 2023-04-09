@@ -122,7 +122,7 @@ import { ElMessage, FormInstance, FormRules } from 'element-plus';
 
 import ajax from '@/utils/ajax';
 import { MetaData } from '@/common/interfaces';
-import { useMetaDataStore } from '@/store/metaData';
+import { useMetaDataStore } from '@/store/modules/metaData';
 import { UserInfo, UserInfoState } from '../utils/interfaces';
 
 const { t } = useI18n();

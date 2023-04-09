@@ -114,7 +114,7 @@
 </template>
 
 <script setup lang="ts">
-import { useMetaDataStore } from '@/store/metaData';
+import { useMetaDataStore } from '@/store/modules/metaData';
 import { watch, ref, reactive } from 'vue';
 import { MetaData } from '@/common/interfaces';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';

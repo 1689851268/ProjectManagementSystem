@@ -241,7 +241,7 @@ import AddProjectDialog from './AddProjectDialog.vue';
 import AllowProjectDialog from './AllowProjectDialog.vue';
 import SubmitAttachmentDialog from './SubmitAttachmentDialog.vue';
 
-import { useUserStore } from '@/store/user';
+import { useUserStore } from '@/store/modules/user';
 
 const userStore = useUserStore();
 const { t } = useI18n();

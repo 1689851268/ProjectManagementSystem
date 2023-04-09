@@ -45,8 +45,8 @@ import { ElMessage, FormInstance, FormRules } from 'element-plus';
 import { useRouter } from 'vue-router';
 
 import LanguageConfig from '@/components/LanguageConfig.vue';
-import ajax from '@/utils/ajax.js';
-import { useUserStore } from '@/store/user';
+import ajax from '@/utils/ajax';
+import { useUserStore } from '@/store/modules/user';
 import useLoading from '@/hooks/useLoading';
 
 const router = useRouter();
